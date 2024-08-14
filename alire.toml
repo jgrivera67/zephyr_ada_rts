@@ -1,0 +1,24 @@
+#
+# Copyright (c) 2024, German Rivera
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# NOTE: This crate is not meant to be built with the native compiler.
+# A dependency on a cross-compiler must be specified in the client
+# crate. See example client crates in the sample_apps folder.
+#
+name = "zephyr_ada_rts"
+description = "Zephyr RTOS Ada Runtime Library"
+version = "0.1.0-dev"
+
+authors = ["J. German Rivera"]
+maintainers = ["J. German Rivera <jgrivera67@gmail.com>"]
+maintainers-logins = ["jgrivera67"]
+licenses = "Apache-2.0"
+website = "https://github.com/jgrivera67/zephyr_ada_rts"
+tags = ["zephyr", "rts"]
+
+[[actions]]
+type = "test"
+command = ["alr", "build"]
+directory = "sample_apps/zephyr_ada_hello"

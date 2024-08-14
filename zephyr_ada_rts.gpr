@@ -1,0 +1,47 @@
+--
+--  Copyright (c) 2024, German Rivera
+--
+--  SPDX-License-Identifier: Apache-2.0
+--
+with "config/zephyr_ada_rts_config.gpr";
+with "compiler_flags.gpr";
+
+project Zephyr_Ada_Rts is
+   for Target use Compiler_Flags.Target_Compiler_Selector;
+   for Runtime ("Ada") use  Project'Project_Dir;
+   for Languages use ("Ada");
+
+   --  NOTE: the library name needs to be 'gnat' so that '-lgnat' can work.
+   for Library_Name use "gnat";
+ 
+   for Library_Version use Project'Library_Name & ".a." & Zephyr_Ada_Rts_Config.Crate_Version;
+
+   for Source_Dirs use ("src",
+                        "src/third_party",
+                        "config");
+   for Object_Dir use "obj/" & Zephyr_Ada_Rts_Config.Build_Profile;
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "lib";
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("ZEPHYR_ADA_RTS_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
+
+   for Library_Auto_Init use "False";
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+         ("-gnatg",     -- Internal GNAT implementation mode to compile runtime library
+          "-nostdinc",  -- Inhibit the search of the default location for the GNAT Run Time Library (RTL) source files.
+          "-nostdlib")  -- Inhibit the search of the default location for the GNAT Run Time Library (RTL) ALI files.
+         &
+          Zephyr_Ada_Rts_Config.Ada_Compiler_Switches &
+          Compiler_Flags.Compiler.ADAFLAGS;
+   end Compiler;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+end Zephyr_Ada_Rts;

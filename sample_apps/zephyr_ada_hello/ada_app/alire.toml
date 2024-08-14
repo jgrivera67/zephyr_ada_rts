@@ -1,0 +1,25 @@
+name = "zephyr_ada_hello"
+description = "Zephyr Ada hello world"
+version = "0.1.0-dev"
+
+authors = ["J. German Rivera"]
+maintainers = ["J. German Rivera <jgrivera67@gmail.com>"]
+maintainers-logins = ["jgrivera67"]
+licenses = "Apache-2.0"
+website = ""
+tags = []
+
+[[depends-on]]
+zephyr_ada_rts = "*"
+gnat_riscv64_elf = "*"
+gnatprove = "*"
+gprbuild = "^22" # needed by alire-index CI builds
+
+[[pins]]
+zephyr_ada_rts = { path='../../..' }
+
+[gpr-set-externals]
+CPU_Core = "riscv32"
+
+[build-profiles]
+zephyr_ada_rts = "development"

@@ -1,5 +1,17 @@
 # Object file
 *.o
+*.elf
+*.bin
+*.map
 
 # Ada Library Information
 *.ali
+
+# vim backup files
+.*.sw[op]
+
+# Build directories
+/obj/
+/lib/
+/alire/
+/build/
