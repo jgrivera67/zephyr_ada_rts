@@ -138,17 +138,17 @@ is
    --  Ghost function to compute the length of a char_array up to the first nul
    --  character.
 
-   function To_C
-     (Item       : String;
-      Append_Nul : Boolean := True) return char_array
-   with
-     Pre  => not (Append_Nul = False and then Item'Length = 0),
-     Post => To_C'Result'First = 0
-       and then To_C'Result'Length =
-         (if Append_Nul then Item'Length + 1 else Item'Length)
-       and then (for all J in Item'Range =>
-                   To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
-       and then (if Append_Nul then To_C'Result (To_C'Result'Last) = nul);
+   --  function To_C
+   --    (Item       : String;
+   --     Append_Nul : Boolean := True) return char_array
+   --  with
+   --    Pre  => not (Append_Nul = False and then Item'Length = 0),
+   --    Post => To_C'Result'First = 0
+   --      and then To_C'Result'Length =
+   --        (if Append_Nul then Item'Length + 1 else Item'Length)
+   --      and then (for all J in Item'Range =>
+   --                  To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
+   --      and then (if Append_Nul then To_C'Result (To_C'Result'Last) = nul);
    --  The result of To_C is a char_array value of length Item'Length (if
    --  Append_Nul is False) or Item'Length+1 (if Append_Nul is True). The lower
    --  bound is 0. For each component Item(I), the corresponding component
@@ -156,21 +156,21 @@ is
    --  Append_Nul is True. If Append_Nul is False and Item'Length is 0, then
    --  To_C propagates Constraint_Error.
 
-   function To_Ada
-     (Item     : char_array;
-      Trim_Nul : Boolean := True) return String
-   with
-     Pre  => (if Trim_Nul then
-                Is_Nul_Terminated (Item)
-                  and then C_Length_Ghost (Item) <= size_t (Natural'Last)
-              else
-                Item'Last - Item'First < size_t (Natural'Last)),
-     Post => To_Ada'Result'First = 1
-       and then To_Ada'Result'Length =
-         (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
-       and then (for all J in To_Ada'Result'Range =>
-                   To_Ada'Result (J) =
-                     To_Ada (Item (size_t (J) - 1 + Item'First)));
+   --  function To_Ada
+   --    (Item     : char_array;
+   --     Trim_Nul : Boolean := True) return String
+   --  with
+   --    Pre  => (if Trim_Nul then
+   --               Is_Nul_Terminated (Item)
+   --                 and then C_Length_Ghost (Item) <= size_t (Natural'Last)
+   --             else
+   --               Item'Last - Item'First < size_t (Natural'Last)),
+   --    Post => To_Ada'Result'First = 1
+   --      and then To_Ada'Result'Length =
+   --        (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
+   --      and then (for all J in To_Ada'Result'Range =>
+   --                  To_Ada'Result (J) =
+   --                    To_Ada (Item (size_t (J) - 1 + Item'First)));
    --  The result of To_Ada is a String whose length is Item'Length (if
    --  Trim_Nul is False) or the length of the slice of Item preceding the
    --  first nul (if Trim_Nul is True). The lower bound of the result is 1.
@@ -279,33 +279,33 @@ is
    --  Ghost function to compute the length of a wchar_array up to the first
    --  wide_nul character.
 
-   function To_C
-     (Item       : Wide_String;
-      Append_Nul : Boolean := True) return wchar_array
-   with
-     Pre  => not (Append_Nul = False and then Item'Length = 0),
-     Post => To_C'Result'First = 0
-       and then To_C'Result'Length =
-         (if Append_Nul then Item'Length + 1 else Item'Length)
-       and then (for all J in Item'Range =>
-                   To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
-       and then (if Append_Nul then To_C'Result (To_C'Result'Last) = wide_nul);
+   --  function To_C
+   --    (Item       : Wide_String;
+   --     Append_Nul : Boolean := True) return wchar_array
+   --  with
+   --    Pre  => not (Append_Nul = False and then Item'Length = 0),
+   --    Post => To_C'Result'First = 0
+   --      and then To_C'Result'Length =
+   --        (if Append_Nul then Item'Length + 1 else Item'Length)
+   --      and then (for all J in Item'Range =>
+   --                  To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
+   --      and then (if Append_Nul then To_C'Result (To_C'Result'Last) = wide_nul);
 
-   function To_Ada
-     (Item     : wchar_array;
-      Trim_Nul : Boolean := True) return Wide_String
-   with
-     Pre  => (if Trim_Nul then
-                Is_Nul_Terminated (Item)
-                  and then C_Length_Ghost (Item) <= size_t (Natural'Last)
-              else
-                Item'Last - Item'First < size_t (Natural'Last)),
-     Post => To_Ada'Result'First = 1
-       and then To_Ada'Result'Length =
-         (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
-       and then (for all J in To_Ada'Result'Range =>
-                   To_Ada'Result (J) =
-                     To_Ada (Item (size_t (J) - 1 + Item'First)));
+   --  function To_Ada
+   --    (Item     : wchar_array;
+   --     Trim_Nul : Boolean := True) return Wide_String
+   --  with
+   --    Pre  => (if Trim_Nul then
+   --               Is_Nul_Terminated (Item)
+   --                 and then C_Length_Ghost (Item) <= size_t (Natural'Last)
+   --             else
+   --               Item'Last - Item'First < size_t (Natural'Last)),
+   --    Post => To_Ada'Result'First = 1
+   --      and then To_Ada'Result'Length =
+   --        (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
+   --      and then (for all J in To_Ada'Result'Range =>
+   --                  To_Ada'Result (J) =
+   --                    To_Ada (Item (size_t (J) - 1 + Item'First)));
 
    procedure To_C
      (Item       : Wide_String;
@@ -400,36 +400,36 @@ is
    --  Ghost function to compute the length of a char16_array up to the first
    --  char16_nul character.
 
-   function To_C
-     (Item       : Wide_String;
-      Append_Nul : Boolean := True) return char16_array
-   with
-     Pre  => not (Append_Nul = False and then Item'Length = 0),
-     Post => To_C'Result'First = 0
-       and then To_C'Result'Length =
-         (if Append_Nul then Item'Length + 1 else Item'Length)
-       and then (for all J in Item'Range =>
-                   To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
-       and then
-         (if Append_Nul then To_C'Result (To_C'Result'Last) = char16_nul);
-   pragma Ada_05 (To_C);
+   --  function To_C
+   --    (Item       : Wide_String;
+   --     Append_Nul : Boolean := True) return char16_array
+   --  with
+   --    Pre  => not (Append_Nul = False and then Item'Length = 0),
+   --    Post => To_C'Result'First = 0
+   --      and then To_C'Result'Length =
+   --        (if Append_Nul then Item'Length + 1 else Item'Length)
+   --      and then (for all J in Item'Range =>
+   --                  To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
+   --      and then
+   --        (if Append_Nul then To_C'Result (To_C'Result'Last) = char16_nul);
+   --  pragma Ada_05 (To_C);
 
-   function To_Ada
-     (Item     : char16_array;
-      Trim_Nul : Boolean := True) return Wide_String
-   with
-     Pre  => (if Trim_Nul then
-                Is_Nul_Terminated (Item)
-                  and then C_Length_Ghost (Item) <= size_t (Natural'Last)
-              else
-                Item'Last - Item'First < size_t (Natural'Last)),
-     Post => To_Ada'Result'First = 1
-       and then To_Ada'Result'Length =
-         (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
-       and then (for all J in To_Ada'Result'Range =>
-                   To_Ada'Result (J) =
-                     To_Ada (Item (size_t (J) - 1 + Item'First)));
-   pragma Ada_05 (To_Ada);
+   --  function To_Ada
+   --    (Item     : char16_array;
+   --     Trim_Nul : Boolean := True) return Wide_String
+   --  with
+   --    Pre  => (if Trim_Nul then
+   --               Is_Nul_Terminated (Item)
+   --                 and then C_Length_Ghost (Item) <= size_t (Natural'Last)
+   --             else
+   --               Item'Last - Item'First < size_t (Natural'Last)),
+   --    Post => To_Ada'Result'First = 1
+   --      and then To_Ada'Result'Length =
+   --        (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
+   --      and then (for all J in To_Ada'Result'Range =>
+   --                  To_Ada'Result (J) =
+   --                    To_Ada (Item (size_t (J) - 1 + Item'First)));
+   --  pragma Ada_05 (To_Ada);
 
    procedure To_C
      (Item       : Wide_String;
@@ -520,36 +520,36 @@ is
    --  subprograms that convert between String and char_array, except
    --  that char32_nul is used instead of nul.
 
-   function To_C
-     (Item       : Wide_Wide_String;
-      Append_Nul : Boolean := True) return char32_array
-   with
-     Pre  => not (Append_Nul = False and then Item'Length = 0),
-     Post => To_C'Result'First = 0
-       and then To_C'Result'Length =
-         (if Append_Nul then Item'Length + 1 else Item'Length)
-       and then (for all J in Item'Range =>
-                   To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
-       and then
-         (if Append_Nul then To_C'Result (To_C'Result'Last) = char32_nul);
-   pragma Ada_05 (To_C);
+   --  function To_C
+   --    (Item       : Wide_Wide_String;
+   --     Append_Nul : Boolean := True) return char32_array
+   --  with
+   --    Pre  => not (Append_Nul = False and then Item'Length = 0),
+   --    Post => To_C'Result'First = 0
+   --      and then To_C'Result'Length =
+   --        (if Append_Nul then Item'Length + 1 else Item'Length)
+   --      and then (for all J in Item'Range =>
+   --                  To_C'Result (size_t (J - Item'First)) = To_C (Item (J)))
+   --      and then
+   --        (if Append_Nul then To_C'Result (To_C'Result'Last) = char32_nul);
+   --  pragma Ada_05 (To_C);
 
-   function To_Ada
-     (Item     : char32_array;
-      Trim_Nul : Boolean := True) return Wide_Wide_String
-   with
-     Pre  => (if Trim_Nul then
-                Is_Nul_Terminated (Item)
-                  and then C_Length_Ghost (Item) <= size_t (Natural'Last)
-              else
-                Item'Last - Item'First < size_t (Natural'Last)),
-     Post => To_Ada'Result'First = 1
-       and then To_Ada'Result'Length =
-         (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
-       and then (for all J in To_Ada'Result'Range =>
-                   To_Ada'Result (J) =
-                     To_Ada (Item (size_t (J) - 1 + Item'First)));
-   pragma Ada_05 (To_Ada);
+   --  function To_Ada
+   --    (Item     : char32_array;
+   --     Trim_Nul : Boolean := True) return Wide_Wide_String
+   --  with
+   --    Pre  => (if Trim_Nul then
+   --               Is_Nul_Terminated (Item)
+   --                 and then C_Length_Ghost (Item) <= size_t (Natural'Last)
+   --             else
+   --               Item'Last - Item'First < size_t (Natural'Last)),
+   --    Post => To_Ada'Result'First = 1
+   --      and then To_Ada'Result'Length =
+   --        (if Trim_Nul then C_Length_Ghost (Item) else Item'Length)
+   --      and then (for all J in To_Ada'Result'Range =>
+   --                  To_Ada'Result (J) =
+   --                    To_Ada (Item (size_t (J) - 1 + Item'First)));
+   --  pragma Ada_05 (To_Ada);
 
    procedure To_C
      (Item       : Wide_Wide_String;

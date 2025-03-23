@@ -13,7 +13,7 @@ tags = []
 zephyr_ada_rts = "*"
 gnat_riscv64_elf = "*"
 gnatprove = "*"
-gprbuild = "^22" # needed by alire-index CI builds
+gprbuild = "*" # needed by alire-index CI builds
 
 [[pins]]
 zephyr_ada_rts = { path='../../..' }

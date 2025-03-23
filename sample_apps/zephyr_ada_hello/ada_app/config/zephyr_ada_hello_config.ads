@@ -10,7 +10,7 @@ package Zephyr_Ada_Hello_Config is
 
    Alire_Host_OS : constant String := "macos";
 
-   Alire_Host_Arch : constant String := "x86_64";
+   Alire_Host_Arch : constant String := "aarch64";
 
    Alire_Host_Distro : constant String := "homebrew";
 

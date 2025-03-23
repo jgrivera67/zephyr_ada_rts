@@ -10,3 +10,4 @@ pragma Restrictions (No_Dispatch);
 pragma Restrictions (No_Implicit_Dynamic_Code);
 pragma Restrictions (No_Secondary_Stack);
 pragma Restrictions (No_Exception_Handlers);
+pragma Extensions_Allowed (All);

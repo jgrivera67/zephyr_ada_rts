@@ -16,7 +16,9 @@ project Zephyr_Ada_Hello is
    for Library_Name use "ada_app";
    for Library_Version use Project'Library_Name & ".a." & Zephyr_Ada_Hello_Config.Crate_Version;
 
-   for Source_Dirs use ("src/", "config/");
+   for Source_Dirs use ("src/",
+                       "../../../src/third_party/generated_zephyr_ada_bindings/",
+                        "config/");
    for Object_Dir use "obj/" & Zephyr_Ada_Hello_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Library_Dir use "lib";

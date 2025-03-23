@@ -6,59 +6,393 @@
 
 with Interfaces.C;
 with GNAT.Source_Info;
+with zephyr_posix_pthread_h;
+with zephyr_posix_time_h;
+with zephyr_posix_posix_types_h;
+with sys_utimespec_h;
+with sys_types_h;
 
 package body Zephyr_Ada_Hello is
-   procedure Print_String (Str : String; Arg : Integer := 0)
-   is
-      procedure Printk (Str : System.Address; Arg : Interfaces.C.int)
-        with Import,
-             Convention => C_Variadic_1,
-             External_Name => "printk";
+   use Interfaces;
+   use type C.int;
+   use type C.long;
+   use type System.Address;
+   package pthread_h renames zephyr_posix_pthread_h;
+   package posix_types_h renames zephyr_posix_posix_types_h;
+   package time_h renames zephyr_posix_time_h;
+   package timespec_h renames sys_utimespec_h;
 
-      C_Str : String (1 .. Str'Length + 1) := Str & ASCII.NUL;
-   begin
-      Printk (C_Str'Address, Interfaces.C.int (Arg));
-   end Print_String;
+   Nsec_Per_Sec : constant := 1000000000;
+   Nsec_Per_Msec : constant := 1000000;
+   Service1_Period_Ms : constant := 20;
+   Service2_Period_Ms : constant := 100;
+   Service3_Period_Ms : constant := 200;
+
+   procedure Printk (Fmt : String);
+
+   procedure Printk (Fmt : String;
+                     Arg1 : C.unsigned;
+                     Arg2 : C.unsigned_long_long;
+                     Arg3 : C.unsigned_long;
+                     Arg4 : C.unsigned_long);
+
+   procedure Printk (Fmt : String; C_Str_Addr : System.Address);
+
+   procedure Printk (Fmt : String;
+                     C_Str_Addr : System.Address;
+                     Arg : C.unsigned);
+
+   function Service1_Thread_Func (arg : System.Address) return System.Address
+      with Convention => C;
+
+   function Service2_Thread_Func (arg : System.Address) return System.Address
+      with Convention => C;
+
+   function Service3_Thread_Func (arg : System.Address) return System.Address
+      with Convention => C;
+
+   function Calc_Next_Wakeup_Time (Time_Stamp : timespec_h.timespec;
+                                   Sleep_Time_Ms : C.long)
+      return timespec_h.timespec
+      with Pre => Time_Stamp.tv_nsec < Nsec_Per_Sec and then
+                  Sleep_Time_Ms > 0,
+           Post => Calc_Next_Wakeup_Time'Result.tv_nsec < Nsec_Per_Sec;
 
    procedure Hello_Ada is
+      C_Ret : C.int;
+      --  Rt_Max_Prio : constant C.int := sched_h.sched_get_priority_max(sched_h.SCHED_FIFO);
+      --  Thread_Attr : aliased pthread_h.pthread_attr_t;
+      Thread_Handle : aliased posix_types_h.pthread_t;
    begin
-      Print_String (
-        "Hello Ada (built on " &
-        GNAT.Source_Info.Compilation_Date & " at " &
-        GNAT.Source_Info.Compilation_Time & ")" & ASCII.LF);
+      Printk ("Hello Ada (built on " &
+              GNAT.Source_Info.Compilation_Date & " at " &
+              GNAT.Source_Info.Compilation_Time & ")" & ASCII.LF);
+
+      --  Set_Real_Time_Thread_Attr (Thread_Attr, Rt_Max_Prio - 1, Cpu_Id);
+      C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
+                                         attr => null, --  Thread_Attr'Access,
+                                         threadroutine => Service1_Thread_Func'Access,
+                                         arg => System.Null_Address);
+      pragma Assert (C_Ret = 0);
+
+      --  Set_Real_Time_Thread_Attr (Thread_Attr, Rt_Max_Prio - 2, Cpu_Id);
+      C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
+                                         attr => null, --  Thread_Attr'Access,
+                                         threadroutine => Service2_Thread_Func'Access,
+                                         arg => System.Null_Address);
+      pragma Assert (C_Ret = 0);
+
+      --  Set_Real_Time_Thread_Attr (Thread_Attr, Rt_Max_Prio - 3, Cpu_Id);
+      C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
+                                         attr => null, --  Thread_Attr'Access,
+                                         threadroutine => Service3_Thread_Func'Access,
+                                         arg => System.Null_Address);
+      pragma Assert (C_Ret = 0);
+
+      --
+      --  None of the child threads are supposed to terminate, so just wait
+      --  on the last child thread created, to prevent the process to terminate
+      --
+      C_Ret := pthread_h.pthread_join (Thread_Handle, System.Null_Address);
+      pragma Assert (C_Ret = 0);
    end Hello_Ada;
+
+   procedure Printk (Fmt : String) is
+      procedure C_Printk (Fmt_Addr : System.Address)
+         with Import,
+              Convention => C_Variadic_1,
+              External_Name => "printk";
+
+      C_Fmt : C.char_array (0 .. Fmt'Length);
+      Count : C.size_t;
+   begin
+      C.To_C (Fmt, C_Fmt, Count, Append_Nul => True);
+      C_Printk (C_Fmt'Address);
+   end Printk;
+
+   procedure Printk (Fmt : String;
+                  Arg1 : C.unsigned;
+                  Arg2 : C.unsigned_long_long;
+                  Arg3 : C.unsigned_long;
+                  Arg4 : C.unsigned_long) is
+      procedure C_Printk (Fmt_Addr : System.Address;
+                          Arg1 : C.unsigned;
+                          Arg2 : C.unsigned_long_long;
+                          Arg3 : C.unsigned_long;
+                          Arg4 : C.unsigned_long)
+         with Import,
+              Convention => C_Variadic_1,
+              External_Name => "printk";
+
+      C_Fmt : C.char_array (0 .. Fmt'Length);
+      Count : C.size_t;
+   begin
+      C.To_C (Fmt, C_Fmt, Count, Append_Nul => True);
+      C_Printk (C_Fmt'Address, Arg1, Arg2, Arg3, Arg4);
+   end Printk;
+
+   procedure Printk (Fmt : String; C_Str_Addr : System.Address) is
+      procedure C_Printk (Fmt_Addr : System.Address;
+                          Str_Addr : System.Address)
+         with Import,
+              Convention => C_Variadic_1,
+              External_Name => "printk";
+
+      C_Fmt : C.char_array (0 .. Fmt'Length);
+      Count : C.size_t;
+   begin
+      C.To_C (Fmt, C_Fmt, Count, Append_Nul => True);
+      C_Printk (C_Fmt'Address, C_Str_Addr);
+   end Printk;
+
+   procedure Printk (Fmt : String; C_Str_Addr : System.Address; Arg : C.unsigned) is
+      procedure C_Printk (Fmt_Addr : System.Address;
+                          Str_Addr : System.Address;
+                          Arg : C.unsigned)
+         with Import,
+              Convention => C_Variadic_1,
+              External_Name => "printk";
+
+      C_Fmt : C.char_array (0 .. Fmt'Length);
+      Count : C.size_t;
+   begin
+      C.To_C (Fmt, C_Fmt, Count, Append_Nul => True);
+      C_Printk (C_Fmt'Address, C_Str_Addr, Arg);
+   end Printk;
+
+   --
+   --  Child thread entry-point function for Service 1
+   --
+   function Service1_Thread_Func (arg : System.Address) return System.Address
+   is
+      Cnt : C.int := 0;
+      Current_Time : aliased timespec_h.timespec;
+      Next_Wakeup_Time : aliased timespec_h.timespec;
+      Remaining_Sleep_Time : aliased timespec_h.timespec;
+      C_Ret : C.int;
+   begin
+      pragma Assert (arg = System.Null_Address);
+      C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                       ts => Current_Time'Access);
+      pragma Assert (C_Ret = 0);
+
+      Next_Wakeup_Time := Current_Time;
+      loop
+         Cnt := Cnt + 1;
+         Printk ("thread1: 50 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
+                  C.unsigned (Cnt),
+                  C.unsigned_long_long (Current_Time.tv_sec),
+                  C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
+                  C.unsigned_long (Current_Time.tv_nsec mod Nsec_Per_Msec));
+
+         Next_Wakeup_Time := Calc_Next_Wakeup_Time (Next_Wakeup_Time,
+                                                      Service1_Period_Ms);
+
+         --
+         --  Check that we are not going to miss the next period:
+         --  (or that we have not missed the current deadline)
+         --
+         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                          ts => Current_Time'Access);
+         pragma Assert (C_Ret = 0);
+         pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
+                        (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
+                           Next_Wakeup_Time.tv_nsec > Current_Time.tv_nsec));
+
+         --
+         --  Wait for next period:
+         --
+         C_Ret := time_h.clock_nanosleep (clock_id => time_h.CLOCK_MONOTONIC,
+                                          flags => time_h.TIMER_ABSTIME,
+                                          rqtp => Next_Wakeup_Time'Access,
+                                          rmtp => Remaining_Sleep_Time'Access);
+         pragma Assert (C_Ret = 0);
+
+         --
+         --  Check that we did not wake up too early:
+         --
+         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                          ts => Current_Time'Access);
+         pragma Assert (C_Ret = 0);
+         pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
+                        (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
+                           Current_Time.tv_nsec >= Next_Wakeup_Time.tv_nsec));
+      end loop;
+
+      pragma Warnings (off, "unreachable code");
+      return System.Null_Address;
+      pragma Warnings (on, "unreachable code");
+   end Service1_Thread_Func;
+
+   --
+   --  Child thread entry-point function for Service 2
+   --
+   function Service2_Thread_Func (arg : System.Address) return System.Address
+   is
+      Cnt : C.int := 0;
+      Current_Time : aliased timespec_h.timespec;
+      Next_Wakeup_Time : aliased timespec_h.timespec;
+      Remaining_Sleep_Time : aliased timespec_h.timespec;
+      C_Ret : C.int;
+   begin
+      pragma Assert (arg = System.Null_Address);
+      C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                       ts => Current_Time'Access);
+      pragma Assert (C_Ret = 0);
+
+      Next_Wakeup_Time := Current_Time;
+      loop
+         Cnt := Cnt + 1;
+         Printk ("thread2: 10 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
+                  C.unsigned (Cnt),
+                  C.unsigned_long_long (Current_Time.tv_sec),
+                  C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
+                  C.unsigned_long (Current_Time.tv_nsec mod Nsec_Per_Msec));
+
+         Next_Wakeup_Time := Calc_Next_Wakeup_Time (Next_Wakeup_Time,
+                                                      Service2_Period_Ms);
+
+         --
+         --  Check that we are not going to miss the next period:
+         --  (or that we have not missed the current deadline)
+         --
+         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                          ts => Current_Time'Access);
+         pragma Assert (C_Ret = 0);
+         pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
+                        (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
+                           Next_Wakeup_Time.tv_nsec > Current_Time.tv_nsec));
+
+         --
+         --  Wait for next period:
+         --
+         C_Ret := time_h.clock_nanosleep (clock_id => time_h.CLOCK_MONOTONIC,
+                                          flags => time_h.TIMER_ABSTIME,
+                                          rqtp => Next_Wakeup_Time'Access,
+                                          rmtp => Remaining_Sleep_Time'Access);
+         pragma Assert (C_Ret = 0);
+
+         --
+         --  Check that we did not wake up too early:
+         --
+         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                          ts => Current_Time'Access);
+         pragma Assert (C_Ret = 0);
+         pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
+                        (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
+                           Current_Time.tv_nsec >= Next_Wakeup_Time.tv_nsec));
+      end loop;
+
+      pragma Warnings (off, "unreachable code");
+      return System.Null_Address;
+      pragma Warnings (on, "unreachable code");
+   end Service2_Thread_Func;
+
+   --
+   --  Child thread entry-point function for Service 3
+   --
+   function Service3_Thread_Func (arg : System.Address) return System.Address
+   is
+      Cnt : C.int := 0;
+      Current_Time : aliased timespec_h.timespec;
+      Next_Wakeup_Time : aliased timespec_h.timespec;
+      Remaining_Sleep_Time : aliased timespec_h.timespec;
+      C_Ret : C.int;
+   begin
+      pragma Assert (arg = System.Null_Address);
+      C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                       ts => Current_Time'Access);
+      pragma Assert (C_Ret = 0);
+
+      Next_Wakeup_Time := Current_Time;
+      loop
+         Cnt := Cnt + 1;
+         Printk ("thread3: 5 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
+                  C.unsigned (Cnt),
+                  C.unsigned_long_long (Current_Time.tv_sec),
+                  C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
+                  C.unsigned_long (Current_Time.tv_nsec mod Nsec_Per_Msec));
+
+         Next_Wakeup_Time := Calc_Next_Wakeup_Time (Next_Wakeup_Time,
+                                                    Service3_Period_Ms);
+
+         --
+         --  Check that we are not going to miss the next period:
+         --  (or that we have not missed the current deadline)
+         --
+         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                          ts => Current_Time'Access);
+         pragma Assert (C_Ret = 0);
+         pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
+                        (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
+                           Next_Wakeup_Time.tv_nsec > Current_Time.tv_nsec));
+
+         --
+         --  Wait for next period:
+         --
+         C_Ret := time_h.clock_nanosleep (clock_id => time_h.CLOCK_MONOTONIC,
+                                          flags => time_h.TIMER_ABSTIME,
+                                          rqtp => Next_Wakeup_Time'Access,
+                                          rmtp => Remaining_Sleep_Time'Access);
+         pragma Assert (C_Ret = 0);
+
+         --
+         --  Check that we did not wake up too early:
+         --
+         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
+                                          ts => Current_Time'Access);
+         pragma Assert (C_Ret = 0);
+         pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
+                        (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
+                           Current_Time.tv_nsec >= Next_Wakeup_Time.tv_nsec));
+      end loop;
+
+      pragma Warnings (off, "unreachable code");
+      return System.Null_Address;
+      pragma Warnings (on, "unreachable code");
+   end Service3_Thread_Func;
+
+   --
+   --  Compute the next wakeup time given the last wakeup time and the wanted
+   --  sleep time
+   --
+   function Calc_Next_Wakeup_Time (Time_Stamp : timespec_h.timespec;
+                                   Sleep_Time_Ms : C.long)
+      return timespec_h.timespec
+   is
+      Secs_Increase : constant C.long :=
+         (Time_Stamp.tv_nsec + (Sleep_Time_Ms * Nsec_Per_Msec)) / Nsec_Per_Sec;
+      Next_Time_Stamp : timespec_h.timespec;
+   begin
+      if Secs_Increase /= 0 then
+         Next_Time_Stamp.tv_sec := Time_Stamp.tv_sec + sys_types_h.time_t (Secs_Increase);
+         Next_Time_Stamp.tv_nsec :=
+            (Time_Stamp.tv_nsec + (Sleep_Time_Ms * Nsec_Per_Msec)) mod Nsec_Per_Sec;
+      else
+         Next_Time_Stamp.tv_sec := Time_Stamp.tv_sec;
+         Next_Time_Stamp.tv_nsec := Time_Stamp.tv_nsec + (Sleep_Time_Ms * Nsec_Per_Msec);
+      end if;
+
+      return Next_Time_Stamp;
+   end Calc_Next_Wakeup_Time;
 
    procedure Last_Chance_Handler (Msg : System.Address; Line : Integer) is
       procedure Privileged_Last_Chance_Handler (Msg : System.Address;
                                                 Line : Integer)
          with No_Return
       is
-         Msg_Text : String (1 .. 128) with Address => Msg;
-         Msg_Length : Natural := 0;
       begin
-         --
-         --  Calculate length of the null-terminated 'Msg' string:
-         --
-         for Msg_Char of Msg_Text loop
-            Msg_Length := Msg_Length + 1;
-            exit when Msg_Char = ASCII.NUL;
-         end loop;
-
          --  Print exception message to UART:
-         --
+         --  NOTE: Msg is the address of a null-terminated string
          if Line /= 0 then
-            Print_String (
-               ASCII.LF & "*** Exception: '" & Msg_Text (1 .. Msg_Length) &
-               "' at line %u" & ASCII.LF, Line);
+            Printk (ASCII.LF & "*** Exception: '%s' at line %u ***" & ASCII.LF, Msg,
+                    C.unsigned (Line));
          else
-            Print_String (
-               ASCII.LF &
-               "*** Exception: '" & Msg_Text (1 .. Msg_Length) & "'" &
-               ASCII.LF);
+            Printk (ASCII.LF & "*** Exception: '%s' ***" & ASCII.LF, Msg);
          end if;
 
          loop
-            null; --???HiRTOS_Cpu_Arch_Interface.Wait_For_Interrupt;
+            null;
          end loop;
       end Privileged_Last_Chance_Handler;
 

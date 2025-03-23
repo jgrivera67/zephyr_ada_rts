@@ -7,7 +7,7 @@
 
 #define ALIRE_HOST_OS "macos"
 
-#define ALIRE_HOST_ARCH "x86_64"
+#define ALIRE_HOST_ARCH "aarch64"
 
 #define ALIRE_HOST_DISTRO "homebrew"
 

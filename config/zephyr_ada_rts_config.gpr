@@ -5,7 +5,7 @@ abstract project Zephyr_Ada_Rts_Config is
 
    Alire_Host_OS := "macos";
 
-   Alire_Host_Arch := "x86_64";
+   Alire_Host_Arch := "aarch64";
 
    Alire_Host_Distro := "homebrew";
    Ada_Compiler_Switches := External_As_List ("ADAFLAGS", " ");

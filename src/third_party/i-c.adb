@@ -182,60 +182,60 @@ is
 
    --  Convert char_array to String (function form)
 
-   function To_Ada
-     (Item     : char_array;
-      Trim_Nul : Boolean := True) return String
-   is
-      Count : Natural;
-      From  : size_t;
+   --  function To_Ada
+   --    (Item     : char_array;
+   --     Trim_Nul : Boolean := True) return String
+   --  is
+   --     Count : Natural;
+   --     From  : size_t;
 
-   begin
-      if Trim_Nul then
-         From := Item'First;
+   --  begin
+   --     if Trim_Nul then
+   --        From := Item'First;
 
-         loop
-            pragma Loop_Invariant (From in Item'Range);
-            pragma Loop_Invariant
-              (for some J in From .. Item'Last => Item (J) = nul);
-            pragma Loop_Invariant
-              (for all J in Item'First .. From when J /= From =>
-                 Item (J) /= nul);
-            pragma Loop_Variant (Increases => From);
+   --        loop
+   --           pragma Loop_Invariant (From in Item'Range);
+   --           pragma Loop_Invariant
+   --             (for some J in From .. Item'Last => Item (J) = nul);
+   --           pragma Loop_Invariant
+   --             (for all J in Item'First .. From when J /= From =>
+   --                Item (J) /= nul);
+   --           pragma Loop_Variant (Increases => From);
 
-            if From > Item'Last then
-               raise Terminator_Error;
-            elsif Item (From) = nul then
-               exit;
-            else
-               From := From + 1;
-            end if;
-         end loop;
+   --           if From > Item'Last then
+   --              raise Terminator_Error;
+   --           elsif Item (From) = nul then
+   --              exit;
+   --           else
+   --              From := From + 1;
+   --           end if;
+   --        end loop;
 
-         pragma Assert (From = Item'First + C_Length_Ghost (Item));
+   --        pragma Assert (From = Item'First + C_Length_Ghost (Item));
 
-         Count := Natural (From - Item'First);
+   --        Count := Natural (From - Item'First);
 
-      else
-         Count := Item'Length;
-      end if;
+   --     else
+   --        Count := Item'Length;
+   --     end if;
 
-      declare
-         Count_Cst : constant Natural := Count;
-         R : String (1 .. Count_Cst) with Relaxed_Initialization;
+   --     declare
+   --        Count_Cst : constant Natural := Count;
+   --        R : String (1 .. Count_Cst) with Relaxed_Initialization;
 
-      begin
-         for J in R'Range loop
-            R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
+   --     begin
+   --        for J in R'Range loop
+   --           R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
 
-            pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
-            pragma Loop_Invariant
-              (for all K in 1 .. J =>
-                R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
-         end loop;
+   --           pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
+   --           pragma Loop_Invariant
+   --             (for all K in 1 .. J =>
+   --               R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
+   --        end loop;
 
-         return R;
-      end;
-   end To_Ada;
+   --        return R;
+   --     end;
+   --  end To_Ada;
 
    --  Convert char_array to String (procedure form)
 
@@ -317,60 +317,60 @@ is
 
    --  Convert wchar_array to Wide_String (function form)
 
-   function To_Ada
-     (Item     : wchar_array;
-      Trim_Nul : Boolean := True) return Wide_String
-   is
-      Count : Natural;
-      From  : size_t;
+   --  function To_Ada
+   --    (Item     : wchar_array;
+   --     Trim_Nul : Boolean := True) return Wide_String
+   --  is
+   --     Count : Natural;
+   --     From  : size_t;
 
-   begin
-      if Trim_Nul then
-         From := Item'First;
+   --  begin
+   --     if Trim_Nul then
+   --        From := Item'First;
 
-         loop
-            pragma Loop_Invariant (From in Item'Range);
-            pragma Loop_Invariant
-              (for some J in From .. Item'Last => Item (J) = wide_nul);
-            pragma Loop_Invariant
-              (for all J in Item'First .. From when J /= From =>
-                 Item (J) /= wide_nul);
-            pragma Loop_Variant (Increases => From);
+   --        loop
+   --           pragma Loop_Invariant (From in Item'Range);
+   --           pragma Loop_Invariant
+   --             (for some J in From .. Item'Last => Item (J) = wide_nul);
+   --           pragma Loop_Invariant
+   --             (for all J in Item'First .. From when J /= From =>
+   --                Item (J) /= wide_nul);
+   --           pragma Loop_Variant (Increases => From);
 
-            if From > Item'Last then
-               raise Terminator_Error;
-            elsif Item (From) = wide_nul then
-               exit;
-            else
-               From := From + 1;
-            end if;
-         end loop;
+   --           if From > Item'Last then
+   --              raise Terminator_Error;
+   --           elsif Item (From) = wide_nul then
+   --              exit;
+   --           else
+   --              From := From + 1;
+   --           end if;
+   --        end loop;
 
-         pragma Assert (From = Item'First + C_Length_Ghost (Item));
+   --        pragma Assert (From = Item'First + C_Length_Ghost (Item));
 
-         Count := Natural (From - Item'First);
+   --        Count := Natural (From - Item'First);
 
-      else
-         Count := Item'Length;
-      end if;
+   --     else
+   --        Count := Item'Length;
+   --     end if;
 
-      declare
-         Count_Cst : constant Natural := Count;
-         R : Wide_String (1 .. Count_Cst) with Relaxed_Initialization;
+   --     declare
+   --        Count_Cst : constant Natural := Count;
+   --        R : Wide_String (1 .. Count_Cst) with Relaxed_Initialization;
 
-      begin
-         for J in R'Range loop
-            R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
+   --     begin
+   --        for J in R'Range loop
+   --           R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
 
-            pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
-            pragma Loop_Invariant
-              (for all K in 1 .. J =>
-                R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
-         end loop;
+   --           pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
+   --           pragma Loop_Invariant
+   --             (for all K in 1 .. J =>
+   --               R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
+   --        end loop;
 
-         return R;
-      end;
-   end To_Ada;
+   --        return R;
+   --     end;
+   --  end To_Ada;
 
    --  Convert wchar_array to Wide_String (procedure form)
 
@@ -452,60 +452,60 @@ is
 
    --  Convert char16_array to Wide_String (function form)
 
-   function To_Ada
-     (Item     : char16_array;
-      Trim_Nul : Boolean := True) return Wide_String
-   is
-      Count : Natural;
-      From  : size_t;
+   --  function To_Ada
+   --    (Item     : char16_array;
+   --     Trim_Nul : Boolean := True) return Wide_String
+   --  is
+   --     Count : Natural;
+   --     From  : size_t;
 
-   begin
-      if Trim_Nul then
-         From := Item'First;
+   --  begin
+   --     if Trim_Nul then
+   --        From := Item'First;
 
-         loop
-            pragma Loop_Invariant (From in Item'Range);
-            pragma Loop_Invariant
-              (for some J in From .. Item'Last => Item (J) = char16_nul);
-            pragma Loop_Invariant
-              (for all J in Item'First .. From when J /= From =>
-                 Item (J) /= char16_nul);
-            pragma Loop_Variant (Increases => From);
+   --        loop
+   --           pragma Loop_Invariant (From in Item'Range);
+   --           pragma Loop_Invariant
+   --             (for some J in From .. Item'Last => Item (J) = char16_nul);
+   --           pragma Loop_Invariant
+   --             (for all J in Item'First .. From when J /= From =>
+   --                Item (J) /= char16_nul);
+   --           pragma Loop_Variant (Increases => From);
 
-            if From > Item'Last then
-               raise Terminator_Error;
-            elsif Item (From) = char16_nul then
-               exit;
-            else
-               From := From + 1;
-            end if;
-         end loop;
+   --           if From > Item'Last then
+   --              raise Terminator_Error;
+   --           elsif Item (From) = char16_nul then
+   --              exit;
+   --           else
+   --              From := From + 1;
+   --           end if;
+   --        end loop;
 
-         pragma Assert (From = Item'First + C_Length_Ghost (Item));
+   --        pragma Assert (From = Item'First + C_Length_Ghost (Item));
 
-         Count := Natural (From - Item'First);
+   --        Count := Natural (From - Item'First);
 
-      else
-         Count := Item'Length;
-      end if;
+   --     else
+   --        Count := Item'Length;
+   --     end if;
 
-      declare
-         Count_Cst : constant Natural := Count;
-         R : Wide_String (1 .. Count_Cst) with Relaxed_Initialization;
+   --     declare
+   --        Count_Cst : constant Natural := Count;
+   --        R : Wide_String (1 .. Count_Cst) with Relaxed_Initialization;
 
-      begin
-         for J in R'Range loop
-            R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
+   --     begin
+   --        for J in R'Range loop
+   --           R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
 
-            pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
-            pragma Loop_Invariant
-              (for all K in 1 .. J =>
-                R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
-         end loop;
+   --           pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
+   --           pragma Loop_Invariant
+   --             (for all K in 1 .. J =>
+   --               R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
+   --        end loop;
 
-         return R;
-      end;
-   end To_Ada;
+   --        return R;
+   --     end;
+   --  end To_Ada;
 
    --  Convert char16_array to Wide_String (procedure form)
 
@@ -587,60 +587,60 @@ is
 
    --  Convert char32_array to Wide_Wide_String (function form)
 
-   function To_Ada
-     (Item     : char32_array;
-      Trim_Nul : Boolean := True) return Wide_Wide_String
-   is
-      Count : Natural;
-      From  : size_t;
+   --  function To_Ada
+   --    (Item     : char32_array;
+   --     Trim_Nul : Boolean := True) return Wide_Wide_String
+   --  is
+   --     Count : Natural;
+   --     From  : size_t;
 
-   begin
-      if Trim_Nul then
-         From := Item'First;
+   --  begin
+   --     if Trim_Nul then
+   --        From := Item'First;
 
-         loop
-            pragma Loop_Invariant (From in Item'Range);
-            pragma Loop_Invariant
-              (for some J in From .. Item'Last => Item (J) = char32_nul);
-            pragma Loop_Invariant
-              (for all J in Item'First .. From when J /= From =>
-                 Item (J) /= char32_nul);
-            pragma Loop_Variant (Increases => From);
+   --        loop
+   --           pragma Loop_Invariant (From in Item'Range);
+   --           pragma Loop_Invariant
+   --             (for some J in From .. Item'Last => Item (J) = char32_nul);
+   --           pragma Loop_Invariant
+   --             (for all J in Item'First .. From when J /= From =>
+   --                Item (J) /= char32_nul);
+   --           pragma Loop_Variant (Increases => From);
 
-            if From > Item'Last then
-               raise Terminator_Error;
-            elsif Item (From) = char32_nul then
-               exit;
-            else
-               From := From + 1;
-            end if;
-         end loop;
+   --           if From > Item'Last then
+   --              raise Terminator_Error;
+   --           elsif Item (From) = char32_nul then
+   --              exit;
+   --           else
+   --              From := From + 1;
+   --           end if;
+   --        end loop;
 
-         pragma Assert (From = Item'First + C_Length_Ghost (Item));
+   --        pragma Assert (From = Item'First + C_Length_Ghost (Item));
 
-         Count := Natural (From - Item'First);
+   --        Count := Natural (From - Item'First);
 
-      else
-         Count := Item'Length;
-      end if;
+   --     else
+   --        Count := Item'Length;
+   --     end if;
 
-      declare
-         Count_Cst : constant Natural := Count;
-         R : Wide_Wide_String (1 .. Count_Cst) with Relaxed_Initialization;
+   --     declare
+   --        Count_Cst : constant Natural := Count;
+   --        R : Wide_Wide_String (1 .. Count_Cst) with Relaxed_Initialization;
 
-      begin
-         for J in R'Range loop
-            R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
+   --     begin
+   --        for J in R'Range loop
+   --           R (J) := To_Ada (Item (size_t (J) - 1 + Item'First));
 
-            pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
-            pragma Loop_Invariant
-              (for all K in 1 .. J =>
-                R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
-         end loop;
+   --           pragma Loop_Invariant (for all K in 1 .. J => R (K)'Initialized);
+   --           pragma Loop_Invariant
+   --             (for all K in 1 .. J =>
+   --               R (K) = To_Ada (Item (size_t (K) - 1 + Item'First)));
+   --        end loop;
 
-         return R;
-      end;
-   end To_Ada;
+   --        return R;
+   --     end;
+   --  end To_Ada;
 
    --  Convert char32_array to Wide_Wide_String (procedure form)
 
@@ -726,73 +726,73 @@ is
 
    --  Convert String to char_array (function form)
 
-   function To_C
-     (Item       : String;
-      Append_Nul : Boolean := True) return char_array
-   is
-   begin
-      if Append_Nul then
-         declare
-            R : char_array (0 .. Item'Length) with Relaxed_Initialization;
+   --  function To_C
+   --    (Item       : String;
+   --     Append_Nul : Boolean := True) return char_array
+   --  is
+   --  begin
+   --     if Append_Nul then
+   --        declare
+   --           R : char_array (0 .. Item'Length) with Relaxed_Initialization;
 
-         begin
-            for J in Item'Range loop
-               R (size_t (J - Item'First)) := To_C (Item (J));
+   --        begin
+   --           for J in Item'Range loop
+   --              R (size_t (J - Item'First)) := To_C (Item (J));
 
-               pragma Loop_Invariant
-                 (for all K in 0 .. size_t (J - Item'First) =>
-                    R (K)'Initialized);
-               pragma Loop_Invariant
-                 (for all K in Item'First .. J =>
-                    R (size_t (K - Item'First)) = To_C (Item (K)));
-            end loop;
+   --              pragma Loop_Invariant
+   --                (for all K in 0 .. size_t (J - Item'First) =>
+   --                   R (K)'Initialized);
+   --              pragma Loop_Invariant
+   --                (for all K in Item'First .. J =>
+   --                   R (size_t (K - Item'First)) = To_C (Item (K)));
+   --           end loop;
 
-            R (R'Last) := nul;
+   --           R (R'Last) := nul;
 
-            pragma Assert
-              (for all J in Item'Range =>
-                 R (size_t (J - Item'First)) = To_C (Item (J)));
+   --           pragma Assert
+   --             (for all J in Item'Range =>
+   --                R (size_t (J - Item'First)) = To_C (Item (J)));
 
-            return R;
-         end;
+   --           return R;
+   --        end;
 
-      --  Append_Nul False
+   --     --  Append_Nul False
 
-      else
-         --  A nasty case, if the string is null, we must return a null
-         --  char_array. The lower bound of this array is required to be zero
-         --  (RM B.3(50)) but that is of course impossible given that size_t
-         --  is unsigned. According to Ada 2005 AI-258, the result is to raise
-         --  Constraint_Error. This is also the appropriate behavior in Ada 95,
-         --  since nothing else makes sense.
+   --     else
+   --        --  A nasty case, if the string is null, we must return a null
+   --        --  char_array. The lower bound of this array is required to be zero
+   --        --  (RM B.3(50)) but that is of course impossible given that size_t
+   --        --  is unsigned. According to Ada 2005 AI-258, the result is to raise
+   --        --  Constraint_Error. This is also the appropriate behavior in Ada 95,
+   --        --  since nothing else makes sense.
 
-         if Item'Length = 0 then
-            raise Constraint_Error;
+   --        if Item'Length = 0 then
+   --           raise Constraint_Error;
 
-         --  Normal case
+   --        --  Normal case
 
-         else
-            declare
-               R : char_array (0 .. Item'Length - 1)
-                 with Relaxed_Initialization;
+   --        else
+   --           declare
+   --              R : char_array (0 .. Item'Length - 1)
+   --                with Relaxed_Initialization;
 
-            begin
-               for J in Item'Range loop
-                  R (size_t (J - Item'First)) := To_C (Item (J));
+   --           begin
+   --              for J in Item'Range loop
+   --                 R (size_t (J - Item'First)) := To_C (Item (J));
 
-                  pragma Loop_Invariant
-                    (for all K in 0 .. size_t (J - Item'First) =>
-                       R (K)'Initialized);
-                  pragma Loop_Invariant
-                    (for all K in Item'First .. J =>
-                       R (size_t (K - Item'First)) = To_C (Item (K)));
-               end loop;
+   --                 pragma Loop_Invariant
+   --                   (for all K in 0 .. size_t (J - Item'First) =>
+   --                      R (K)'Initialized);
+   --                 pragma Loop_Invariant
+   --                   (for all K in Item'First .. J =>
+   --                      R (size_t (K - Item'First)) = To_C (Item (K)));
+   --              end loop;
 
-               return R;
-            end;
-         end if;
-      end if;
-   end To_C;
+   --              return R;
+   --           end;
+   --        end if;
+   --     end if;
+   --  end To_C;
 
    --  Convert String to char_array (procedure form)
 
@@ -851,69 +851,69 @@ is
 
    --  Convert Wide_String to wchar_array (function form)
 
-   function To_C
-     (Item       : Wide_String;
-      Append_Nul : Boolean := True) return wchar_array
-   is
-   begin
-      if Append_Nul then
-         declare
-            R : wchar_array (0 .. Item'Length) with Relaxed_Initialization;
+   --  function To_C
+   --    (Item       : Wide_String;
+   --     Append_Nul : Boolean := True) return wchar_array
+   --  is
+   --  begin
+   --     if Append_Nul then
+   --        declare
+   --           R : wchar_array (0 .. Item'Length) with Relaxed_Initialization;
 
-         begin
-            for J in Item'Range loop
-               R (size_t (J - Item'First)) := To_C (Item (J));
+   --        begin
+   --           for J in Item'Range loop
+   --              R (size_t (J - Item'First)) := To_C (Item (J));
 
-               pragma Loop_Invariant
-                 (for all K in 0 .. size_t (J - Item'First) =>
-                    R (K)'Initialized);
-               pragma Loop_Invariant
-                 (for all K in Item'First .. J =>
-                    R (size_t (K - Item'First)) = To_C (Item (K)));
-            end loop;
+   --              pragma Loop_Invariant
+   --                (for all K in 0 .. size_t (J - Item'First) =>
+   --                   R (K)'Initialized);
+   --              pragma Loop_Invariant
+   --                (for all K in Item'First .. J =>
+   --                   R (size_t (K - Item'First)) = To_C (Item (K)));
+   --           end loop;
 
-            R (R'Last) := wide_nul;
+   --           R (R'Last) := wide_nul;
 
-            pragma Assert
-              (for all J in Item'Range =>
-                 R (size_t (J - Item'First)) = To_C (Item (J)));
+   --           pragma Assert
+   --             (for all J in Item'Range =>
+   --                R (size_t (J - Item'First)) = To_C (Item (J)));
 
-            return R;
-         end;
+   --           return R;
+   --        end;
 
-      else
-         --  A nasty case, if the string is null, we must return a null
-         --  wchar_array. The lower bound of this array is required to be zero
-         --  (RM B.3(50)) but that is of course impossible given that size_t
-         --  is unsigned. According to Ada 2005 AI-258, the result is to raise
-         --  Constraint_Error. This is also the appropriate behavior in Ada 95,
-         --  since nothing else makes sense.
+   --     else
+   --        --  A nasty case, if the string is null, we must return a null
+   --        --  wchar_array. The lower bound of this array is required to be zero
+   --        --  (RM B.3(50)) but that is of course impossible given that size_t
+   --        --  is unsigned. According to Ada 2005 AI-258, the result is to raise
+   --        --  Constraint_Error. This is also the appropriate behavior in Ada 95,
+   --        --  since nothing else makes sense.
 
-         if Item'Length = 0 then
-            raise Constraint_Error;
+   --        if Item'Length = 0 then
+   --           raise Constraint_Error;
 
-         else
-            declare
-               R : wchar_array (0 .. Item'Length - 1)
-                 with Relaxed_Initialization;
+   --        else
+   --           declare
+   --              R : wchar_array (0 .. Item'Length - 1)
+   --                with Relaxed_Initialization;
 
-            begin
-               for J in Item'Range loop
-                  R (size_t (J - Item'First)) := To_C (Item (J));
+   --           begin
+   --              for J in Item'Range loop
+   --                 R (size_t (J - Item'First)) := To_C (Item (J));
 
-                  pragma Loop_Invariant
-                    (for all K in 0 .. size_t (J - Item'First) =>
-                       R (K)'Initialized);
-                  pragma Loop_Invariant
-                    (for all K in Item'First .. J =>
-                       R (size_t (K - Item'First)) = To_C (Item (K)));
-               end loop;
+   --                 pragma Loop_Invariant
+   --                   (for all K in 0 .. size_t (J - Item'First) =>
+   --                      R (K)'Initialized);
+   --                 pragma Loop_Invariant
+   --                   (for all K in Item'First .. J =>
+   --                      R (size_t (K - Item'First)) = To_C (Item (K)));
+   --              end loop;
 
-               return R;
-            end;
-         end if;
-      end if;
-   end To_C;
+   --              return R;
+   --           end;
+   --        end if;
+   --     end if;
+   --  end To_C;
 
    --  Convert Wide_String to wchar_array (procedure form)
 
@@ -981,69 +981,69 @@ is
 
    --  Convert Wide_String to char16_array (function form)
 
-   function To_C
-     (Item       : Wide_String;
-      Append_Nul : Boolean := True) return char16_array
-   is
-   begin
-      if Append_Nul then
-         declare
-            R : char16_array (0 .. Item'Length) with Relaxed_Initialization;
+   --  function To_C
+   --    (Item       : Wide_String;
+   --     Append_Nul : Boolean := True) return char16_array
+   --  is
+   --  begin
+   --     if Append_Nul then
+   --        declare
+   --           R : char16_array (0 .. Item'Length) with Relaxed_Initialization;
 
-         begin
-            for J in Item'Range loop
-               R (size_t (J - Item'First)) := To_C (Item (J));
+   --        begin
+   --           for J in Item'Range loop
+   --              R (size_t (J - Item'First)) := To_C (Item (J));
 
-               pragma Loop_Invariant
-                 (for all K in 0 .. size_t (J - Item'First) =>
-                    R (K)'Initialized);
-               pragma Loop_Invariant
-                 (for all K in Item'First .. J =>
-                    R (size_t (K - Item'First)) = To_C (Item (K)));
-            end loop;
+   --              pragma Loop_Invariant
+   --                (for all K in 0 .. size_t (J - Item'First) =>
+   --                   R (K)'Initialized);
+   --              pragma Loop_Invariant
+   --                (for all K in Item'First .. J =>
+   --                   R (size_t (K - Item'First)) = To_C (Item (K)));
+   --           end loop;
 
-            R (R'Last) := char16_nul;
+   --           R (R'Last) := char16_nul;
 
-            pragma Assert
-              (for all J in Item'Range =>
-                 R (size_t (J - Item'First)) = To_C (Item (J)));
+   --           pragma Assert
+   --             (for all J in Item'Range =>
+   --                R (size_t (J - Item'First)) = To_C (Item (J)));
 
-            return R;
-         end;
+   --           return R;
+   --        end;
 
-      else
-         --  A nasty case, if the string is null, we must return a null
-         --  char16_array. The lower bound of this array is required to be zero
-         --  (RM B.3(50)) but that is of course impossible given that size_t
-         --  is unsigned. According to Ada 2005 AI-258, the result is to raise
-         --  Constraint_Error. This is also the appropriate behavior in Ada 95,
-         --  since nothing else makes sense.
+   --     else
+   --        --  A nasty case, if the string is null, we must return a null
+   --        --  char16_array. The lower bound of this array is required to be zero
+   --        --  (RM B.3(50)) but that is of course impossible given that size_t
+   --        --  is unsigned. According to Ada 2005 AI-258, the result is to raise
+   --        --  Constraint_Error. This is also the appropriate behavior in Ada 95,
+   --        --  since nothing else makes sense.
 
-         if Item'Length = 0 then
-            raise Constraint_Error;
+   --        if Item'Length = 0 then
+   --           raise Constraint_Error;
 
-         else
-            declare
-               R : char16_array (0 .. Item'Length - 1)
-                 with Relaxed_Initialization;
+   --        else
+   --           declare
+   --              R : char16_array (0 .. Item'Length - 1)
+   --                with Relaxed_Initialization;
 
-            begin
-               for J in Item'Range loop
-                  R (size_t (J - Item'First)) := To_C (Item (J));
+   --           begin
+   --              for J in Item'Range loop
+   --                 R (size_t (J - Item'First)) := To_C (Item (J));
 
-                  pragma Loop_Invariant
-                    (for all K in 0 .. size_t (J - Item'First) =>
-                       R (K)'Initialized);
-                  pragma Loop_Invariant
-                    (for all K in Item'First .. J =>
-                       R (size_t (K - Item'First)) = To_C (Item (K)));
-               end loop;
+   --                 pragma Loop_Invariant
+   --                   (for all K in 0 .. size_t (J - Item'First) =>
+   --                      R (K)'Initialized);
+   --                 pragma Loop_Invariant
+   --                   (for all K in Item'First .. J =>
+   --                      R (size_t (K - Item'First)) = To_C (Item (K)));
+   --              end loop;
 
-               return R;
-            end;
-         end if;
-      end if;
-   end To_C;
+   --              return R;
+   --           end;
+   --        end if;
+   --     end if;
+   --  end To_C;
 
    --  Convert Wide_String to char16_array (procedure form)
 
@@ -1111,68 +1111,68 @@ is
 
    --  Convert Wide_Wide_String to char32_array (function form)
 
-   function To_C
-     (Item       : Wide_Wide_String;
-      Append_Nul : Boolean := True) return char32_array
-   is
-   begin
-      if Append_Nul then
-         declare
-            R : char32_array (0 .. Item'Length) with Relaxed_Initialization;
+   --  function To_C
+   --    (Item       : Wide_Wide_String;
+   --     Append_Nul : Boolean := True) return char32_array
+   --  is
+   --  begin
+   --     if Append_Nul then
+   --        declare
+   --           R : char32_array (0 .. Item'Length) with Relaxed_Initialization;
 
-         begin
-            for J in Item'Range loop
-               R (size_t (J - Item'First)) := To_C (Item (J));
+   --        begin
+   --           for J in Item'Range loop
+   --              R (size_t (J - Item'First)) := To_C (Item (J));
 
-               pragma Loop_Invariant
-                 (for all K in 0 .. size_t (J - Item'First) =>
-                    R (K)'Initialized);
-               pragma Loop_Invariant
-                 (for all K in Item'First .. J =>
-                    R (size_t (K - Item'First)) = To_C (Item (K)));
-            end loop;
+   --              pragma Loop_Invariant
+   --                (for all K in 0 .. size_t (J - Item'First) =>
+   --                   R (K)'Initialized);
+   --              pragma Loop_Invariant
+   --                (for all K in Item'First .. J =>
+   --                   R (size_t (K - Item'First)) = To_C (Item (K)));
+   --           end loop;
 
-            R (R'Last) := char32_nul;
+   --           R (R'Last) := char32_nul;
 
-            pragma Assert
-              (for all J in Item'Range =>
-                 R (size_t (J - Item'First)) = To_C (Item (J)));
+   --           pragma Assert
+   --             (for all J in Item'Range =>
+   --                R (size_t (J - Item'First)) = To_C (Item (J)));
 
-            return R;
-         end;
+   --           return R;
+   --        end;
 
-      else
-         --  A nasty case, if the string is null, we must return a null
-         --  char32_array. The lower bound of this array is required to be zero
-         --  (RM B.3(50)) but that is of course impossible given that size_t
-         --  is unsigned. According to Ada 2005 AI-258, the result is to raise
-         --  Constraint_Error.
+   --     else
+   --        --  A nasty case, if the string is null, we must return a null
+   --        --  char32_array. The lower bound of this array is required to be zero
+   --        --  (RM B.3(50)) but that is of course impossible given that size_t
+   --        --  is unsigned. According to Ada 2005 AI-258, the result is to raise
+   --        --  Constraint_Error.
 
-         if Item'Length = 0 then
-            raise Constraint_Error;
+   --        if Item'Length = 0 then
+   --           raise Constraint_Error;
 
-         else
-            declare
-               R : char32_array (0 .. Item'Length - 1)
-                 with Relaxed_Initialization;
+   --        else
+   --           declare
+   --              R : char32_array (0 .. Item'Length - 1)
+   --                with Relaxed_Initialization;
 
-            begin
-               for J in Item'Range loop
-                  R (size_t (J - Item'First)) := To_C (Item (J));
+   --           begin
+   --              for J in Item'Range loop
+   --                 R (size_t (J - Item'First)) := To_C (Item (J));
 
-                  pragma Loop_Invariant
-                    (for all K in 0 .. size_t (J - Item'First) =>
-                       R (K)'Initialized);
-                  pragma Loop_Invariant
-                    (for all K in Item'First .. J =>
-                       R (size_t (K - Item'First)) = To_C (Item (K)));
-               end loop;
+   --                 pragma Loop_Invariant
+   --                   (for all K in 0 .. size_t (J - Item'First) =>
+   --                      R (K)'Initialized);
+   --                 pragma Loop_Invariant
+   --                   (for all K in Item'First .. J =>
+   --                      R (size_t (K - Item'First)) = To_C (Item (K)));
+   --              end loop;
 
-               return R;
-            end;
-         end if;
-      end if;
-   end To_C;
+   --              return R;
+   --           end;
+   --        end if;
+   --     end if;
+   --  end To_C;
 
    --  Convert Wide_Wide_String to char32_array (procedure form)
 

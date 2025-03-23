@@ -2,6 +2,7 @@ ALIRE_DIR=/opt/alire
 #export PATH=$ALIRE_DIR/bin:/opt/tkdiff:/opt/fuzz/bin:/opt/arm-gnu-toolchain/bin:/opt/gnatstudio:$PATH
 export PATH=$ALIRE_DIR/bin:~/.alire/bin:/opt/tkdiff:/opt/fuzz/bin:/opt/arm-gnu-toolchain/bin:$PATH
 export PATH='$(brew --prefix)'/opt/python/libexec/bin:$PATH
+export PATH=~/.local/share/alire/toolchains/gnat_riscv64_elf_14.1.3_cff3a81e/bin:$PATH
 
 export OS=macOS
 
