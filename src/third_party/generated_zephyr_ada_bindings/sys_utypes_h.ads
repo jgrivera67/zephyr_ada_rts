@@ -34,9 +34,9 @@ package sys_utypes_h is
   --LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
   --OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
   --SUCH DAMAGE.
-  --  
+  --
 
-  -- ANSI C namespace clean utility typedefs  
+  -- ANSI C namespace clean utility typedefs
   -- This file defines various typedefs needed by the system calls that support
   --   the C library.  Basically, they're just the POSIX versions with an '_'
   --   prepended.  Targets shall use <machine/_types.h> to define their own
@@ -48,11 +48,11 @@ package sys_utypes_h is
   --   must not be used in other files.
   --   User type definitions are guarded by __xyz_t_defined in glibc and
   --   _XYZ_T_DECLARED in BSD compatible systems.
-  -- 
+  --
 
   -- The Arm Compiler doesn't define wint_t as part of stddef.h so
   -- * define it here.
-  --  
+  --
 
    subtype uu_blkcnt_t is long;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:66
 
@@ -94,30 +94,30 @@ package sys_utypes_h is
 
   -- * We need fpos_t for the following, but it doesn't have a leading "_",
   -- * so we use _fpos_t instead.
-  --  
+  --
 
-  -- XXX must match off_t in <sys/types.h>  
+  -- XXX must match off_t in <sys/types.h>
    subtype u_fpos_t is long;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:167
 
-  -- (and must be `long' for now)  
-  -- Defined by GCC provided <stddef.h>  
+  -- (and must be `long' for now)
+  -- Defined by GCC provided <stddef.h>
    subtype uu_size_t is unsigned;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:182
 
   -- If __SIZE_TYPE__ is defined (gcc) we define ssize_t based on size_t.
   --   We simply change "unsigned" to "signed" for this single definition
-  --   to make sure ssize_t and size_t only differ by their signedness.  
+  --   to make sure ssize_t and size_t only differ by their signedness.
 
    subtype u_ssize_t is int;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:198
 
    subtype uu_ssize_t is u_ssize_t;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:209
 
-  -- Conversion state information.   
-  -- Value so far.   
+  -- Conversion state information.
+  -- Value so far.
    type anon_array922 is array (0 .. 3) of aliased unsigned_char;
    type anon_union1321 (discr : unsigned := 0) is record
       case discr is
-         when 0 =>
-            uu_wch : aliased stddef_h.wint_t;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:218
+         --  when 0 =>
+         --     uu_wch : aliased stddef_h.wint_t;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:218
          when others =>
             uu_wchb : aliased anon_array922;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:219
       end case;
@@ -130,7 +130,7 @@ package sys_utypes_h is
    end record
    with Convention => C_Pass_By_Copy;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:221
 
-  -- Iconv descriptor type  
+  -- Iconv descriptor type
    type u_iconv_t is new System.Address;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:226
 
    subtype uu_clock_t is unsigned_long;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:233
@@ -151,10 +151,10 @@ package sys_utypes_h is
 
    subtype uu_nlink_t is unsigned_short;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:264
 
-  -- microseconds (signed)  
+  -- microseconds (signed)
    subtype uu_suseconds_t is long;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:265
 
-  -- microseconds (unsigned)  
+  -- microseconds (unsigned)
    subtype uu_useconds_t is unsigned_long;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/picolibc/include/sys/_types.h:266
 
 end sys_utypes_h;

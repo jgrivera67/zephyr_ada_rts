@@ -103,8 +103,6 @@ package stddef_h is
 
    subtype wchar_t is int;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/lib/gcc/riscv64-zephyr-elf/12.2.0/include/stddef.h:329
 
-   subtype wint_t is unsigned;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk-0.16.8/riscv64-zephyr-elf/lib/gcc/riscv64-zephyr-elf/12.2.0/include/stddef.h:359
-
   --  The references to _GCC_PTRDIFF_T_, _GCC_SIZE_T_, and _GCC_WCHAR_T_
   --    are probably typos and should be removed before 2.8 is released.   
 

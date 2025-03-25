@@ -7,6 +7,7 @@
 with Interfaces.C;
 with GNAT.Source_Info;
 with zephyr_posix_pthread_h;
+with zephyr_posix_sched_h;
 with zephyr_posix_time_h;
 with zephyr_posix_posix_types_h;
 with sys_utimespec_h;
@@ -18,6 +19,7 @@ package body Zephyr_Ada_Hello is
    use type C.long;
    use type System.Address;
    package pthread_h renames zephyr_posix_pthread_h;
+   package sched_h renames zephyr_posix_sched_h;
    package posix_types_h renames zephyr_posix_posix_types_h;
    package time_h renames zephyr_posix_time_h;
    package timespec_h renames sys_utimespec_h;
@@ -60,33 +62,39 @@ package body Zephyr_Ada_Hello is
 
    procedure Hello_Ada is
       C_Ret : C.int;
-      --  Rt_Max_Prio : constant C.int := sched_h.sched_get_priority_max(sched_h.SCHED_FIFO);
-      --  Thread_Attr : aliased pthread_h.pthread_attr_t;
+      Max_Posix_Priority : constant C.int := 31;
+      Sched_Param : aliased sched_h.sched_param;
       Thread_Handle : aliased posix_types_h.pthread_t;
    begin
       Printk ("Hello Ada (built on " &
               GNAT.Source_Info.Compilation_Date & " at " &
               GNAT.Source_Info.Compilation_Time & ")" & ASCII.LF);
 
-      --  Set_Real_Time_Thread_Attr (Thread_Attr, Rt_Max_Prio - 1, Cpu_Id);
       C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
-                                         attr => null, --  Thread_Attr'Access,
+                                         attr => null,
                                          threadroutine => Service1_Thread_Func'Access,
                                          arg => System.Null_Address);
       pragma Assert (C_Ret = 0);
+      Sched_Param.sched_priority := Max_Posix_Priority - 1;
+      C_Ret := pthread_h.pthread_setschedparam (Thread_Handle, sched_h.SCHED_RR, Sched_Param'Access);
+      pragma Assert (C_Ret = 0);
 
-      --  Set_Real_Time_Thread_Attr (Thread_Attr, Rt_Max_Prio - 2, Cpu_Id);
       C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
-                                         attr => null, --  Thread_Attr'Access,
+                                         attr => null,
                                          threadroutine => Service2_Thread_Func'Access,
                                          arg => System.Null_Address);
       pragma Assert (C_Ret = 0);
+      Sched_Param.sched_priority := Max_Posix_Priority - 2;
+      C_Ret := pthread_h.pthread_setschedparam (Thread_Handle, sched_h.SCHED_RR, Sched_Param'Access);
+      pragma Assert (C_Ret = 0);
 
-      --  Set_Real_Time_Thread_Attr (Thread_Attr, Rt_Max_Prio - 3, Cpu_Id);
       C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
-                                         attr => null, --  Thread_Attr'Access,
+                                         attr => null,
                                          threadroutine => Service3_Thread_Func'Access,
                                          arg => System.Null_Address);
+      pragma Assert (C_Ret = 0);
+      Sched_Param.sched_priority := Max_Posix_Priority - 3;
+      C_Ret := pthread_h.pthread_setschedparam (Thread_Handle, sched_h.SCHED_RR, Sched_Param'Access);
       pragma Assert (C_Ret = 0);
 
       --
