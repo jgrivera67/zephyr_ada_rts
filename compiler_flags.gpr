@@ -1,13 +1,28 @@
 --
---  Copyright (c) 2024, German Rivera
+--  Copyright (c) 2025, German Rivera
 --
 --  SPDX-License-Identifier: Apache-2.0
 --
 abstract project Compiler_Flags is
 
-   type CPU_Core_Type is ("arm_cortex_m0plus", "arm_cortex_m4", "arm_cortex_r5", "arm_cortex_r52", "riscv32");
+  type Board_Type is ("esp32c3_devkitm", "rpi_4b", "rpi_5");
 
-   CPU_Core : CPU_Core_Type := External ("CPU_Core", "arm_cortex_r52");
+   Board : Board_Type := External ("Board", "");
+
+   type CPU_Core_Type is ("arm_cortex_m0plus", "arm_cortex_m4", "arm_cortex_r5", "arm_cortex_r52",
+                          "riscv32", "arm_cortex_a72", "arm_cortex_a76");
+
+   CPU_Core := "";
+   case Board is
+      when "esp32c3_devkitm" =>
+         CPU_Core := "riscv32";
+      when "rpi_4b" =>
+         CPU_Core := "arm_cortex_a72";
+      when "rpi_5" =>
+         CPU_Core := "arm_cortex_a76";
+      when others =>
+         null;
+   end case;
 
    CPU_Arch := "";
    Target_Compiler_Selector := "";
@@ -48,24 +63,38 @@ abstract project Compiler_Flags is
                                "-funwind-tables");
 
       when "arm_cortex_r52" =>
-              CPU_Arch := "armv8r_aarch32";
-              Target_Compiler_Selector := "arm-eabi";
-              CPU_Core_Switches := ("-mcpu=cortex-r52",
-                                  --"-march=armv8-r",
-                                    "-mlittle-endian",
-                                  --"-mfloat-abi=softfp",
-                                    "-mhard-float",
-                                    "-mfpu=fp-armv8",
-                                    "-fno-omit-frame-pointer");
+         CPU_Arch := "armv8r_aarch32";
+         Target_Compiler_Selector := "arm-eabi";
+         CPU_Core_Switches := ("-mcpu=cortex-r52",
+                               --"-march=armv8-r",
+                               "-mlittle-endian",
+                               --"-mfloat-abi=softfp",
+                               "-mhard-float",
+                               "-mfpu=fp-armv8",
+                               "-fno-omit-frame-pointer");
 
       when "riscv32" =>
-              CPU_Arch := "riscv32";
-              Target_Compiler_Selector := "riscv64-elf";
-              --  ‘g’ will expand to ‘i’, ‘m’, ‘a’, ‘f’, ‘d’, ‘zicsr’ and ‘zifencei’.
-              --  'zbb' Basic bit manipulation extension.
-              CPU_Core_Switches := ("-march=rv32imc_zicsr_zifencei", --  rv32gc_zbb
-                                    "-mabi=ilp32",
-                                    "-mcmodel=medany");
+         CPU_Arch := "riscv32";
+         Target_Compiler_Selector := "riscv64-elf";
+         --  ‘g’ will expand to ‘i’, ‘m’, ‘a’, ‘f’, ‘d’, ‘zicsr’ and ‘zifencei’.
+         --  'zbb' Basic bit manipulation extension.
+         CPU_Core_Switches := ("-march=rv32imc_zicsr_zifencei", --  rv32gc_zbb
+                               "-mabi=ilp32",
+                               "-mcmodel=medany");
+      when "arm_cortex_a72" =>
+         CPU_Arch := "armv8a_aarch64";
+         Target_Compiler_Selector := "aarch64-elf";
+         CPU_Core_Switches := ("-march=armv8-a",
+                              "-mlittle-endian",
+                              "-mabi=lp64",
+                              "-mcpu=cortex-a72+nosimd");
+      when "arm_cortex_a76" =>
+         CPU_Arch := "armv8a_aarch64";
+         Target_Compiler_Selector := "aarch64-elf";
+         CPU_Core_Switches := ("-march=armv8-a",
+                              "-mlittle-endian",
+                              "-mabi=lp64",
+                              "-mcpu=cortex-a76+nosimd");
       when others =>
               null;
    end case;

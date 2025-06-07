@@ -12,14 +12,12 @@ tags = []
 [[depends-on]]
 zephyr_ada_rts = "*"
 gnat_riscv64_elf = "*"
+gnat_aarch64_elf = "*"
 gnatprove = "*"
 gprbuild = "*" # needed by alire-index CI builds
 
 [[pins]]
 zephyr_ada_rts = { path='../../..' }
-
-[gpr-set-externals]
-CPU_Core = "riscv32"
 
 [build-profiles]
 zephyr_ada_rts = "development"

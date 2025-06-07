@@ -11,7 +11,6 @@ with zephyr_posix_sched_h;
 with zephyr_posix_time_h;
 with zephyr_posix_posix_types_h;
 with sys_utimespec_h;
-with sys_types_h;
 
 package body Zephyr_Ada_Hello is
    use Interfaces;
@@ -187,7 +186,7 @@ package body Zephyr_Ada_Hello is
       Next_Wakeup_Time := Current_Time;
       loop
          Cnt := Cnt + 1;
-         Printk ("thread1: 50 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
+         Printk ("Ada thread1: 50 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
                   C.unsigned (Cnt),
                   C.unsigned_long_long (Current_Time.tv_sec),
                   C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
@@ -251,7 +250,7 @@ package body Zephyr_Ada_Hello is
       Next_Wakeup_Time := Current_Time;
       loop
          Cnt := Cnt + 1;
-         Printk ("thread2: 10 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
+         Printk ("Ada thread2: 10 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
                   C.unsigned (Cnt),
                   C.unsigned_long_long (Current_Time.tv_sec),
                   C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
@@ -315,7 +314,7 @@ package body Zephyr_Ada_Hello is
       Next_Wakeup_Time := Current_Time;
       loop
          Cnt := Cnt + 1;
-         Printk ("thread3: 5 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
+         Printk ("Ada thread3: 5 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
                   C.unsigned (Cnt),
                   C.unsigned_long_long (Current_Time.tv_sec),
                   C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
@@ -373,7 +372,7 @@ package body Zephyr_Ada_Hello is
       Next_Time_Stamp : timespec_h.timespec;
    begin
       if Secs_Increase /= 0 then
-         Next_Time_Stamp.tv_sec := Time_Stamp.tv_sec + sys_types_h.time_t (Secs_Increase);
+         Next_Time_Stamp.tv_sec := Time_Stamp.tv_sec + sys_utimespec_h.time_t (Secs_Increase);
          Next_Time_Stamp.tv_nsec :=
             (Time_Stamp.tv_nsec + (Sleep_Time_Ms * Nsec_Per_Msec)) mod Nsec_Per_Sec;
       else
