@@ -16,9 +16,7 @@ int main(void)
 
   ada_appinit();
 
-  for (int i = 0; i < 8; i++) {
-    hello_ada();
-  }
+  hello_ada();
 
 	return 0;
 }

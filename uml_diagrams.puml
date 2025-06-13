@@ -1,0 +1,49 @@
+'
+' UML diagrams
+'
+' NOTE: To generate .svg files for the diagrams run 'plantuml -tsvg' on this file.
+' To generate .latex files run 'plantuml -tlatex on this file.
+' To render the diagrams, run 'plantuml -gui' on this file.
+'
+' author: German Rivera
+'
+
+@startuml zephyr_ada_road_map
+start
+fork
+  :Set up Zephyr RTOS development environment;
+fork again
+  :Download and install Alire package manager;
+  :Download or Build the GNAT cross-toolchain for target architecture;
+end fork
+:Create a Zephyr C application skeleton;
+note right
+ - C main calls gnatbind-generated Ada package elaboration code
+ - C main calls Ada application APIs
+end note
+:Create an Ada library crate;
+note right
+- Application Ada code
+- Minimal platform-indepdendent Ada runtime library
+end note
+:Create an external CMake project to integrate\nthe Ada library crate into te zephyr build;
+:Generate Ada bindings for Zephyr APIs;
+note right
+- Get CFLAGS from Zephyr build for the target board (buidl zephyr with -v):
+- $ZEPHYR_GCC $CFLAGS -c -fdump-ada-spec -C ${ZEPHYR_BASE_DIR}/include/zephyr/kernel.h
+- $ZEPHYR_GCC $CFLAGS -c -fdump-ada-spec -C ${ZEPHYR_BASE_DIR}/include/zephyr/posix/pthread.h
+end note
+:Write C wrapper functions for Zephyr C macros to be called from Ada;
+note right
+Necessary when writing Zephyr device drivers in Ada,
+to access device tree nodes
+end note
+:Build zephyr;
+note right
+Examples:
+- west -v build -p always -b esp32c3_devkitm
+- west -v build -p always -b rpi_5
+end note
+:Fix compilation errors (if any) in generated Ada bindings;
+stop
+@enduml

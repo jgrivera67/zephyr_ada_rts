@@ -407,12 +407,4 @@ package body Zephyr_Ada_Hello is
       Privileged_Last_Chance_Handler (Msg, Line);
    end Last_Chance_Handler;
 
-  --   task My_Ada_Task;
-
-  --   task body My_Ada_Task is
-  --   begin
-  --      loop
-  --         null;
-  --      end loop;
-  --   end My_Ada_Task;
 end Zephyr_Ada_Hello;

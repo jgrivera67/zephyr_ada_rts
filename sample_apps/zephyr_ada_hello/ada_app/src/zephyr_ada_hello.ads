@@ -13,6 +13,8 @@ package Zephyr_Ada_Hello is
       Convention => C,
       External_Name => "hello_ada";
 
+private
+
    procedure Last_Chance_Handler (Msg : System.Address; Line : Integer)
      with No_Return,
           Export,
