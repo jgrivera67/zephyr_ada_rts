@@ -20,7 +20,7 @@ boards and it is easily extensible to support custom SoCs and boards.
   can be listed with the `west boards` comand:
   ```
   (.venv) $ west boards | wc -l
-     770
+     959
   ```
 
 - The Zephyr RTOS and its environment can be easily installed
@@ -35,4 +35,16 @@ Ada Runtime Library (RTS), even a zero-foot-print RTS.
   supported by Zephyr.
 
 ## How to Write Ada Applications on Zephyr?
-![](./zephyr_ada_road_map.svg)
+![](./doc/zephyr_ada_road_map.svg)
+
+## How Initialize zephyr environment
+
+```
+python3 -m venv .venv
+. .venv/bin/activate
+pip install west
+west init -l apps
+west update
+pip install -r ./zephyr/scripts/requirements.txt
+```
+

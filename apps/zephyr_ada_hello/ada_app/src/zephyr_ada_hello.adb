@@ -8,9 +8,9 @@ with Interfaces.C;
 with GNAT.Source_Info;
 with zephyr_posix_pthread_h;
 with zephyr_posix_sched_h;
-with zephyr_posix_time_h;
 with zephyr_posix_posix_types_h;
 with sys_utimespec_h;
+with time_h;
 
 package body Zephyr_Ada_Hello is
    use Interfaces;
@@ -20,7 +20,6 @@ package body Zephyr_Ada_Hello is
    package pthread_h renames zephyr_posix_pthread_h;
    package sched_h renames zephyr_posix_sched_h;
    package posix_types_h renames zephyr_posix_posix_types_h;
-   package time_h renames zephyr_posix_time_h;
    package timespec_h renames sys_utimespec_h;
 
    Nsec_Per_Sec : constant := 1000000000;
@@ -180,7 +179,7 @@ package body Zephyr_Ada_Hello is
    begin
       pragma Assert (arg = System.Null_Address);
       C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                       ts => Current_Time'Access);
+                                     tp => Current_Time'Access);
       pragma Assert (C_Ret = 0);
 
       Next_Wakeup_Time := Current_Time;
@@ -200,7 +199,7 @@ package body Zephyr_Ada_Hello is
          --  (or that we have not missed the current deadline)
          --
          C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                          ts => Current_Time'Access);
+                                        tp => Current_Time'Access);
          pragma Assert (C_Ret = 0);
          pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
                         (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
@@ -219,7 +218,7 @@ package body Zephyr_Ada_Hello is
          --  Check that we did not wake up too early:
          --
          C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                          ts => Current_Time'Access);
+                                        tp => Current_Time'Access);
          pragma Assert (C_Ret = 0);
          pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
                         (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
@@ -244,7 +243,7 @@ package body Zephyr_Ada_Hello is
    begin
       pragma Assert (arg = System.Null_Address);
       C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                       ts => Current_Time'Access);
+                                     tp => Current_Time'Access);
       pragma Assert (C_Ret = 0);
 
       Next_Wakeup_Time := Current_Time;
@@ -264,7 +263,7 @@ package body Zephyr_Ada_Hello is
          --  (or that we have not missed the current deadline)
          --
          C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                          ts => Current_Time'Access);
+                                        tp => Current_Time'Access);
          pragma Assert (C_Ret = 0);
          pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
                         (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
@@ -283,7 +282,7 @@ package body Zephyr_Ada_Hello is
          --  Check that we did not wake up too early:
          --
          C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                          ts => Current_Time'Access);
+                                        tp => Current_Time'Access);
          pragma Assert (C_Ret = 0);
          pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
                         (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
@@ -308,7 +307,7 @@ package body Zephyr_Ada_Hello is
    begin
       pragma Assert (arg = System.Null_Address);
       C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                       ts => Current_Time'Access);
+                                     tp => Current_Time'Access);
       pragma Assert (C_Ret = 0);
 
       Next_Wakeup_Time := Current_Time;
@@ -328,7 +327,7 @@ package body Zephyr_Ada_Hello is
          --  (or that we have not missed the current deadline)
          --
          C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                          ts => Current_Time'Access);
+                                        tp => Current_Time'Access);
          pragma Assert (C_Ret = 0);
          pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
                         (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
@@ -347,7 +346,7 @@ package body Zephyr_Ada_Hello is
          --  Check that we did not wake up too early:
          --
          C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                          ts => Current_Time'Access);
+                                        tp => Current_Time'Access);
          pragma Assert (C_Ret = 0);
          pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
                         (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then

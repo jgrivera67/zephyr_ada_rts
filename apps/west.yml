@@ -1,0 +1,15 @@
+manifest:
+  remotes:
+    - name: zephyrproject-rtos
+      url-base: https://github.com/zephyrproject-rtos
+
+  projects:
+    - name: zephyr
+      remote: zephyrproject-rtos
+      repo-path: zephyr
+      revision: main
+      import: true      # This pulls in other modules, like HALs
+
+  self:
+    path: apps
+

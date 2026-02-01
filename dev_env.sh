@@ -255,7 +255,7 @@ function flash_esp32c6
 }
 
 . ~/my-projects/third-party/alire/scripts/alr-completion.bash
-. ~/my-projects/third-party/zephyrproject/.venv/bin/activate
-. ~/my-projects/third-party/zephyrproject/zephyr/zephyr-env.sh
-. <(west completion bash)
+#. ~/my-projects/third-party/zephyrproject/.venv/bin/activate
+#. ~/my-projects/third-party/zephyrproject/zephyr/zephyr-env.sh
+#. <(west completion bash)
 

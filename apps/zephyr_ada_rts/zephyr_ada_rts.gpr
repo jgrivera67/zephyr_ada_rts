@@ -4,7 +4,7 @@
 --  SPDX-License-Identifier: Apache-2.0
 --
 with "config/zephyr_ada_rts_config.gpr";
-with "compiler_flags.gpr";
+with "../compiler_flags.gpr";
 
 project Zephyr_Ada_Rts is
    for Target use Compiler_Flags.Target_Compiler_Selector;

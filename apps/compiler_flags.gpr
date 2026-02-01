@@ -5,7 +5,7 @@
 --
 abstract project Compiler_Flags is
 
-  type Board_Type is ("esp32c3_devkitm", "rpi_4b", "rpi_5");
+  type Board_Type is ("esp32c3_devkitm", "rpi_4b", "rpi_5", "frdm_kl25z");
 
    Board : Board_Type := External ("Board", "");
 
@@ -20,6 +20,8 @@ abstract project Compiler_Flags is
          CPU_Core := "arm_cortex_a72";
       when "rpi_5" =>
          CPU_Core := "arm_cortex_a76";
+      when "frdm_kl25z" =>
+         CPU_Core := "arm_cortex_m0plus";
       when others =>
          null;
    end case;
@@ -32,7 +34,7 @@ abstract project Compiler_Flags is
    case CPU_Core is
       when "arm_cortex_m0plus" =>
               CPU_Arch := "arm_cortex_m";
-              Target_Compiler_Selector := "arm-abi";
+              Target_Compiler_Selector := "arm-eabi";
               CPU_Core_Switches := ("-mcpu=cortex-m0plus",
                                     "-mthumb",
                                   --"-march=armv6-m",

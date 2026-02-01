@@ -13,7 +13,7 @@ ExternalProject_Add(
   BUILD_ALWAYS 1
   BUILD_COMMAND alr --chdir=${CMAKE_CURRENT_SOURCE_DIR} build -- -XBoard=${BOARD}
   INSTALL_COMMAND ""      # This particular build system has no install command
-  BUILD_BYPRODUCTS ${CMAKE_CURRENT_SOURCE_DIR}/lib/${BOARD}/${libname}.a ${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/${BOARD}/libgnat.a
+  BUILD_BYPRODUCTS ${CMAKE_CURRENT_SOURCE_DIR}/lib/${BOARD}/${libname}.a ${CMAKE_CURRENT_SOURCE_DIR}/../../zephyr_ada_rts/lib/${BOARD}/libgnat.a
   )
 
 # Create a wrapper CMake library that our app can link with
@@ -30,4 +30,4 @@ set_target_properties(${libname} PROPERTIES IMPORTED_LOCATION             ${CMAK
 set_target_properties(${libname} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(ada_runtime STATIC IMPORTED GLOBAL)
-set_target_properties(ada_runtime PROPERTIES IMPORTED_LOCATION            ${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/${BOARD}/libgnat.a)
+set_target_properties(ada_runtime PROPERTIES IMPORTED_LOCATION            ${CMAKE_CURRENT_SOURCE_DIR}/../../zephyr_ada_rts/lib/${BOARD}/libgnat.a)
