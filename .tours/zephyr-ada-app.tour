@@ -3,37 +3,37 @@
   "title": "zephyr-Ada-app",
   "steps": [
     {
-      "file": "sample_apps/zephyr_ada_hello/CMakeLists.txt",
+      "file": "apps/zephyr_ada_hello/CMakeLists.txt",
       "description": "Zephyr application top-level CMakelists.txt",
       "line": 2
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/src/main.c",
+      "file": "apps/zephyr_ada_hello/src/main.c",
       "description": "Call gnatbind-generated Ada package elaboration for Ada application library",
       "line": 16
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/src/main.c",
+      "file": "apps/zephyr_ada_hello/src/main.c",
       "description": "Call Ada application \"main\" subprogram",
       "line": 18
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/alire.toml",
+      "file": "apps/zephyr_ada_hello/ada_app/alire.toml",
       "description": "Alire crate manifest",
       "line": 11
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/CMakeLists.txt",
+      "file": "apps/zephyr_ada_hello/ada_app/CMakeLists.txt",
       "description": "CMake external project to build the Ada application crate as part of the Zephyr build",
       "line": 6
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/CMakeLists.txt",
+      "file": "apps/zephyr_ada_hello/ada_app/CMakeLists.txt",
       "description": "alr build invocation for the target board",
       "line": 13
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/zephyr_ada_hello.gpr",
+      "file": "apps/zephyr_ada_hello/ada_app/zephyr_ada_hello.gpr",
       "description": "Use our own platform-independent Ada runtime library",
       "line": 11
     },
@@ -42,37 +42,37 @@
       "description": "Sources of minimal platform-independent Ada runtime library (RTS) copied from the host\nGNAT native toolchain "
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/zephyr_ada_hello.gpr",
+      "file": "apps/zephyr_ada_hello/ada_app/zephyr_ada_hello.gpr",
       "description": "Name of of our Ada application \"standalone\" library. \ngnatbind generates a <library name>init subprogram to do\nAda package elaboration. We call that function from\nthe C mmain.",
       "line": 14
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/zephyr_ada_hello.gpr",
+      "file": "apps/zephyr_ada_hello/ada_app/zephyr_ada_hello.gpr",
       "description": "This is necessary so that gnatbind generates a callable\nsubprogram to do Ada package elaboration, instead of a\n\"main\"",
       "line": 29
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.ads",
+      "file": "apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.ads",
       "description": "Subprogram to be called from Zephyr app's C main",
       "line": 10
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
+      "file": "apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
       "description": "Ada application entry point",
       "line": 67
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
+      "file": "apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
       "description": "Ada wrapper for Zephyr's variadic `printk` C function",
       "line": 106
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
+      "file": "apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
       "description": "Create a Zephyr thread using the Posix threads API",
       "line": 71
     },
     {
-      "file": "sample_apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
+      "file": "apps/zephyr_ada_hello/ada_app/src/zephyr_ada_hello.adb",
       "description": "A thread subprogram",
       "line": 172
     }
