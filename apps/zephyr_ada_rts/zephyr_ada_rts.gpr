@@ -18,6 +18,10 @@ project Zephyr_Ada_Rts is
 
    for Source_Dirs use ("src",
                         "src/third_party",
+                        "src/zephyr",
+                        "src/gnarl",
+                        "src/ada",
+                        "../third_party/generated_zephyr_ada_bindings/" & Compiler_Flags.Board,
                         "config");
    for Object_Dir use "obj/" & Zephyr_Ada_Rts_Config.Build_Profile & "/" & Compiler_Flags.Board;
    for Create_Missing_Dirs use "True";
