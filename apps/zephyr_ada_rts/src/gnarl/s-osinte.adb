@@ -30,7 +30,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Interfaces.C;
+with generated_zephyr_syscalls_kernel_h;
+
 package body System.OS_Interface is
+
+   use Interfaces.C;
+
+   package Zephyr_Kernel renames generated_zephyr_syscalls_kernel_h;
 
    -----------------------
    -- Current_Interrupt --
@@ -73,8 +80,8 @@ package body System.OS_Interface is
 
    function Clock return Time is
    begin
-      --  TODO: Implement in Milestone 5 using k_uptime_ticks()
-      return 0;
+      --  Get current time in ticks since boot using Zephyr kernel API
+      return Time (Zephyr_Kernel.k_uptime_ticks);
    end Clock;
 
    -----------------
@@ -82,10 +89,18 @@ package body System.OS_Interface is
    -----------------
 
    procedure Delay_Until (T : Time) is
-      pragma Unreferenced (T);
+      Now : constant Time := Clock;
+      Delay_Ticks : Time;
    begin
-      --  TODO: Implement in Milestone 5 using k_sleep()
-      raise Program_Error with "Delay_Until not yet implemented";
+      --  Only delay if the target time is in the future
+      if T > Now then
+         Delay_Ticks := T - Now;
+         --  k_sleep takes a k_timeout_t in milliseconds
+         --  We need to convert ticks to milliseconds
+         --  Assuming Ticks_Per_Second = 1000 (1ms per tick), conversion is 1:1
+         Zephyr_Kernel.k_sleep (int (Delay_Ticks));
+      end if;
+      --  If T <= Now, return immediately (delay already expired)
    end Delay_Until;
 
    ----------------
@@ -96,14 +111,17 @@ package body System.OS_Interface is
      (Environment_Thread : Thread_Id;
       Main_Priority      : System.Any_Priority)
    is
-      pragma Unreferenced (Environment_Thread, Main_Priority);
+      Zephyr_Prio : constant System.Zephyr.Priorities.Zephyr_Priority :=
+        System.Zephyr.Priorities.To_Zephyr_Priority (Main_Priority);
    begin
-      --  TODO: Implement in Milestone 2
-      --  This should:
-      --  1. Initialize the Zephyr tasking subsystem (if needed)
-      --  2. Set up the environment thread (main thread)
-      --  3. Set priority of main thread
-      null;
+      --  The environment thread is already the Zephyr main thread
+      --  (created by Zephyr at startup). We just need to set its priority
+      --  to match the Ada environment task's priority.
+
+      System.Zephyr.Threads.Set_Priority (Environment_Thread, Integer (Zephyr_Prio));
+
+      --  Note: Zephyr kernel is already initialized by the time main() is called,
+      --  so we don't need to explicitly initialize the tasking subsystem.
    end Initialize;
 
    -------------------
@@ -125,15 +143,18 @@ package body System.OS_Interface is
 
       Entry_Point : constant System.Zephyr.Threads.Thread_Entry_Point :=
         System.Zephyr.Threads.Thread_Entry_Point (Code);
+
+      Zephyr_Prio : constant System.Zephyr.Priorities.Zephyr_Priority :=
+        System.Zephyr.Priorities.To_Zephyr_Priority (Priority);
    begin
-      --  Call Zephyr thread creation wrapper
+      --  Call Zephyr thread creation wrapper with converted priority
       System.Zephyr.Threads.Thread_Create
         (New_Thread  => Id,
          Stack_Addr  => Stack_Address,
          Stack_Size  => Stack_Size,
          Entry_Point => Entry_Point,
          Arg         => Arg,
-         Priority    => Priority,
+         Priority    => Integer (Zephyr_Prio),
          Options     => 0,  -- Default options
          Delay_Ms    => 0); -- Start immediately
    end Thread_Create;
@@ -144,9 +165,23 @@ package body System.OS_Interface is
 
    procedure Set_Priority (Priority : Integer) is
       Current : constant Thread_Id := Thread_Self;
+      Zephyr_Prio : constant System.Zephyr.Priorities.Zephyr_Priority :=
+        System.Zephyr.Priorities.To_Zephyr_Priority (Priority);
    begin
-      System.Zephyr.Threads.Set_Priority (Current, Priority);
+      System.Zephyr.Threads.Set_Priority (Current, Integer (Zephyr_Prio));
    end Set_Priority;
+
+   ------------------
+   -- Get_Priority --
+   ------------------
+
+   function Get_Priority (Id : Thread_Id) return Integer is
+      Zephyr_Prio : constant Integer := System.Zephyr.Threads.Get_Priority (Id);
+   begin
+      --  Convert from Zephyr priority back to Ada priority
+      return System.Zephyr.Priorities.To_Ada_Priority (
+        System.Zephyr.Priorities.Zephyr_Priority (Zephyr_Prio));
+   end Get_Priority;
 
    --------------
    -- Set_ATCB --

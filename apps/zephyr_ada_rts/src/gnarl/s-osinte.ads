@@ -176,10 +176,9 @@ package System.OS_Interface is
    --  Priority should be in Zephyr scale
    --  TODO: Implement in Milestone 2
 
-   function Get_Priority (Id : Thread_Id) return Integer
-     renames System.Zephyr.Threads.Get_Priority;
+   function Get_Priority (Id : Thread_Id) return Integer;
    --  Get the current base priority of a thread
-   --  Returns priority in Zephyr scale
+   --  Returns priority in Ada scale (0-31)
 
    procedure Sleep;
    --  The calling thread is unconditionally suspended
