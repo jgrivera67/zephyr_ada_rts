@@ -30,14 +30,26 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Interfaces.C;
+with Ada.Unchecked_Conversion;
+with System.Zephyr.Priorities;
+
+pragma Warnings (Off, "cannot depend on");
+pragma Warnings (Off, "preelaborated unit cannot depend on non-preelaborated unit");
 with generated_zephyr_syscalls_kernel_h;
+with zephyr_sys_clock_h;
+pragma Warnings (On, "preelaborated unit cannot depend on non-preelaborated unit");
+pragma Warnings (On, "cannot depend on");
 
 package body System.OS_Interface is
 
-   use Interfaces.C;
-
    package Zephyr_Kernel renames generated_zephyr_syscalls_kernel_h;
+   package Zephyr_Clock renames zephyr_sys_clock_h;
+
+   function To_Thread_Entry_Point is new Ada.Unchecked_Conversion
+     (Source => System.Address, Target => System.Zephyr.Threads.Thread_Entry_Point);
+
+   function To_Thread_Id is new Ada.Unchecked_Conversion
+     (Source => System.Address, Target => Thread_Id);
 
    -----------------------
    -- Current_Interrupt --
@@ -48,6 +60,16 @@ package body System.OS_Interface is
       --  TODO: Implement in Milestone 7 using Zephyr interrupt APIs
       return No_Interrupt;
    end Current_Interrupt;
+
+   -------------------
+   -- Get_Thread_Id --
+   -------------------
+
+   function Get_Thread_Id (Thread_Desc : Thread_Descriptor) return Thread_Id is
+   begin
+      --  Return the address of the k_thread structure as Thread_Id
+      return To_Thread_Id (Thread_Desc.K_Thread'Address);
+   end Get_Thread_Id;
 
    --------------------
    -- Attach_Handler --
@@ -91,14 +113,16 @@ package body System.OS_Interface is
    procedure Delay_Until (T : Time) is
       Now : constant Time := Clock;
       Delay_Ticks : Time;
+      Timeout : Zephyr_Clock.k_timeout_t;
+      Result : Interfaces.C.int;
+      pragma Unreferenced (Result);
    begin
       --  Only delay if the target time is in the future
       if T > Now then
          Delay_Ticks := T - Now;
-         --  k_sleep takes a k_timeout_t in milliseconds
-         --  We need to convert ticks to milliseconds
-         --  Assuming Ticks_Per_Second = 1000 (1ms per tick), conversion is 1:1
-         Zephyr_Kernel.k_sleep (int (Delay_Ticks));
+         --  Construct k_timeout_t with relative tick count
+         Timeout.ticks := Zephyr_Clock.k_ticks_t (Delay_Ticks);
+         Result := Zephyr_Kernel.k_sleep (Timeout);
       end if;
       --  If T <= Now, return immediately (delay already expired)
    end Delay_Until;
@@ -142,7 +166,7 @@ package body System.OS_Interface is
       use type System.Zephyr.Threads.Thread_Entry_Point;
 
       Entry_Point : constant System.Zephyr.Threads.Thread_Entry_Point :=
-        System.Zephyr.Threads.Thread_Entry_Point (Code);
+        To_Thread_Entry_Point (Code);
 
       Zephyr_Prio : constant System.Zephyr.Priorities.Zephyr_Priority :=
         System.Zephyr.Priorities.To_Zephyr_Priority (Priority);

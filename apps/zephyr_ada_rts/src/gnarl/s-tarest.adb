@@ -36,10 +36,12 @@ pragma Style_Checks (All_Checks);
 --  Turn off subprogram alpha order check, since we group soft link bodies and
 --  also separate off subprograms for restricted GNARLI.
 
+with System.Multiprocessors;
 with System.Task_Primitives.Operations;
 
 package body System.Tasking.Restricted.Stages is
 
+   use System.Multiprocessors;
    use System.Secondary_Stack;
    use System.Task_Primitives.Operations;
 
@@ -376,7 +378,11 @@ package body System.Tasking.Restricted.Stages is
       Task_Image        : String;
       Created_Task      : Task_Id)
    is
+      pragma Warnings (Off, "formal parameter ""Task_Image"" is not referenced");
+      pragma Warnings (Off, "formal parameter ""Elaborated"" is not referenced");
       pragma Unreferenced (Task_Image, Elaborated);
+      pragma Warnings (On, "formal parameter ""Elaborated"" is not referenced");
+      pragma Warnings (On, "formal parameter ""Task_Image"" is not referenced");
 
    begin
       Create_Restricted_Task

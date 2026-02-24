@@ -115,7 +115,7 @@ package System.Task_Primitives.Operations is
    pragma Inline (Sleep);
    --  The caller should hold no lock when calling this procedure
 
-   procedure Delay_Until (Abs_Time : Time);
+   not overriding procedure Delay_Until (Abs_Time : Time);
    pragma Inline (Delay_Until);
    --  Delay until the specified absolute time
 

@@ -109,8 +109,8 @@ package sys_types_h is
   -- link count  
    subtype nlink_t is sys_utypes_h.uu_nlink_t;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk/arm-zephyr-eabi/picolibc/include/sys/types.h:217
 
-  -- microseconds (unsigned)  
-   subtype useconds_t is useconds_t;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk/arm-zephyr-eabi/picolibc/include/sys/types.h:238
+  -- microseconds (unsigned)
+   subtype useconds_t is sys_utypes_h.uu_useconds_t;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk/arm-zephyr-eabi/picolibc/include/sys/types.h:238
 
    subtype suseconds_t is sys_utypes_h.uu_suseconds_t;  -- /Users/jgrivera/my-projects/third-party/zephyr-sdk/arm-zephyr-eabi/picolibc/include/sys/types.h:243
 

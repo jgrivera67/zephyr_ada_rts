@@ -92,7 +92,7 @@ package body System.Task_Primitives.Operations is
    -- Delay_Until --
    -----------------
 
-   procedure Delay_Until (Abs_Time : Time) is
+   not overriding procedure Delay_Until (Abs_Time : Time) is
       Self_ID : constant ST.Task_Id := Self;
    begin
       Self_ID.Common.State := ST.Delay_Sleep;
@@ -228,7 +228,7 @@ package body System.Task_Primitives.Operations is
          and then Storage_Offset (Stack_Size) =
            T.Common.Compiler_Data.Pri_Stack_Info.Size);
 
-      T.Common.LL.Thread := T.Common.LL.Thread_Desc'Access;
+      T.Common.LL.Thread := Get_Thread_Id (T.Common.LL.Thread_Desc);
 
       --  Create the underlying Zephyr thread
       --  The Wrapper is the task entry point that will call Enter_Task
@@ -260,7 +260,7 @@ package body System.Task_Primitives.Operations is
    begin
       --  Set the thread descriptor
 
-      T := Environment_Task.Common.LL.Thread_Desc'Access;
+      T := Get_Thread_Id (Environment_Task.Common.LL.Thread_Desc);
 
       --  Clear Activation_Link, as required by Add_Task_Id
 

@@ -10,8 +10,8 @@ with sys_ustdint_h;
 
 package zephyr_sw_isr_table_h is
 
-   Z_STR_L2 : constant := 2ND;  --  /Users/jgrivera/my-projects/third-party/zephyrproject/zephyr/include/zephyr/sw_isr_table.h:65
-   Z_STR_L3 : constant := 3RD;  --  /Users/jgrivera/my-projects/third-party/zephyrproject/zephyr/include/zephyr/sw_isr_table.h:66
+   --  Z_STR_L2 : constant := 2ND;  --  Invalid identifier, commented out
+   --  Z_STR_L3 : constant := 3RD;  --  Invalid identifier, commented out
    --  arg-macro: procedure Z_SW_ISR_TBL_KCONFIG_BY_ALVL (l)
    --    CONCAT(CONFIG_, CONCAT(Z_STR_L, l), _LVL_ISR_TBL_OFFSET)
    --  arg-macro: procedure INTC_BASE_ISR_TBL_OFFSET (node_id)

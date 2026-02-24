@@ -43,7 +43,12 @@ pragma Restrictions (No_Elaboration_Code);
 with System.Multiprocessors;
 with System.Storage_Elements;
 with System.Zephyr.Threads;
-with System.Zephyr.Priorities;
+
+pragma Warnings (Off, "cannot depend on ""zephyr_kernel_thread_h""");
+pragma Warnings (Off, "preelaborated unit cannot depend on non-preelaborated unit");
+with zephyr_kernel_thread_h;
+pragma Warnings (On, "preelaborated unit cannot depend on non-preelaborated unit");
+pragma Warnings (On, "cannot depend on ""zephyr_kernel_thread_h""");
 
 package System.OS_Interface is
    pragma Preelaborate;
@@ -128,6 +133,11 @@ package System.OS_Interface is
                       System.Zephyr.Threads.Null_Thread_Id;
    --  Identifier for a non-valid thread
 
+   function Get_Thread_Id (Thread_Desc : Thread_Descriptor) return Thread_Id;
+   pragma Inline (Get_Thread_Id);
+   --  Get the Thread_Id (k_tid_t pointer) from a Thread_Descriptor
+   --  This returns the address of the internal k_thread structure
+
    Lwp_Self : constant System.Address := Null_Address;
    --  LWP is not used by gdb on Ravenscar/Zephyr
 
@@ -205,10 +215,10 @@ package System.OS_Interface is
 private
 
    type Thread_Descriptor is limited record
-      null;
-      --  We don't need to store anything here since Zephyr manages
-      --  the k_thread structure internally. The Thread_Id (k_tid_t)
-      --  is sufficient to identify and operate on threads.
+      K_Thread : aliased zephyr_kernel_thread_h.k_thread;
+      --  Zephyr thread control block. This must be allocated for the
+      --  lifetime of the thread and passed to k_thread_create.
+      --  The returned k_tid_t (Thread_Id) is a pointer to this structure.
    end record;
 
 end System.OS_Interface;

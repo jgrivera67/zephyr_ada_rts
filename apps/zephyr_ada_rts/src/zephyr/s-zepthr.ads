@@ -94,7 +94,7 @@ package System.Zephyr.Threads is
    --  Yield processor to other threads (wrapper for k_yield)
 
    ----------------
-   -- ATCB Storage (Option A: Thread Custom Data)
+   --  ATCB Storage (Option A: Thread Custom Data)
    ----------------
 
    procedure Set_ATCB (ATCB_Addr : System.Address);

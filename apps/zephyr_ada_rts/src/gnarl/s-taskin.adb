@@ -106,8 +106,7 @@ package body System.Tasking is
         Stack_Address;
 
       T.Common.Compiler_Data.Pri_Stack_Info.Size :=
-        Storage_Elements.Storage_Offset
-          (Parameters.Adjust_Storage_Size (Stack_Size));
+        Storage_Elements.Storage_Offset (Stack_Size);
    end Initialize_ATCB;
 
    ----------------
