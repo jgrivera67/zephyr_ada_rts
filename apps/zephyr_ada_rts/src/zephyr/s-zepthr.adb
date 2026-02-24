@@ -33,15 +33,42 @@
 --  This is the Zephyr-specific implementation using native kernel APIs
 
 with Interfaces.C; use Interfaces.C;
+with Ada.Unchecked_Conversion;
+with System.Address_To_Access_Conversions;
 with generated_zephyr_syscalls_kernel_h;
 with zephyr_kernel_thread_h;
 with zephyr_kernel_thread_stack_h;
+with zephyr_arch_arch_interface_h;
+with zephyr_sys_clock_h;
 with stddef_h;
 
 package body System.Zephyr.Threads is
 
    package Zephyr_Kernel renames generated_zephyr_syscalls_kernel_h;
    package Zephyr_Thread renames zephyr_kernel_thread_h;
+
+   package K_Thread_Conversions is new System.Address_To_Access_Conversions
+     (Object => Zephyr_Thread.k_thread);
+   --  For converting Thread_Id (Address) to access k_thread
+
+   package Stack_Conversions is new System.Address_To_Access_Conversions
+     (Object => zephyr_kernel_thread_stack_h.z_thread_stack_element);
+   --  For converting Stack_Addr to access z_thread_stack_element
+
+   function To_K_Thread_Entry is new Ada.Unchecked_Conversion
+     (Source => Thread_Entry_Point,
+      Target => zephyr_arch_arch_interface_h.k_thread_entry_t);
+   --  Convert our Thread_Entry_Point to Zephyr's k_thread_entry_t
+
+   function To_Thread_Id is new Ada.Unchecked_Conversion
+     (Source => Zephyr_Thread.k_tid_t,
+      Target => Thread_Id);
+   --  Convert k_tid_t to Thread_Id (Address)
+
+   function To_K_Tid_T is new Ada.Unchecked_Conversion
+     (Source => Thread_Id,
+      Target => Zephyr_Thread.k_tid_t);
+   --  Convert Thread_Id (Address) to k_tid_t
 
    -------------------
    -- Thread_Create --
@@ -57,13 +84,11 @@ package body System.Zephyr.Threads is
       Options       : Interfaces.C.unsigned := 0;
       Delay_Ms      : Interfaces.C.int := 0)
    is
-      use type System.Address;
-
       K_Thread : constant access Zephyr_Thread.k_thread :=
-        Zephyr_Thread.k_thread (New_Thread);
+        K_Thread_Conversions.To_Pointer (System.Address (New_Thread));
 
       Stack : constant access zephyr_kernel_thread_stack_h.z_thread_stack_element :=
-        zephyr_kernel_thread_stack_h.z_thread_stack_element (Stack_Addr);
+        Stack_Conversions.To_Pointer (Stack_Addr);
 
       Result : Zephyr_Thread.k_tid_t;
       pragma Unreferenced (Result);
@@ -78,13 +103,13 @@ package body System.Zephyr.Threads is
         (new_thread => K_Thread,
          stack      => Stack,
          stack_size => stddef_h.size_t (Stack_Size),
-         c_entry    => Entry_Point.all'Address,  -- Entry point address
+         c_entry    => To_K_Thread_Entry (Entry_Point),
          p1         => Arg,                       -- First parameter (ATCB)
          p2         => System.Null_Address,       -- Unused
          p3         => System.Null_Address,       -- Unused
          prio       => int (Priority),
-         options    => unsigned (Options),
-         c_delay    => Delay_Ms);
+         options    => Options,
+         c_delay    => (ticks => zephyr_sys_clock_h.k_ticks_t (Delay_Ms)));
 
       --  Note: In Ravenscar, tasks should never terminate, so we don't
       --  need to handle thread completion
@@ -96,8 +121,8 @@ package body System.Zephyr.Threads is
 
    function Thread_Self return Thread_Id is
    begin
-      --  k_current_get() returns the current thread's k_tid_t
-      return Thread_Id (Zephyr_Kernel.k_current_get);
+      --  k_sched_current_thread_query() returns the current thread's k_tid_t
+      return To_Thread_Id (Zephyr_Kernel.k_sched_current_thread_query);
    end Thread_Self;
 
    ------------------
@@ -108,7 +133,7 @@ package body System.Zephyr.Threads is
    begin
       --  k_thread_priority_set(k_tid_t thread, int prio)
       Zephyr_Kernel.k_thread_priority_set
-        (thread => Zephyr_Thread.k_tid_t (Thread),
+        (thread => To_K_Tid_T (Thread),
          prio   => int (Priority));
    end Set_Priority;
 
@@ -119,8 +144,7 @@ package body System.Zephyr.Threads is
    function Get_Priority (Thread : Thread_Id) return Integer is
    begin
       --  k_thread_priority_get(k_tid_t thread)
-      return Integer (Zephyr_Kernel.k_thread_priority_get
-        (Zephyr_Thread.k_tid_t (Thread)));
+      return Integer (Zephyr_Kernel.k_thread_priority_get (To_K_Tid_T (Thread)));
    end Get_Priority;
 
    -----------
@@ -130,7 +154,7 @@ package body System.Zephyr.Threads is
    procedure Sleep (Thread : Thread_Id) is
    begin
       --  k_thread_suspend(k_tid_t thread)
-      Zephyr_Kernel.k_thread_suspend (Zephyr_Thread.k_tid_t (Thread));
+      Zephyr_Kernel.k_thread_suspend (To_K_Tid_T (Thread));
    end Sleep;
 
    ------------
@@ -140,7 +164,7 @@ package body System.Zephyr.Threads is
    procedure Wakeup (Thread : Thread_Id) is
    begin
       --  k_thread_resume(k_tid_t thread)
-      Zephyr_Kernel.k_thread_resume (Zephyr_Thread.k_tid_t (Thread));
+      Zephyr_Kernel.k_thread_resume (To_K_Tid_T (Thread));
    end Wakeup;
 
    -----------

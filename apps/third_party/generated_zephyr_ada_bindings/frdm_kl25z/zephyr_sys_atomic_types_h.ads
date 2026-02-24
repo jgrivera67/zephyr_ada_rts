@@ -7,6 +7,7 @@ with Interfaces.C; use Interfaces.C;
 with System;
 
 package zephyr_sys_atomic_types_h is
+   pragma Preelaborate;
 
   -- Copyright (c) 1997-2015, Wind River Systems, Inc.
   -- * Copyright (c) 2021 Intel Corporation

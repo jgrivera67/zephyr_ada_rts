@@ -9,6 +9,7 @@ with System;
 with stddef_h;
 
 package zephyr_sys_dlist_h is
+   pragma Preelaborate;
 
    --  arg-macro: procedure SYS_DLIST_FOR_EACH_NODE (__dl, __dn)
    --    for (__dn := sys_dlist_peek_head(__dl); __dn /= NULL; __dn := sys_dlist_peek_next(__dl, __dn))

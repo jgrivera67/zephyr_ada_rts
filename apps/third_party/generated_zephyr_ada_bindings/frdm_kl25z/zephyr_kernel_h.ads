@@ -24,6 +24,7 @@ limited with zephyr_sys_mem_stats_h;
 with zephyr_sys_sys_heap_h;
 
 package zephyr_kernel_h is
+   pragma Preelaborate;
 
    --  unsupported macro: K_ANY NULL
    --  arg-macro: function K_PRIO_COOP (x)

@@ -6,6 +6,7 @@ pragma Warnings (Off, "-gnatwu");
 with Interfaces.C; use Interfaces.C;
 
 package zephyr_arch_arm_structs_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2023 Arm Limited (or its affiliates). All rights reserved.
   -- * SPDX-License-Identifier: Apache-2.0

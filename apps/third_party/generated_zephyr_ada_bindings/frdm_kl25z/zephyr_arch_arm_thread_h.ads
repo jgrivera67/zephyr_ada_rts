@@ -7,6 +7,7 @@ with Interfaces.C; use Interfaces.C;
 with sys_ustdint_h;
 
 package zephyr_arch_arm_thread_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2017 Intel Corporation
   -- * Copyright 2025 Arm Limited and/or its affiliates <open-source-office@arm.com>

@@ -9,6 +9,7 @@ with System;
 with Interfaces.C.Extensions;
 
 package zephyr_sys_ring_buffer_h is
+   pragma Preelaborate;
 
    --  unsupported macro: RING_BUFFER_MAX_SIZE (UINT16_MAX / 2)
    RING_BUFFER_SIZE_ASSERT_MSG : aliased constant String := "Size too big, please enable CONFIG_RING_BUFFER_LARGE" & ASCII.NUL;  --  /Users/jgrivera/my-projects/third-party/zephyrproject/zephyr/include/zephyr/sys/ring_buffer.h:39

@@ -8,6 +8,7 @@ with sys_ustdint_h;
 with Interfaces.C.Extensions;
 
 package zephyr_spinlock_h is
+   pragma Preelaborate;
 
    --  unsupported macro: K_SPINLOCK_ONEXIT __attribute__((__cleanup__(z_spin_onexit)))
    --  unsupported macro: K_SPINLOCK_BREAK continue

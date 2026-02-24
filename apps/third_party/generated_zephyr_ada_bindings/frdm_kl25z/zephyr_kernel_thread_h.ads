@@ -17,6 +17,7 @@ with zephyr_arch_arm_thread_h;
 limited with zephyr_kernel_h;
 
 package zephyr_kernel_thread_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2016, Wind River Systems, Inc.
   -- *

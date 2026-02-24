@@ -3,11 +3,11 @@ abstract project Zephyr_Ada_Rts_Config is
    Crate_Version := "0.1.0-dev";
    Crate_Name := "zephyr_ada_rts";
 
-   Alire_Host_OS := "macos";
+   Alire_Host_OS := "linux";
 
-   Alire_Host_Arch := "aarch64";
+   Alire_Host_Arch := "x86_64";
 
-   Alire_Host_Distro := "homebrew";
+   Alire_Host_Distro := "ubuntu";
    Ada_Compiler_Switches := External_As_List ("ADAFLAGS", " ");
    Ada_Compiler_Switches := Ada_Compiler_Switches &
           (

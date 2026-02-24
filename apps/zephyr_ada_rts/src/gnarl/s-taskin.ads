@@ -51,6 +51,7 @@ with System.Secondary_Stack;
 with System.Storage_Elements;
 with System.Task_Info;
 with System.Task_Primitives;
+with System.Multiprocessors;
 
 package System.Tasking is
    pragma Preelaborate;

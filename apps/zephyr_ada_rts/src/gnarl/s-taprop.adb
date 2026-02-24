@@ -92,7 +92,7 @@ package body System.Task_Primitives.Operations is
    -- Delay_Until --
    -----------------
 
-   not overriding procedure Delay_Until (Abs_Time : Time) is
+   overriding procedure Delay_Until (Abs_Time : Time) is
       Self_ID : constant ST.Task_Id := Self;
    begin
       Self_ID.Common.State := ST.Delay_Sleep;

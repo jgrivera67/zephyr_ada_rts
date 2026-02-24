@@ -5,11 +5,11 @@
 #define CRATE_VERSION "0.1.0-dev"
 #define CRATE_NAME "zephyr_ada_hello"
 
-#define ALIRE_HOST_OS "macos"
+#define ALIRE_HOST_OS "linux"
 
-#define ALIRE_HOST_ARCH "aarch64"
+#define ALIRE_HOST_ARCH "x86_64"
 
-#define ALIRE_HOST_DISTRO "homebrew"
+#define ALIRE_HOST_DISTRO "ubuntu"
 
 #define BUILD_PROFILE_RELEASE 1
 #define BUILD_PROFILE_VALIDATION 2

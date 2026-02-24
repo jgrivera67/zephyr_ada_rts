@@ -14,6 +14,7 @@ with zephyr_arch_arm_structs_h;
 with System;
 
 package zephyr_kernel_structs_h is
+   pragma Preelaborate;
 
    --  unsupported macro: K_NUM_THREAD_PRIO (CONFIG_NUM_PREEMPT_PRIORITIES + CONFIG_NUM_COOP_PRIORITIES + 1)
    --  unsupported macro: PRIQ_BITMAP_SIZE (DIV_ROUND_UP(K_NUM_THREAD_PRIO, BITS_PER_LONG))

@@ -333,7 +333,6 @@ package body System.Tasking.Restricted.Stages is
       Task_Image        : String;
       Created_Task      : Task_Id)
    is
-      pragma Unreferenced (Task_Image, Elaborated);
    begin
       if Partition_Elaboration_Policy = 'S' then
 
@@ -378,12 +377,8 @@ package body System.Tasking.Restricted.Stages is
       Task_Image        : String;
       Created_Task      : Task_Id)
    is
-      pragma Warnings (Off, "formal parameter ""Task_Image"" is not referenced");
-      pragma Warnings (Off, "formal parameter ""Elaborated"" is not referenced");
-      pragma Unreferenced (Task_Image, Elaborated);
-      pragma Warnings (On, "formal parameter ""Elaborated"" is not referenced");
-      pragma Warnings (On, "formal parameter ""Task_Image"" is not referenced");
-
+      pragma Unreferenced (Task_Image);
+      pragma Unreferenced (Elaborated);
    begin
       Create_Restricted_Task
         (Priority, Stack_Address, Stack_Size, Sec_Stack_Address,

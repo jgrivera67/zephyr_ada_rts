@@ -34,9 +34,8 @@ package cmsis_gcc_h is
   -- * limitations under the License.
   --  
 
-  -- Fallback for __has_builtin  
-  -- CMSIS compiler specific defines  
-   pragma Compile_Time_Warning (True, "packed layout may be incorrect");
+  -- Fallback for __has_builtin
+  -- CMSIS compiler specific defines
    type T_UINT16_WRITE is record
       v : sys_ustdint_h.uint16_t;  -- /Users/jgrivera/my-projects/third-party/zephyrproject/modules/hal/cmsis_6/CMSIS/Core/Include/cmsis_gcc.h:75
    end record
@@ -44,7 +43,6 @@ package cmsis_gcc_h is
         Pack => True,
         Alignment => 1;  -- /Users/jgrivera/my-projects/third-party/zephyrproject/modules/hal/cmsis_6/CMSIS/Core/Include/cmsis_gcc.h:75
 
-   pragma Compile_Time_Warning (True, "packed layout may be incorrect");
    type T_UINT16_READ is record
       v : sys_ustdint_h.uint16_t;  -- /Users/jgrivera/my-projects/third-party/zephyrproject/modules/hal/cmsis_6/CMSIS/Core/Include/cmsis_gcc.h:83
    end record
@@ -52,15 +50,13 @@ package cmsis_gcc_h is
         Pack => True,
         Alignment => 1;  -- /Users/jgrivera/my-projects/third-party/zephyrproject/modules/hal/cmsis_6/CMSIS/Core/Include/cmsis_gcc.h:83
 
-   pragma Compile_Time_Warning (True, "packed layout may be incorrect");
    type T_UINT32_WRITE is record
       v : sys_ustdint_h.uint32_t;  -- /Users/jgrivera/my-projects/third-party/zephyrproject/modules/hal/cmsis_6/CMSIS/Core/Include/cmsis_gcc.h:91
    end record
    with Convention => C_Pass_By_Copy,
         Pack => True,
-        Alignment => 1;  -- /Users/jgrivera/my-projects/third-party/zephyrproject/modules/hal/cmsis_6/CMSIS/Core/Include/cmsis_gcc.h:91
+        Alignment => 1;  -- /Users/jgrivera/my-projects/zephyr_ada/apps/third_party/generated_zephyr_ada_bindings/frdm_kl25z/cmsis_gcc_h.ads:61
 
-   pragma Compile_Time_Warning (True, "packed layout may be incorrect");
    type T_UINT32_READ is record
       v : sys_ustdint_h.uint32_t;  -- /Users/jgrivera/my-projects/third-party/zephyrproject/modules/hal/cmsis_6/CMSIS/Core/Include/cmsis_gcc.h:99
    end record

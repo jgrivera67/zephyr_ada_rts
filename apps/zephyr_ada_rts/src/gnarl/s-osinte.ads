@@ -43,12 +43,7 @@ pragma Restrictions (No_Elaboration_Code);
 with System.Multiprocessors;
 with System.Storage_Elements;
 with System.Zephyr.Threads;
-
-pragma Warnings (Off, "cannot depend on ""zephyr_kernel_thread_h""");
-pragma Warnings (Off, "preelaborated unit cannot depend on non-preelaborated unit");
 with zephyr_kernel_thread_h;
-pragma Warnings (On, "preelaborated unit cannot depend on non-preelaborated unit");
-pragma Warnings (On, "cannot depend on ""zephyr_kernel_thread_h""");
 
 package System.OS_Interface is
    pragma Preelaborate;

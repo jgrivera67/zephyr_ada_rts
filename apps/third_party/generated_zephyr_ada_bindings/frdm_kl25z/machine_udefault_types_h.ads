@@ -7,6 +7,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Extensions;
 
 package machine_udefault_types_h is
+   pragma Preelaborate;
 
   -- *  Copyright (c) 2007 Patrick Mansfield <patmans@us.ibm.com>
   --  

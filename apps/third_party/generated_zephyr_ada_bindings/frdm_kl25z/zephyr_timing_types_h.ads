@@ -7,6 +7,7 @@ with Interfaces.C; use Interfaces.C;
 with sys_ustdint_h;
 
 package zephyr_timing_types_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2020 Intel Corporation.
   -- *

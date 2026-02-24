@@ -31,14 +31,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Unchecked_Conversion;
+with Interfaces.C;
 with System.Zephyr.Priorities;
-
-pragma Warnings (Off, "cannot depend on");
-pragma Warnings (Off, "preelaborated unit cannot depend on non-preelaborated unit");
 with generated_zephyr_syscalls_kernel_h;
 with zephyr_sys_clock_h;
-pragma Warnings (On, "preelaborated unit cannot depend on non-preelaborated unit");
-pragma Warnings (On, "cannot depend on");
 
 package body System.OS_Interface is
 

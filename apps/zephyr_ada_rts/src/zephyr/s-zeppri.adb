@@ -32,6 +32,8 @@
 
 package body System.Zephyr.Priorities is
 
+   use Interfaces.C;
+
    --  Priority mapping strategy:
    --
    --  Ada defines priorities 0-31:
