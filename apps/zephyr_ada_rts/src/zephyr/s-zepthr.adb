@@ -34,41 +34,67 @@
 
 with Interfaces.C; use Interfaces.C;
 with Ada.Unchecked_Conversion;
-with System.Address_To_Access_Conversions;
-with generated_zephyr_syscalls_kernel_h;
-with zephyr_kernel_thread_h;
-with zephyr_kernel_thread_stack_h;
-with zephyr_arch_arch_interface_h;
-with zephyr_sys_clock_h;
-with stddef_h;
 
 package body System.Zephyr.Threads is
 
-   package Zephyr_Kernel renames generated_zephyr_syscalls_kernel_h;
-   package Zephyr_Thread renames zephyr_kernel_thread_h;
+   --  Platform-independent Zephyr API declarations
+   --  These match Zephyr's C API but are defined here to avoid depending
+   --  on platform-specific generated bindings
 
-   package K_Thread_Conversions is new System.Address_To_Access_Conversions
-     (Object => Zephyr_Thread.k_thread);
-   --  For converting Thread_Id (Address) to access k_thread
+   --  Zephyr timeout type (platform-independent structure)
+   type K_Timeout_T is record
+      Ticks : Interfaces.C.long;
+   end record
+   with Convention => C;
 
-   package Stack_Conversions is new System.Address_To_Access_Conversions
-     (Object => zephyr_kernel_thread_stack_h.z_thread_stack_element);
-   --  For converting Stack_Addr to access z_thread_stack_element
+   --  Zephyr thread creation function (platform-independent signature)
+   function K_Thread_Create
+     (New_Thread : System.Address;
+      Stack      : System.Address;
+      Stack_Size : Interfaces.C.size_t;
+      Entry_Func : System.Address;
+      P1         : System.Address;
+      P2         : System.Address;
+      P3         : System.Address;
+      Prio       : Interfaces.C.int;
+      Options    : Interfaces.C.unsigned;
+      C_Delay    : K_Timeout_T) return System.Address
+   with Import, Convention => C, External_Name => "k_thread_create";
 
-   function To_K_Thread_Entry is new Ada.Unchecked_Conversion
+   function K_Sched_Current_Thread_Query return System.Address
+   with Import, Convention => C, External_Name => "k_sched_current_thread_query";
+
+   procedure K_Thread_Priority_Set
+     (Thread : System.Address;
+      Prio   : Interfaces.C.int)
+   with Import, Convention => C, External_Name => "k_thread_priority_set";
+
+   function K_Thread_Priority_Get
+     (Thread : System.Address) return Interfaces.C.int
+   with Import, Convention => C, External_Name => "k_thread_priority_get";
+
+   procedure K_Thread_Suspend
+     (Thread : System.Address)
+   with Import, Convention => C, External_Name => "k_thread_suspend";
+
+   procedure K_Thread_Resume
+     (Thread : System.Address)
+   with Import, Convention => C, External_Name => "k_thread_resume";
+
+   procedure K_Yield
+   with Import, Convention => C, External_Name => "k_yield";
+
+   procedure K_Thread_Custom_Data_Set
+     (Value : System.Address)
+   with Import, Convention => C, External_Name => "k_thread_custom_data_set";
+
+   function K_Thread_Custom_Data_Get return System.Address
+   with Import, Convention => C, External_Name => "k_thread_custom_data_get";
+
+   function To_Address is new Ada.Unchecked_Conversion
      (Source => Thread_Entry_Point,
-      Target => zephyr_arch_arch_interface_h.k_thread_entry_t);
-   --  Convert our Thread_Entry_Point to Zephyr's k_thread_entry_t
-
-   function To_Thread_Id is new Ada.Unchecked_Conversion
-     (Source => Zephyr_Thread.k_tid_t,
-      Target => Thread_Id);
-   --  Convert k_tid_t to Thread_Id (Address)
-
-   function To_K_Tid_T is new Ada.Unchecked_Conversion
-     (Source => Thread_Id,
-      Target => Zephyr_Thread.k_tid_t);
-   --  Convert Thread_Id (Address) to k_tid_t
+      Target => System.Address);
+   --  Convert Thread_Entry_Point to System.Address for C interop
 
    -------------------
    -- Thread_Create --
@@ -84,32 +110,26 @@ package body System.Zephyr.Threads is
       Options       : Interfaces.C.unsigned := 0;
       Delay_Ms      : Interfaces.C.int := 0)
    is
-      K_Thread : constant access Zephyr_Thread.k_thread :=
-        K_Thread_Conversions.To_Pointer (System.Address (New_Thread));
-
-      Stack : constant access zephyr_kernel_thread_stack_h.z_thread_stack_element :=
-        Stack_Conversions.To_Pointer (Stack_Addr);
-
-      Result : Zephyr_Thread.k_tid_t;
+      Result : System.Address;
       pragma Unreferenced (Result);
    begin
-      --  Call Zephyr k_thread_create with native kernel API
+      --  Call Zephyr k_thread_create with native kernel API (platform-independent)
       --  k_thread_create(k_thread *new_thread, k_thread_stack_t *stack,
       --                  size_t stack_size, k_thread_entry_t entry,
       --                  void *p1, void *p2, void *p3,
       --                  int prio, uint32_t options, k_timeout_t delay)
 
-      Result := Zephyr_Kernel.k_thread_create
-        (new_thread => K_Thread,
-         stack      => Stack,
-         stack_size => stddef_h.size_t (Stack_Size),
-         c_entry    => To_K_Thread_Entry (Entry_Point),
-         p1         => Arg,                       -- First parameter (ATCB)
-         p2         => System.Null_Address,       -- Unused
-         p3         => System.Null_Address,       -- Unused
-         prio       => int (Priority),
-         options    => Options,
-         c_delay    => (ticks => zephyr_sys_clock_h.k_ticks_t (Delay_Ms)));
+      Result := K_Thread_Create
+        (New_Thread => System.Address (New_Thread),
+         Stack      => Stack_Addr,
+         Stack_Size => Interfaces.C.size_t (Stack_Size),
+         Entry_Func => To_Address (Entry_Point),
+         P1         => Arg,
+         P2         => System.Null_Address,
+         P3         => System.Null_Address,
+         Prio       => Interfaces.C.int (Priority),
+         Options    => Options,
+         C_Delay    => (Ticks => Interfaces.C.long (Delay_Ms)));
 
       --  Note: In Ravenscar, tasks should never terminate, so we don't
       --  need to handle thread completion
@@ -121,8 +141,8 @@ package body System.Zephyr.Threads is
 
    function Thread_Self return Thread_Id is
    begin
-      --  k_sched_current_thread_query() returns the current thread's k_tid_t
-      return To_Thread_Id (Zephyr_Kernel.k_sched_current_thread_query);
+      --  k_sched_current_thread_query() returns the current thread's k_tid_t (address)
+      return Thread_Id (K_Sched_Current_Thread_Query);
    end Thread_Self;
 
    ------------------
@@ -132,9 +152,9 @@ package body System.Zephyr.Threads is
    procedure Set_Priority (Thread : Thread_Id; Priority : Integer) is
    begin
       --  k_thread_priority_set(k_tid_t thread, int prio)
-      Zephyr_Kernel.k_thread_priority_set
-        (thread => To_K_Tid_T (Thread),
-         prio   => int (Priority));
+      K_Thread_Priority_Set
+        (Thread => System.Address (Thread),
+         Prio   => Interfaces.C.int (Priority));
    end Set_Priority;
 
    ------------------
@@ -144,7 +164,7 @@ package body System.Zephyr.Threads is
    function Get_Priority (Thread : Thread_Id) return Integer is
    begin
       --  k_thread_priority_get(k_tid_t thread)
-      return Integer (Zephyr_Kernel.k_thread_priority_get (To_K_Tid_T (Thread)));
+      return Integer (K_Thread_Priority_Get (System.Address (Thread)));
    end Get_Priority;
 
    -----------
@@ -154,7 +174,7 @@ package body System.Zephyr.Threads is
    procedure Sleep (Thread : Thread_Id) is
    begin
       --  k_thread_suspend(k_tid_t thread)
-      Zephyr_Kernel.k_thread_suspend (To_K_Tid_T (Thread));
+      K_Thread_Suspend (System.Address (Thread));
    end Sleep;
 
    ------------
@@ -164,7 +184,7 @@ package body System.Zephyr.Threads is
    procedure Wakeup (Thread : Thread_Id) is
    begin
       --  k_thread_resume(k_tid_t thread)
-      Zephyr_Kernel.k_thread_resume (To_K_Tid_T (Thread));
+      K_Thread_Resume (System.Address (Thread));
    end Wakeup;
 
    -----------
@@ -174,7 +194,7 @@ package body System.Zephyr.Threads is
    procedure Yield is
    begin
       --  k_yield() - yield the CPU to other threads
-      Zephyr_Kernel.k_yield;
+      K_Yield;
    end Yield;
 
    --------------
@@ -185,7 +205,7 @@ package body System.Zephyr.Threads is
    begin
       --  Store ATCB pointer in current thread's custom data
       --  k_thread_custom_data_set(void *value)
-      Zephyr_Kernel.k_thread_custom_data_set (value => ATCB_Addr);
+      K_Thread_Custom_Data_Set (Value => ATCB_Addr);
    end Set_ATCB;
 
    --------------
@@ -196,7 +216,7 @@ package body System.Zephyr.Threads is
    begin
       --  Retrieve ATCB pointer from current thread's custom data
       --  void *k_thread_custom_data_get(void)
-      return Zephyr_Kernel.k_thread_custom_data_get;
+      return K_Thread_Custom_Data_Get;
    end Get_ATCB;
 
 end System.Zephyr.Threads;

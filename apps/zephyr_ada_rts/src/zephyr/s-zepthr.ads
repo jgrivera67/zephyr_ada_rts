@@ -48,11 +48,14 @@ package System.Zephyr.Threads is
    Null_Thread_Id : constant Thread_Id;
    --  Represents no thread
 
-   type Thread_Entry_Point is access procedure (Arg : System.Address)
+   type Thread_Entry_Point is access procedure
+        (Arg1 : System.Address;
+         Arg2 : System.Address;
+         Arg3 : System.Address)
      with Convention => C;
    --  Thread entry point function type
-   --  Note: Zephyr k_thread_entry_t takes 3 void* parameters,
-   --  but we only use the first one (for ATCB pointer)
+   --  Matches Zephyr's k_thread_entry_t signature (3 void* parameters)
+   --  The RTS only uses Arg1 (for ATCB pointer), Arg2 and Arg3 are unused
 
    procedure Thread_Create
      (New_Thread    : Thread_Id;
