@@ -6,35 +6,14 @@
 
 with Interfaces.C;
 with GNAT.Source_Info;
-with zephyr_posix_pthread_h;
-with zephyr_posix_sched_h;
-with zephyr_posix_posix_types_h;
-with sys_utimespec_h;
-with time_h;
 
 package body Zephyr_Ada_Hello is
    use Interfaces;
-   use type C.int;
-   use type C.long;
-   use type System.Address;
-   package pthread_h renames zephyr_posix_pthread_h;
-   package sched_h renames zephyr_posix_sched_h;
-   package posix_types_h renames zephyr_posix_posix_types_h;
-   package timespec_h renames sys_utimespec_h;
-
-   Nsec_Per_Sec : constant := 1000000000;
-   Nsec_Per_Msec : constant := 1000000;
-   Service1_Period_Ms : constant := 20;
-   Service2_Period_Ms : constant := 100;
-   Service3_Period_Ms : constant := 200;
 
    procedure Printk (Fmt : String);
 
    procedure Printk (Fmt : String;
-                     Arg1 : C.unsigned;
-                     Arg2 : C.unsigned_long_long;
-                     Arg3 : C.unsigned_long;
-                     Arg4 : C.unsigned_long);
+                     Arg : C.unsigned);
 
    procedure Printk (Fmt : String; C_Str_Addr : System.Address);
 
@@ -42,65 +21,42 @@ package body Zephyr_Ada_Hello is
                      C_Str_Addr : System.Address;
                      Arg : C.unsigned);
 
-   function Service1_Thread_Func (arg : System.Address) return System.Address
-      with Convention => C;
+   --  Simple busy-wait delay
+   procedure Busy_Delay (Iterations : C.unsigned) is
+   begin
+      for I in 1 .. Iterations loop
+         null;  -- Busy wait
+      end loop;
+   end Busy_Delay;
 
-   function Service2_Thread_Func (arg : System.Address) return System.Address
-      with Convention => C;
+   --  Service task 1: High priority
+   task Service1_Task is
+      pragma Priority (System.Priority'Last - 1);
+   end Service1_Task;
 
-   function Service3_Thread_Func (arg : System.Address) return System.Address
-      with Convention => C;
+   --  Service task 2: Medium priority
+   task Service2_Task is
+      pragma Priority (System.Priority'Last - 2);
+   end Service2_Task;
 
-   function Calc_Next_Wakeup_Time (Time_Stamp : timespec_h.timespec;
-                                   Sleep_Time_Ms : C.long)
-      return timespec_h.timespec
-      with Pre => Time_Stamp.tv_nsec < Nsec_Per_Sec and then
-                  Sleep_Time_Ms > 0,
-           Post => Calc_Next_Wakeup_Time'Result.tv_nsec < Nsec_Per_Sec;
+   --  Service task 3: Low priority
+   task Service3_Task is
+      pragma Priority (System.Priority'Last - 3);
+   end Service3_Task;
 
    procedure Hello_Ada is
-      C_Ret : C.int;
-      Max_Posix_Priority : constant C.int := 31;
-      Sched_Param : aliased sched_h.sched_param;
-      Thread_Handle : aliased posix_types_h.pthread_t;
    begin
       Printk ("Hello Ada (built on " &
               GNAT.Source_Info.Compilation_Date & " at " &
               GNAT.Source_Info.Compilation_Time & ")" & ASCII.LF);
 
-      C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
-                                         attr => null,
-                                         threadroutine => Service1_Thread_Func'Access,
-                                         arg => System.Null_Address);
-      pragma Assert (C_Ret = 0);
-      Sched_Param.sched_priority := Max_Posix_Priority - 1;
-      C_Ret := pthread_h.pthread_setschedparam (Thread_Handle, sched_h.SCHED_RR, Sched_Param'Access);
-      pragma Assert (C_Ret = 0);
+      Printk ("Starting 3 Ada concurrent tasks..." & ASCII.LF);
 
-      C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
-                                         attr => null,
-                                         threadroutine => Service2_Thread_Func'Access,
-                                         arg => System.Null_Address);
-      pragma Assert (C_Ret = 0);
-      Sched_Param.sched_priority := Max_Posix_Priority - 2;
-      C_Ret := pthread_h.pthread_setschedparam (Thread_Handle, sched_h.SCHED_RR, Sched_Param'Access);
-      pragma Assert (C_Ret = 0);
-
-      C_Ret := pthread_h.pthread_create (newthread => Thread_Handle'Access,
-                                         attr => null,
-                                         threadroutine => Service3_Thread_Func'Access,
-                                         arg => System.Null_Address);
-      pragma Assert (C_Ret = 0);
-      Sched_Param.sched_priority := Max_Posix_Priority - 3;
-      C_Ret := pthread_h.pthread_setschedparam (Thread_Handle, sched_h.SCHED_RR, Sched_Param'Access);
-      pragma Assert (C_Ret = 0);
-
-      --
-      --  None of the child threads are supposed to terminate, so just wait
-      --  on the last child thread created, to prevent the process to terminate
-      --
-      C_Ret := pthread_h.pthread_join (Thread_Handle, System.Null_Address);
-      pragma Assert (C_Ret = 0);
+      --  Tasks are automatically activated when Hello_Ada is called
+      --  Just loop here to keep the environment task alive
+      loop
+         Busy_Delay (50000000);  -- Busy wait
+      end loop;
    end Hello_Ada;
 
    procedure Printk (Fmt : String) is
@@ -116,16 +72,8 @@ package body Zephyr_Ada_Hello is
       C_Printk (C_Fmt'Address);
    end Printk;
 
-   procedure Printk (Fmt : String;
-                  Arg1 : C.unsigned;
-                  Arg2 : C.unsigned_long_long;
-                  Arg3 : C.unsigned_long;
-                  Arg4 : C.unsigned_long) is
-      procedure C_Printk (Fmt_Addr : System.Address;
-                          Arg1 : C.unsigned;
-                          Arg2 : C.unsigned_long_long;
-                          Arg3 : C.unsigned_long;
-                          Arg4 : C.unsigned_long)
+   procedure Printk (Fmt : String; Arg : C.unsigned) is
+      procedure C_Printk (Fmt_Addr : System.Address; Arg : C.unsigned)
          with Import,
               Convention => C_Variadic_1,
               External_Name => "printk";
@@ -134,7 +82,7 @@ package body Zephyr_Ada_Hello is
       Count : C.size_t;
    begin
       C.To_C (Fmt, C_Fmt, Count, Append_Nul => True);
-      C_Printk (C_Fmt'Address, Arg1, Arg2, Arg3, Arg4);
+      C_Printk (C_Fmt'Address, Arg);
    end Printk;
 
    procedure Printk (Fmt : String; C_Str_Addr : System.Address) is
@@ -167,220 +115,43 @@ package body Zephyr_Ada_Hello is
    end Printk;
 
    --
-   --  Child thread entry-point function for Service 1
+   --  Service task 1 implementation
    --
-   function Service1_Thread_Func (arg : System.Address) return System.Address
-   is
-      Cnt : C.int := 0;
-      Current_Time : aliased timespec_h.timespec;
-      Next_Wakeup_Time : aliased timespec_h.timespec;
-      Remaining_Sleep_Time : aliased timespec_h.timespec;
-      C_Ret : C.int;
+   task body Service1_Task is
+      Cnt : Natural := 0;
    begin
-      pragma Assert (arg = System.Null_Address);
-      C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                     tp => Current_Time'Access);
-      pragma Assert (C_Ret = 0);
-
-      Next_Wakeup_Time := Current_Time;
       loop
          Cnt := Cnt + 1;
-         Printk ("Ada thread1: 50 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
-                  C.unsigned (Cnt),
-                  C.unsigned_long_long (Current_Time.tv_sec),
-                  C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
-                  C.unsigned_long (Current_Time.tv_nsec mod Nsec_Per_Msec));
-
-         Next_Wakeup_Time := Calc_Next_Wakeup_Time (Next_Wakeup_Time,
-                                                      Service1_Period_Ms);
-
-         --
-         --  Check that we are not going to miss the next period:
-         --  (or that we have not missed the current deadline)
-         --
-         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                        tp => Current_Time'Access);
-         pragma Assert (C_Ret = 0);
-         pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
-                        (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
-                           Next_Wakeup_Time.tv_nsec > Current_Time.tv_nsec));
-
-         --
-         --  Wait for next period:
-         --
-         C_Ret := time_h.clock_nanosleep (clock_id => time_h.CLOCK_MONOTONIC,
-                                          flags => time_h.TIMER_ABSTIME,
-                                          rqtp => Next_Wakeup_Time'Access,
-                                          rmtp => Remaining_Sleep_Time'Access);
-         pragma Assert (C_Ret = 0);
-
-         --
-         --  Check that we did not wake up too early:
-         --
-         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                        tp => Current_Time'Access);
-         pragma Assert (C_Ret = 0);
-         pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
-                        (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
-                           Current_Time.tv_nsec >= Next_Wakeup_Time.tv_nsec));
+         Printk ("Ada task1 (high prio): iteration %u" & ASCII.LF, C.unsigned (Cnt));
+         Busy_Delay (10000000);
       end loop;
-
-      pragma Warnings (off, "unreachable code");
-      return System.Null_Address;
-      pragma Warnings (on, "unreachable code");
-   end Service1_Thread_Func;
+   end Service1_Task;
 
    --
-   --  Child thread entry-point function for Service 2
+   --  Service task 2 implementation
    --
-   function Service2_Thread_Func (arg : System.Address) return System.Address
-   is
-      Cnt : C.int := 0;
-      Current_Time : aliased timespec_h.timespec;
-      Next_Wakeup_Time : aliased timespec_h.timespec;
-      Remaining_Sleep_Time : aliased timespec_h.timespec;
-      C_Ret : C.int;
+   task body Service2_Task is
+      Cnt : Natural := 0;
    begin
-      pragma Assert (arg = System.Null_Address);
-      C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                     tp => Current_Time'Access);
-      pragma Assert (C_Ret = 0);
-
-      Next_Wakeup_Time := Current_Time;
       loop
          Cnt := Cnt + 1;
-         Printk ("Ada thread2: 10 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
-                  C.unsigned (Cnt),
-                  C.unsigned_long_long (Current_Time.tv_sec),
-                  C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
-                  C.unsigned_long (Current_Time.tv_nsec mod Nsec_Per_Msec));
-
-         Next_Wakeup_Time := Calc_Next_Wakeup_Time (Next_Wakeup_Time,
-                                                      Service2_Period_Ms);
-
-         --
-         --  Check that we are not going to miss the next period:
-         --  (or that we have not missed the current deadline)
-         --
-         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                        tp => Current_Time'Access);
-         pragma Assert (C_Ret = 0);
-         pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
-                        (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
-                           Next_Wakeup_Time.tv_nsec > Current_Time.tv_nsec));
-
-         --
-         --  Wait for next period:
-         --
-         C_Ret := time_h.clock_nanosleep (clock_id => time_h.CLOCK_MONOTONIC,
-                                          flags => time_h.TIMER_ABSTIME,
-                                          rqtp => Next_Wakeup_Time'Access,
-                                          rmtp => Remaining_Sleep_Time'Access);
-         pragma Assert (C_Ret = 0);
-
-         --
-         --  Check that we did not wake up too early:
-         --
-         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                        tp => Current_Time'Access);
-         pragma Assert (C_Ret = 0);
-         pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
-                        (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
-                           Current_Time.tv_nsec >= Next_Wakeup_Time.tv_nsec));
+         Printk ("Ada task2 (medium prio): iteration %u" & ASCII.LF, C.unsigned (Cnt));
+         Busy_Delay (25000000);
       end loop;
-
-      pragma Warnings (off, "unreachable code");
-      return System.Null_Address;
-      pragma Warnings (on, "unreachable code");
-   end Service2_Thread_Func;
+   end Service2_Task;
 
    --
-   --  Child thread entry-point function for Service 3
+   --  Service task 3 implementation
    --
-   function Service3_Thread_Func (arg : System.Address) return System.Address
-   is
-      Cnt : C.int := 0;
-      Current_Time : aliased timespec_h.timespec;
-      Next_Wakeup_Time : aliased timespec_h.timespec;
-      Remaining_Sleep_Time : aliased timespec_h.timespec;
-      C_Ret : C.int;
+   task body Service3_Task is
+      Cnt : Natural := 0;
    begin
-      pragma Assert (arg = System.Null_Address);
-      C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                     tp => Current_Time'Access);
-      pragma Assert (C_Ret = 0);
-
-      Next_Wakeup_Time := Current_Time;
       loop
          Cnt := Cnt + 1;
-         Printk ("Ada thread3: 5 Hz, counter %u @ %llus, %lums, %luns" & ASCII.LF,
-                  C.unsigned (Cnt),
-                  C.unsigned_long_long (Current_Time.tv_sec),
-                  C.unsigned_long (Current_Time.tv_nsec / Nsec_Per_Msec),
-                  C.unsigned_long (Current_Time.tv_nsec mod Nsec_Per_Msec));
-
-         Next_Wakeup_Time := Calc_Next_Wakeup_Time (Next_Wakeup_Time,
-                                                    Service3_Period_Ms);
-
-         --
-         --  Check that we are not going to miss the next period:
-         --  (or that we have not missed the current deadline)
-         --
-         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                        tp => Current_Time'Access);
-         pragma Assert (C_Ret = 0);
-         pragma Assert (Next_Wakeup_Time.tv_sec > Current_Time.tv_sec or else
-                        (Next_Wakeup_Time.tv_sec = Current_Time.tv_sec and then
-                           Next_Wakeup_Time.tv_nsec > Current_Time.tv_nsec));
-
-         --
-         --  Wait for next period:
-         --
-         C_Ret := time_h.clock_nanosleep (clock_id => time_h.CLOCK_MONOTONIC,
-                                          flags => time_h.TIMER_ABSTIME,
-                                          rqtp => Next_Wakeup_Time'Access,
-                                          rmtp => Remaining_Sleep_Time'Access);
-         pragma Assert (C_Ret = 0);
-
-         --
-         --  Check that we did not wake up too early:
-         --
-         C_Ret := time_h.clock_gettime (clock_id => time_h.CLOCK_MONOTONIC,
-                                        tp => Current_Time'Access);
-         pragma Assert (C_Ret = 0);
-         pragma Assert (Current_Time.tv_sec > Next_Wakeup_Time.tv_sec  or else
-                        (Current_Time.tv_sec = Next_Wakeup_Time.tv_sec and then
-                           Current_Time.tv_nsec >= Next_Wakeup_Time.tv_nsec));
+         Printk ("Ada task3 (low prio): iteration %u" & ASCII.LF, C.unsigned (Cnt));
+         Busy_Delay (50000000);
       end loop;
-
-      pragma Warnings (off, "unreachable code");
-      return System.Null_Address;
-      pragma Warnings (on, "unreachable code");
-   end Service3_Thread_Func;
-
-   --
-   --  Compute the next wakeup time given the last wakeup time and the wanted
-   --  sleep time
-   --
-   function Calc_Next_Wakeup_Time (Time_Stamp : timespec_h.timespec;
-                                   Sleep_Time_Ms : C.long)
-      return timespec_h.timespec
-   is
-      Secs_Increase : constant C.long :=
-         (Time_Stamp.tv_nsec + (Sleep_Time_Ms * Nsec_Per_Msec)) / Nsec_Per_Sec;
-      Next_Time_Stamp : timespec_h.timespec;
-   begin
-      if Secs_Increase /= 0 then
-         Next_Time_Stamp.tv_sec := Time_Stamp.tv_sec + sys_utimespec_h.time_t (Secs_Increase);
-         Next_Time_Stamp.tv_nsec :=
-            (Time_Stamp.tv_nsec + (Sleep_Time_Ms * Nsec_Per_Msec)) mod Nsec_Per_Sec;
-      else
-         Next_Time_Stamp.tv_sec := Time_Stamp.tv_sec;
-         Next_Time_Stamp.tv_nsec := Time_Stamp.tv_nsec + (Sleep_Time_Ms * Nsec_Per_Msec);
-      end if;
-
-      return Next_Time_Stamp;
-   end Calc_Next_Wakeup_Time;
+   end Service3_Task;
 
    procedure Last_Chance_Handler (Msg : System.Address; Line : Integer) is
       procedure Privileged_Last_Chance_Handler (Msg : System.Address;
