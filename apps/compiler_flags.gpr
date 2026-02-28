@@ -5,7 +5,7 @@
 --
 abstract project Compiler_Flags is
 
-  type Board_Type is ("esp32c3_devkitm", "rpi_4b", "rpi_5", "frdm_kl25z");
+  type Board_Type is ("esp32c3_devkitm", "rpi_4b", "rpi_5", "frdm_kl25z", "fvp_baser_aemv8r");
 
    Board : Board_Type := External ("Board", "");
 
@@ -22,6 +22,8 @@ abstract project Compiler_Flags is
          CPU_Core := "arm_cortex_a76";
       when "frdm_kl25z" =>
          CPU_Core := "arm_cortex_m0plus";
+      when "fvp_baser_aemv8r" =>
+         CPU_Core := "arm_cortex_r52";
       when others =>
          null;
    end case;
