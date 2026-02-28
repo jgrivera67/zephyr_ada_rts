@@ -7,6 +7,7 @@ with Interfaces.C; use Interfaces.C;
 with sys_ustdint_h;
 
 package zephyr_arch_riscv_thread_h is
+   pragma Preelaborate;
 
    --  unsupported macro: RV_FP_TYPE uint32_t
    PMP_M_MODE_SLOTS : constant := 8;  --  /Users/jgrivera/my-projects/third-party/zephyrproject/zephyr/include/zephyr/arch/riscv/thread.h:66

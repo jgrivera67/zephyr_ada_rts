@@ -6,6 +6,7 @@ pragma Warnings (Off, "-gnatwu");
 with Interfaces.C; use Interfaces.C;
 
 package stddef_h is
+   pragma Preelaborate;
 
    --  unsupported macro: NULL ((void *)0)
    --  arg-macro: procedure offsetof (TYPE, MEMBER)

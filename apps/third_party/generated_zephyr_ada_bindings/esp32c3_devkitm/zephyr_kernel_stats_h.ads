@@ -8,6 +8,7 @@ with sys_ustdint_h;
 with Interfaces.C.Extensions;
 
 package zephyr_kernel_stats_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2021,2023, Intel Corporation
   -- *

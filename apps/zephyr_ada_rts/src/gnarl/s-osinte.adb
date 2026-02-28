@@ -33,13 +33,21 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C;
 with System.Zephyr.Priorities;
-with generated_zephyr_syscalls_kernel_h;
-with zephyr_sys_clock_h;
 
 package body System.OS_Interface is
 
-   package Zephyr_Kernel renames generated_zephyr_syscalls_kernel_h;
-   package Zephyr_Clock renames zephyr_sys_clock_h;
+   --  K_Timeout_T structure for Zephyr timeout values
+   type K_Timeout_T is record
+      Ticks : Interfaces.C.long;
+   end record
+   with Convention => C;
+
+   --  Shim functions for Zephyr kernel APIs
+   function Ada_K_Uptime_Ticks return Interfaces.C.long
+   with Import, Convention => C, External_Name => "ada_k_uptime_ticks";
+
+   function Ada_K_Sleep (Timeout : K_Timeout_T) return Interfaces.C.int
+   with Import, Convention => C, External_Name => "ada_k_sleep";
 
    function To_Thread_Entry_Point is new Ada.Unchecked_Conversion
      (Source => System.Address, Target => System.Zephyr.Threads.Thread_Entry_Point);
@@ -99,7 +107,7 @@ package body System.OS_Interface is
    function Clock return Time is
    begin
       --  Get current time in ticks since boot using Zephyr kernel API
-      return Time (Zephyr_Kernel.k_uptime_ticks);
+      return Time (Ada_K_Uptime_Ticks);
    end Clock;
 
    -----------------
@@ -109,7 +117,7 @@ package body System.OS_Interface is
    procedure Delay_Until (T : Time) is
       Now : constant Time := Clock;
       Delay_Ticks : Time;
-      Timeout : Zephyr_Clock.k_timeout_t;
+      Timeout : K_Timeout_T;
       Result : Interfaces.C.int;
       pragma Unreferenced (Result);
    begin
@@ -117,8 +125,8 @@ package body System.OS_Interface is
       if T > Now then
          Delay_Ticks := T - Now;
          --  Construct k_timeout_t with relative tick count
-         Timeout.ticks := Zephyr_Clock.k_ticks_t (Delay_Ticks);
-         Result := Zephyr_Kernel.k_sleep (Timeout);
+         Timeout.Ticks := Interfaces.C.long (Delay_Ticks);
+         Result := Ada_K_Sleep (Timeout);
       end if;
       --  If T <= Now, return immediately (delay already expired)
    end Delay_Until;

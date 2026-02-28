@@ -7,6 +7,7 @@ with Interfaces.C; use Interfaces.C;
 with machine_udefault_types_h;
 
 package sys_ustdint_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2004, 2005 by
   -- * Ralf Corsepius, Ulm/Germany. All rights reserved.

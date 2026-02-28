@@ -11,6 +11,7 @@ limited with zephyr_sys_mem_stats_h;
 with Interfaces.C.Extensions;
 
 package zephyr_sys_sys_heap_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2019 Intel Corporation
   -- *

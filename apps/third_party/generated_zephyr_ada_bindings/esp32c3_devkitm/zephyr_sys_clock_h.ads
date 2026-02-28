@@ -8,6 +8,7 @@ with sys_ustdint_h;
 with Interfaces.C.Extensions;
 
 package zephyr_sys_clock_h is
+   pragma Preelaborate;
 
    --  unsupported macro: K_TICKS_FOREVER ((k_ticks_t) -1)
    --  arg-macro: function K_TIMEOUT_EQ (a, b)

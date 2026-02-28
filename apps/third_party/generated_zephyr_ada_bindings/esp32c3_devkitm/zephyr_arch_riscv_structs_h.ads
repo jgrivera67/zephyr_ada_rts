@@ -6,6 +6,7 @@ pragma Warnings (Off, "-gnatwu");
 with Interfaces.C; use Interfaces.C;
 
 package zephyr_arch_riscv_structs_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) BayLibre SAS
   -- *

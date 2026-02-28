@@ -7,6 +7,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings;
 
 package zephyr_kernel_thread_stack_h is
+   pragma Preelaborate;
 
    --  arg-macro: function Z_STACK_PTR_ALIGN (ptr)
    --    return (uintptr_t)z_stack_ptr_align((char *)(ptr));

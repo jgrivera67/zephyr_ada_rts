@@ -10,6 +10,7 @@ with System;
 with stddef_h;
 
 package zephyr_sys_sflist_h is
+   pragma Preelaborate;
 
    --  arg-macro: procedure SYS_SFLIST_FOR_EACH_NODE (__sl, __sn)
    --    Z_GENLIST_FOR_EACH_NODE(sflist, __sl, __sn)

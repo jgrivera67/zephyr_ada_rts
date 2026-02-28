@@ -712,10 +712,11 @@ package zephyr_fs_fs_h is
   -- * @retval <0 an other negative errno code on error.
   --  
 
-   function fs_statvfs (path : Interfaces.C.Strings.chars_ptr; stat : access fs_statvfs) return int  -- /Users/jgrivera/my-projects/third-party/zephyrproject/zephyr/include/zephyr/fs/fs.h:627
-   with Import => True, 
-        Convention => C, 
+   function fs_statvfs_func (path : Interfaces.C.Strings.chars_ptr; stat : access fs_statvfs) return int  -- /Users/jgrivera/my-projects/third-party/zephyrproject/zephyr/include/zephyr/fs/fs.h:627
+   with Import => True,
+        Convention => C,
         External_Name => "fs_statvfs";
+   --  NOTE: Renamed from fs_statvfs to fs_statvfs_func to avoid name collision with the fs_statvfs type
 
   --*
   -- * @brief Create fresh file system

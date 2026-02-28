@@ -30,25 +30,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This is the Zephyr-specific implementation using native kernel APIs
+--  This is the Zephyr-specific implementation using C shim layer
+--
+--  Zephyr defines many kernel functions as static inline in generated
+--  syscall headers. These cannot be directly imported by Ada as external
+--  symbols. The zephyr_ada_shim.c/h files provide non-inline wrapper
+--  functions (ada_k_*) that Ada can call.
 
 with Interfaces.C; use Interfaces.C;
 with Ada.Unchecked_Conversion;
 
 package body System.Zephyr.Threads is
 
-   --  Platform-independent Zephyr API declarations
-   --  These match Zephyr's C API but are defined here to avoid depending
-   --  on platform-specific generated bindings
-
-   --  Zephyr timeout type (platform-independent structure)
+   --  Zephyr timeout type
    type K_Timeout_T is record
       Ticks : Interfaces.C.long;
    end record
    with Convention => C;
 
-   --  Zephyr thread creation function (platform-independent signature)
-   function K_Thread_Create
+   --  Import non-inline wrapper functions from zephyr_ada_shim.c
+   --  These wrap Zephyr's inline syscall functions
+
+   function Ada_K_Thread_Create
      (New_Thread : System.Address;
       Stack      : System.Address;
       Stack_Size : Interfaces.C.size_t;
@@ -59,42 +62,42 @@ package body System.Zephyr.Threads is
       Prio       : Interfaces.C.int;
       Options    : Interfaces.C.unsigned;
       C_Delay    : K_Timeout_T) return System.Address
-   with Import, Convention => C, External_Name => "k_thread_create";
+   with Import, Convention => C, External_Name => "ada_k_thread_create";
 
-   function K_Sched_Current_Thread_Query return System.Address
-   with Import, Convention => C, External_Name => "k_sched_current_thread_query";
+   function Ada_K_Sched_Current_Thread_Query return System.Address
+   with Import, Convention => C, External_Name => "ada_k_sched_current_thread_query";
 
-   procedure K_Thread_Priority_Set
+   procedure Ada_K_Thread_Priority_Set
      (Thread : System.Address;
       Prio   : Interfaces.C.int)
-   with Import, Convention => C, External_Name => "k_thread_priority_set";
+   with Import, Convention => C, External_Name => "ada_k_thread_priority_set";
 
-   function K_Thread_Priority_Get
+   function Ada_K_Thread_Priority_Get
      (Thread : System.Address) return Interfaces.C.int
-   with Import, Convention => C, External_Name => "k_thread_priority_get";
+   with Import, Convention => C, External_Name => "ada_k_thread_priority_get";
 
-   procedure K_Thread_Suspend
+   procedure Ada_K_Thread_Suspend
      (Thread : System.Address)
-   with Import, Convention => C, External_Name => "k_thread_suspend";
+   with Import, Convention => C, External_Name => "ada_k_thread_suspend";
 
-   procedure K_Thread_Resume
+   procedure Ada_K_Thread_Resume
      (Thread : System.Address)
-   with Import, Convention => C, External_Name => "k_thread_resume";
+   with Import, Convention => C, External_Name => "ada_k_thread_resume";
 
-   procedure K_Yield
-   with Import, Convention => C, External_Name => "k_yield";
+   procedure Ada_K_Yield
+   with Import, Convention => C, External_Name => "ada_k_yield";
 
-   procedure K_Thread_Custom_Data_Set
+   procedure Ada_K_Thread_Custom_Data_Set
      (Value : System.Address)
-   with Import, Convention => C, External_Name => "k_thread_custom_data_set";
+   with Import, Convention => C, External_Name => "ada_k_thread_custom_data_set";
 
-   function K_Thread_Custom_Data_Get return System.Address
-   with Import, Convention => C, External_Name => "k_thread_custom_data_get";
+   function Ada_K_Thread_Custom_Data_Get return System.Address
+   with Import, Convention => C, External_Name => "ada_k_thread_custom_data_get";
 
+   --  Type conversion for Thread_Entry_Point
    function To_Address is new Ada.Unchecked_Conversion
      (Source => Thread_Entry_Point,
       Target => System.Address);
-   --  Convert Thread_Entry_Point to System.Address for C interop
 
    -------------------
    -- Thread_Create --
@@ -112,14 +115,16 @@ package body System.Zephyr.Threads is
    is
       Result : System.Address;
       pragma Unreferenced (Result);
+
+      C_Delay : constant K_Timeout_T := (Ticks => Interfaces.C.long (Delay_Ms));
    begin
-      --  Call Zephyr k_thread_create with native kernel API (platform-independent)
+      --  Call Zephyr k_thread_create via C shim wrapper
       --  k_thread_create(k_thread *new_thread, k_thread_stack_t *stack,
       --                  size_t stack_size, k_thread_entry_t entry,
       --                  void *p1, void *p2, void *p3,
       --                  int prio, uint32_t options, k_timeout_t delay)
 
-      Result := K_Thread_Create
+      Result := Ada_K_Thread_Create
         (New_Thread => System.Address (New_Thread),
          Stack      => Stack_Addr,
          Stack_Size => Interfaces.C.size_t (Stack_Size),
@@ -129,7 +134,7 @@ package body System.Zephyr.Threads is
          P3         => System.Null_Address,
          Prio       => Interfaces.C.int (Priority),
          Options    => Options,
-         C_Delay    => (Ticks => Interfaces.C.long (Delay_Ms)));
+         C_Delay    => C_Delay);
 
       --  Note: In Ravenscar, tasks should never terminate, so we don't
       --  need to handle thread completion
@@ -141,8 +146,8 @@ package body System.Zephyr.Threads is
 
    function Thread_Self return Thread_Id is
    begin
-      --  k_sched_current_thread_query() returns the current thread's k_tid_t (address)
-      return Thread_Id (K_Sched_Current_Thread_Query);
+      --  ada_k_sched_current_thread_query() returns the current thread's k_tid_t
+      return Thread_Id (Ada_K_Sched_Current_Thread_Query);
    end Thread_Self;
 
    ------------------
@@ -151,8 +156,8 @@ package body System.Zephyr.Threads is
 
    procedure Set_Priority (Thread : Thread_Id; Priority : Integer) is
    begin
-      --  k_thread_priority_set(k_tid_t thread, int prio)
-      K_Thread_Priority_Set
+      --  ada_k_thread_priority_set(k_tid_t thread, int prio)
+      Ada_K_Thread_Priority_Set
         (Thread => System.Address (Thread),
          Prio   => Interfaces.C.int (Priority));
    end Set_Priority;
@@ -163,8 +168,8 @@ package body System.Zephyr.Threads is
 
    function Get_Priority (Thread : Thread_Id) return Integer is
    begin
-      --  k_thread_priority_get(k_tid_t thread)
-      return Integer (K_Thread_Priority_Get (System.Address (Thread)));
+      --  ada_k_thread_priority_get(k_tid_t thread)
+      return Integer (Ada_K_Thread_Priority_Get (System.Address (Thread)));
    end Get_Priority;
 
    -----------
@@ -173,8 +178,8 @@ package body System.Zephyr.Threads is
 
    procedure Sleep (Thread : Thread_Id) is
    begin
-      --  k_thread_suspend(k_tid_t thread)
-      K_Thread_Suspend (System.Address (Thread));
+      --  ada_k_thread_suspend(k_tid_t thread)
+      Ada_K_Thread_Suspend (System.Address (Thread));
    end Sleep;
 
    ------------
@@ -183,8 +188,8 @@ package body System.Zephyr.Threads is
 
    procedure Wakeup (Thread : Thread_Id) is
    begin
-      --  k_thread_resume(k_tid_t thread)
-      K_Thread_Resume (System.Address (Thread));
+      --  ada_k_thread_resume(k_tid_t thread)
+      Ada_K_Thread_Resume (System.Address (Thread));
    end Wakeup;
 
    -----------
@@ -193,8 +198,8 @@ package body System.Zephyr.Threads is
 
    procedure Yield is
    begin
-      --  k_yield() - yield the CPU to other threads
-      K_Yield;
+      --  ada_k_yield() - yield the CPU to other threads
+      Ada_K_Yield;
    end Yield;
 
    --------------
@@ -204,8 +209,8 @@ package body System.Zephyr.Threads is
    procedure Set_ATCB (ATCB_Addr : System.Address) is
    begin
       --  Store ATCB pointer in current thread's custom data
-      --  k_thread_custom_data_set(void *value)
-      K_Thread_Custom_Data_Set (Value => ATCB_Addr);
+      --  ada_k_thread_custom_data_set(void *value)
+      Ada_K_Thread_Custom_Data_Set (Value => ATCB_Addr);
    end Set_ATCB;
 
    --------------
@@ -215,8 +220,8 @@ package body System.Zephyr.Threads is
    function Get_ATCB return System.Address is
    begin
       --  Retrieve ATCB pointer from current thread's custom data
-      --  void *k_thread_custom_data_get(void)
-      return K_Thread_Custom_Data_Get;
+      --  void *ada_k_thread_custom_data_get(void)
+      return Ada_K_Thread_Custom_Data_Get;
    end Get_ATCB;
 
 end System.Zephyr.Threads;

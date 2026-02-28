@@ -13,6 +13,7 @@ with zephyr_timing_types_h;
 limited with zephyr_arch_riscv_exception_h;
 
 package zephyr_arch_arch_interface_h is
+   pragma Preelaborate;
 
   -- * Copyright (c) 2019 Intel Corporation.
   -- *

@@ -9,6 +9,7 @@ with System;
 with sys_ustdint_h;
 
 package zephyr_sys_rb_h is
+   pragma Preelaborate;
 
    --  unsupported macro: alloca __builtin_alloca
    --  arg-macro: function Z_TBITS (t)
