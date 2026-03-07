@@ -1,0 +1,280 @@
+name: Ada Module CI
+
+# Runs on every push and pull request that touches Ada-related files.
+# Uses Zephyr's Twister test framework for build and simulation testing.
+
+on:
+  push:
+    branches: [main, ada_tasking]
+    paths:
+      - 'modules/lang/ada/**'
+      - 'apps/zephyr_ada_rts/**'
+      - 'apps/zephyr_ada_hello/**'
+      - 'apps/scripts/**'
+      - '.github/workflows/ada_ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'modules/lang/ada/**'
+      - 'apps/zephyr_ada_rts/**'
+      - 'apps/zephyr_ada_hello/**'
+      - 'apps/scripts/**'
+
+env:
+  ZEPHYR_VERSION: v4.0.0
+  ALIRE_VERSION: 2.0.2
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: Lint and static checks (fast, no hardware needed)
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Lint & Static Checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check kconfig_to_ada.py syntax
+        run: python3 -m py_compile apps/scripts/kconfig_to_ada.py
+
+      - name: Check dt_to_ada.py syntax
+        run: python3 -m py_compile apps/scripts/dt_to_ada.py
+
+      - name: Run kconfig_to_ada.py unit test
+        run: |
+          python3 -c "
+          import sys
+          sys.path.insert(0, 'apps/scripts')
+          from kconfig_to_ada import ConfigEntry
+          # Boolean
+          e = ConfigEntry('CONFIG_FOO_BAR', '1', is_bool=True)
+          assert 'Foo_Bar : constant Boolean := True' in e.to_ada_constant()
+          # Hex
+          e = ConfigEntry('CONFIG_BASE_ADDR', '0x40000000')
+          assert '16#40000000#' in e.to_ada_constant()
+          # Integer
+          e = ConfigEntry('CONFIG_STACK_SIZE', '4096')
+          assert '4096' in e.to_ada_constant()
+          print('kconfig_to_ada: all checks passed')
+          "
+
+      - name: Check RST documentation
+        run: |
+          pip install docutils
+          for f in doc/zephyr_ada/*.rst; do
+            rst2pseudoxml.py "$f" > /dev/null && echo "OK: $f"
+          done
+
+      - name: Check module.yml exists
+        run: test -f modules/lang/ada/zephyr/module.yml
+
+      - name: Verify sample.yaml for hello_world
+        run: |
+          pip install PyYAML
+          python3 -c "
+          import yaml
+          with open('modules/lang/ada/samples/hello_world/sample.yaml') as f:
+              data = yaml.safe_load(f)
+          assert 'sample' in data
+          assert 'tests' in data
+          print('sample.yaml valid')
+          "
+
+  # ---------------------------------------------------------------------------
+  # Job 2: Build test — QEMU targets (no real hardware)
+  # ---------------------------------------------------------------------------
+  build-qemu:
+    name: Build & Test (QEMU)
+    runs-on: ubuntu-24.04
+    needs: lint
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - qemu_cortex_m3
+          - qemu_riscv32
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Zephyr dependencies
+        run: |
+          pip install west
+          pip install -r https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/refs/tags/${{ env.ZEPHYR_VERSION }}/scripts/requirements-base.txt
+
+      - name: Install Alire
+        run: |
+          wget -q https://github.com/alire-project/alire/releases/download/v${{ env.ALIRE_VERSION }}/alr-${{ env.ALIRE_VERSION }}-bin-x86_64-linux.zip
+          unzip -q alr-*.zip -d alr_install
+          echo "$PWD/alr_install/bin" >> $GITHUB_PATH
+
+      - name: Set up Zephyr workspace
+        run: |
+          west init -l .
+          west update --narrow -o=--depth=1
+
+      - name: Install Zephyr SDK
+        run: |
+          west sdk install --toolchains \
+            arm-zephyr-eabi \
+            riscv64-zephyr-elf
+
+      - name: Build hello_world sample (${{ matrix.platform }})
+        run: |
+          west twister \
+            --platform ${{ matrix.platform }} \
+            --testsuite-root modules/lang/ada/samples/hello_world \
+            --inline-logs \
+            -v
+
+      - name: Run Ada test suite (${{ matrix.platform }})
+        run: |
+          west twister \
+            --platform ${{ matrix.platform }} \
+            --testsuite-root modules/lang/ada/tests/ada_tasking \
+            --inline-logs \
+            -v
+
+      - name: Upload Twister results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: twister-results-${{ matrix.platform }}
+          path: twister-out/
+
+  # ---------------------------------------------------------------------------
+  # Job 3: Build-only for real boards (no flashing in CI)
+  # ---------------------------------------------------------------------------
+  build-boards:
+    name: Build (Real Boards)
+    runs-on: ubuntu-24.04
+    needs: lint
+
+    strategy:
+      fail-fast: false
+      matrix:
+        board:
+          - frdm_kl25z
+          - hifive1_revb
+          - esp32c3_devkitm
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Zephyr dependencies
+        run: |
+          pip install west
+          pip install -r https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/refs/tags/${{ env.ZEPHYR_VERSION }}/scripts/requirements-base.txt
+
+      - name: Install Alire
+        run: |
+          wget -q https://github.com/alire-project/alire/releases/download/v${{ env.ALIRE_VERSION }}/alr-${{ env.ALIRE_VERSION }}-bin-x86_64-linux.zip
+          unzip -q alr-*.zip -d alr_install
+          echo "$PWD/alr_install/bin" >> $GITHUB_PATH
+
+      - name: Set up Zephyr workspace
+        run: |
+          west init -l .
+          west update --narrow -o=--depth=1
+
+      - name: Install Zephyr SDK
+        run: |
+          west sdk install --toolchains \
+            arm-zephyr-eabi \
+            riscv64-zephyr-elf \
+            xtensa-espressif_esp32c3_zephyr-elf
+
+      - name: Build hello_world (${{ matrix.board }}) — build only
+        run: |
+          west twister \
+            --platform ${{ matrix.board }} \
+            --testsuite-root modules/lang/ada/samples/hello_world \
+            --build-only \
+            --inline-logs \
+            -v
+
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.board }}
+          path: twister-out/
+
+  # ---------------------------------------------------------------------------
+  # Job 4: Code generation script tests
+  # ---------------------------------------------------------------------------
+  script-tests:
+    name: Generator Script Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Test kconfig_to_ada.py end-to-end
+        run: |
+          # Create a minimal autoconf.h for testing
+          cat > /tmp/test_autoconf.h << 'EOF'
+          #define CONFIG_ADA 1
+          #define CONFIG_ADA_MAX_TASKS 8
+          #define CONFIG_ADA_MAIN_STACK_SIZE 4096
+          #define CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC 48000000
+          #define CONFIG_SRAM_BASE_ADDRESS 0x20000000
+          #define CONFIG_MAIN_STACK_SIZE 1024
+          EOF
+          python3 apps/scripts/kconfig_to_ada.py \
+            --input /tmp/test_autoconf.h \
+            --output /tmp/test_zephyr_config.ads
+          # Validate output
+          grep -q "Ada_Max_Tasks : constant := 8" /tmp/test_zephyr_config.ads
+          grep -q "Sram_Base_Address : constant := 16#20000000#" /tmp/test_zephyr_config.ads
+          grep -q "Ada : constant Boolean := True" /tmp/test_zephyr_config.ads
+          echo "kconfig_to_ada.py end-to-end: PASS"
+
+      - name: Test dt_to_ada.py end-to-end
+        run: |
+          # Create a minimal DTS for testing
+          cat > /tmp/test.dts << 'EOF'
+          /dts-v1/;
+          / {
+            #address-cells = <0x1>;
+            #size-cells = <0x1>;
+            soc {
+              uart0: uart@40000000 {
+                compatible = "test,uart";
+                reg = <0x40000000 0x1000>;
+                interrupts = <12 0>;
+                status = "okay";
+              };
+              i2c0: i2c@41000000 {
+                compatible = "test,i2c";
+                reg = <0x41000000 0x100>;
+                interrupts = <5 1>;
+                clock-frequency = <100000>;
+                status = "okay";
+              };
+            };
+          };
+          EOF
+          python3 apps/scripts/dt_to_ada.py \
+            --input /tmp/test.dts \
+            --output /tmp/test_device_tree.ads
+          grep -q "package UART0 is" /tmp/test_device_tree.ads
+          grep -q "Base_Address : constant := 16#40000000#" /tmp/test_device_tree.ads
+          grep -q "Interrupt    : constant := 12" /tmp/test_device_tree.ads
+          grep -q "package I2C0 is" /tmp/test_device_tree.ads
+          grep -q "Clock_Freq   : constant := 100000" /tmp/test_device_tree.ads
+          echo "dt_to_ada.py end-to-end: PASS"

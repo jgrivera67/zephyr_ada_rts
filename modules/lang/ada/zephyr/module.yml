@@ -1,0 +1,4 @@
+name: zephyr-lang-ada
+build:
+  cmake: zephyr
+  kconfig: zephyr/Kconfig.ada

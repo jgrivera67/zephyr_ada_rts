@@ -1,0 +1,67 @@
+common:
+  tags:
+    - ada
+    - ada_tasking
+  filter: CONFIG_ADA
+  platform_allow:
+    - frdm_kl25z
+    - hifive1_revb
+    - qemu_cortex_m3
+    - qemu_riscv32
+  integration_platforms:
+    - qemu_cortex_m3
+
+tests:
+  # Test 1: Ada tasking — verify tasks run and produce output
+  ada.tasking.basic:
+    harness: console
+    harness_config:
+      type: multi_line
+      regex:
+        - "PASS: ada_task_created"
+        - "PASS: ada_delay_works"
+        - "PASS: ada_task_priority"
+    extra_configs:
+      - CONFIG_ADA_MAX_TASKS=6
+      - CONFIG_ADA_TASK_STACK_SIZE=2048
+
+  # Test 2: Protected objects — mutual exclusion
+  ada.tasking.protected_objects:
+    harness: console
+    harness_config:
+      type: multi_line
+      regex:
+        - "PASS: protected_increment"
+        - "PASS: no_data_race"
+    extra_configs:
+      - CONFIG_ADA_MAX_TASKS=4
+
+  # Test 3: Rendezvous — entry call synchronization
+  ada.tasking.rendezvous:
+    harness: console
+    harness_config:
+      type: multi_line
+      regex:
+        - "PASS: rendezvous_complete"
+        - "PASS: entry_barrier"
+    extra_configs:
+      - CONFIG_ADA_MAX_TASKS=4
+
+  # Test 4: Kconfig Ada package — verify generated constants
+  ada.kconfig.package:
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "PASS: kconfig_constants"
+
+  # Test 5: Device tree Ada package — verify base addresses present
+  ada.device_tree.package:
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "PASS: dt_base_address"
+    platform_allow:
+      - frdm_kl25z
+      - hifive1_revb

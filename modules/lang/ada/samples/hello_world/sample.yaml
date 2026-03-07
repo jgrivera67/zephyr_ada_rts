@@ -1,0 +1,30 @@
+sample:
+  name: Ada Hello World
+  description: >
+    Minimal Ada application running three concurrent tasks on Zephyr.
+    Demonstrates Ada-first concurrency (no Zephyr C API in Ada code),
+    Ada delay statements mapped to k_msleep, and Kconfig access via
+    the generated Zephyr.Config Ada package.
+
+  tags:
+    - ada
+    - tasking
+    - hello_world
+
+tests:
+  sample.ada.hello_world:
+    build_only: false
+    filter: CONFIG_ADA
+    platform_allow:
+      - frdm_kl25z
+      - hifive1_revb
+      - esp32c3_devkitm
+      - qemu_cortex_m3
+    integration_platforms:
+      - qemu_cortex_m3
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "Ada Hi task running"
+        - "Ada Mid task running"
