@@ -44,7 +44,7 @@ package body Zephyr_Ada_Hello is
       pragma Priority (System.Priority'Last - 3);
    end Service3_Task;
 
-   procedure Hello_Ada is
+   procedure Ada_Main is
    begin
       Printk ("Hello Ada (built on " &
               GNAT.Source_Info.Compilation_Date & " at " &
@@ -52,12 +52,12 @@ package body Zephyr_Ada_Hello is
 
       Printk ("Starting 3 Ada concurrent tasks..." & ASCII.LF);
 
-      --  Tasks are automatically activated when Hello_Ada is called
+      --  Tasks are automatically activated when Ada_Main is called
       --  Just loop here to keep the environment task alive
       loop
          Busy_Delay (50000000);  -- Busy wait
       end loop;
-   end Hello_Ada;
+   end Ada_Main;
 
    procedure Printk (Fmt : String) is
       procedure C_Printk (Fmt_Addr : System.Address)

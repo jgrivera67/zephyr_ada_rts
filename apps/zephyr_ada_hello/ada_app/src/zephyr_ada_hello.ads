@@ -8,10 +8,10 @@ with System;
 
 package Zephyr_Ada_Hello is
 
-   procedure Hello_Ada with
+   procedure Ada_Main with
       Export,
       Convention => C,
-      External_Name => "hello_ada";
+      External_Name => "ada_main";
 
 private
 

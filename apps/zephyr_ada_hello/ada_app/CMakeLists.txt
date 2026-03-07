@@ -1,8 +1,49 @@
 # SPDX-License-Identifier: Apache-2.0
 
 include(ExternalProject)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 set(libname libada_app )
+
+# ---------------------------------------------------------------------------
+# Kconfig-to-Ada: Generate Zephyr.Config Ada package from autoconf.h
+# This allows Ada code to access Kconfig parameters as type-safe Ada constants
+# without using C preprocessor #ifdef directives.
+# ---------------------------------------------------------------------------
+set(AUTOCONF_H "${CMAKE_BINARY_DIR}/zephyr/include/generated/zephyr/autoconf.h")
+set(KCONFIG_ADA_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/../../scripts/kconfig_to_ada.py")
+set(KCONFIG_ADA_FILE   "${CMAKE_CURRENT_SOURCE_DIR}/config/zephyr_config.ads")
+
+add_custom_command(
+  OUTPUT  ${KCONFIG_ADA_FILE}
+  COMMAND ${Python3_EXECUTABLE} ${KCONFIG_ADA_SCRIPT}
+          --input  ${AUTOCONF_H}
+          --output ${KCONFIG_ADA_FILE}
+  DEPENDS ${AUTOCONF_H} ${KCONFIG_ADA_SCRIPT}
+  COMMENT "Generating Zephyr.Config Ada package from Kconfig"
+)
+
+add_custom_target(ada_kconfig_gen DEPENDS ${KCONFIG_ADA_FILE})
+
+# ---------------------------------------------------------------------------
+# Device Tree to Ada: Generate Zephyr.Device_Tree package from compiled DTS
+# Provides type-safe access to hardware base addresses and IRQ numbers.
+# ---------------------------------------------------------------------------
+set(DTS_FILE          "${CMAKE_BINARY_DIR}/zephyr/zephyr.dts")
+set(DT_ADA_SCRIPT     "${CMAKE_CURRENT_SOURCE_DIR}/../../scripts/dt_to_ada.py")
+set(DT_ADA_FILE       "${CMAKE_CURRENT_SOURCE_DIR}/config/zephyr-device_tree.ads")
+
+add_custom_command(
+  OUTPUT  ${DT_ADA_FILE}
+  COMMAND ${Python3_EXECUTABLE} ${DT_ADA_SCRIPT}
+          --input  ${DTS_FILE}
+          --output ${DT_ADA_FILE}
+  DEPENDS ${DTS_FILE} ${DT_ADA_SCRIPT}
+  COMMENT "Generating Zephyr.Device_Tree Ada package from DTS"
+)
+
+add_custom_target(ada_dt_gen DEPENDS ${DT_ADA_FILE})
+# ---------------------------------------------------------------------------
 
 # Check for custom Ada toolchain path
 # Users can specify ADA_TOOLCHAIN_PATH to use their own GNAT cross-compiler
@@ -66,6 +107,7 @@ ExternalProject_Add(
   BUILD_COMMAND bash -c "${BUILD_CMD}"
   INSTALL_COMMAND ""      # This particular build system has no install command
   BUILD_BYPRODUCTS ${CMAKE_CURRENT_SOURCE_DIR}/lib/${BOARD}/${libname}.a ${CMAKE_CURRENT_SOURCE_DIR}/../../zephyr_ada_rts/lib/${BOARD}/libgnat.a
+  DEPENDS ada_kconfig_gen ada_dt_gen  # Ensure Ada packages generated before build
   )
 
 # Create a wrapper CMake library that our app can link with
@@ -83,3 +125,25 @@ set_target_properties(${libname} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAK
 
 add_library(ada_runtime STATIC IMPORTED GLOBAL)
 set_target_properties(ada_runtime PROPERTIES IMPORTED_LOCATION            ${CMAKE_CURRENT_SOURCE_DIR}/../../zephyr_ada_rts/lib/${BOARD}/libgnat.a)
+
+# ---------------------------------------------------------------------------
+# Auto-generate C entry shim: calls ada_appinit() (GNAT elaboration) then
+# ada_main() (Ada main subprogram).  The module-provided
+# ada_alire_application() generates this same shim automatically; here we
+# do it explicitly since this app pre-dates the module.
+# ---------------------------------------------------------------------------
+set(_ada_shim_c "${CMAKE_CURRENT_BINARY_DIR}/ada_entry_shim.c")
+file(WRITE ${_ada_shim_c}
+  "/* Auto-generated Ada entry shim                                         */\n"
+  "/* Convention: Ada main subprogram exported as \"ada_main\"                */\n"
+  "extern void ada_appinit(void);\n"
+  "extern void ada_main(void);\n"
+  "\n"
+  "int main(void)\n"
+  "{\n"
+  "    ada_appinit(); /* GNAT elaboration: packages, tasks, ISRs */\n"
+  "    ada_main();    /* Ada main subprogram                     */\n"
+  "    return 0;\n"
+  "}\n"
+)
+target_sources(app PRIVATE ${_ada_shim_c})
