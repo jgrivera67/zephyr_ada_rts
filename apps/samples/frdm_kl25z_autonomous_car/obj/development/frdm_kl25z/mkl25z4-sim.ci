@@ -1,0 +1,103 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads"
+node: { title: "mkl25z4__sim__sopt1_osc32ksel_fieldRP" label: "sopt1_osc32ksel_fieldRP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sopt2_clkoutsel_fieldH" label: "sopt2_clkoutsel_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+node: { title: "__aeabi_idivmod" label: "aeabi_idivmod\n<built-in>" shape : ellipse }
+edge: { sourcename: "mkl25z4__sim__sopt2_clkoutsel_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sopt2_clkoutsel_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sopt2_clkoutsel_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sopt2_clkoutsel_fieldRP" label: "sopt2_clkoutsel_fieldRP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sopt2_tpmsrc_fieldH" label: "sopt2_tpmsrc_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sopt2_tpmsrc_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sopt2_tpmsrc_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sopt2_uart0src_fieldH" label: "sopt2_uart0src_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sopt2_uart0src_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sopt2_uart0src_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sopt7_adc0trgsel_fieldH" label: "sopt7_adc0trgsel_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sopt7_adc0trgsel_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sopt7_adc0trgsel_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sopt7_adc0trgsel_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sopt7_adc0trgsel_fieldRP" label: "sopt7_adc0trgsel_fieldRP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__clkdiv1_outdiv4_fieldH" label: "clkdiv1_outdiv4_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__clkdiv1_outdiv4_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__clkdiv1_outdiv4_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__clkdiv1_outdiv1_fieldH" label: "clkdiv1_outdiv1_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__clkdiv1_outdiv1_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__clkdiv1_outdiv1_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__fcfg1_pfsize_fieldH" label: "fcfg1_pfsize_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__fcfg1_pfsize_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__fcfg1_pfsize_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__fcfg1_pfsize_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__fcfg1_pfsize_fieldRP" label: "fcfg1_pfsize_fieldRP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__copc_copt_fieldH" label: "copc_copt_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__copc_copt_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__copc_copt_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sim_sopt1_registerIP" label: "sim_sopt1_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_sopt1cfg_registerIP" label: "sim_sopt1cfg_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_sopt2_registerIP" label: "sim_sopt2_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_sopt4_registerIP" label: "sim_sopt4_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_sopt5_registerIP" label: "sim_sopt5_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_sopt7_registerIP" label: "sim_sopt7_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sdid_pinid_fieldH" label: "sdid_pinid_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sdid_pinid_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sdid_pinid_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sdid_pinid_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sdid_pinid_fieldRP" label: "sdid_pinid_fieldRP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sdid_sramsize_fieldH" label: "sdid_sramsize_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sdid_sramsize_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sdid_sramsize_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sdid_seriesid_fieldRP" label: "sdid_seriesid_fieldRP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sdid_subfamid_fieldH" label: "sdid_subfamid_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sdid_subfamid_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sdid_subfamid_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sdid_subfamid_fieldRP" label: "sdid_subfamid_fieldRP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sdid_famid_fieldH" label: "sdid_famid_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sdid_famid_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sdid_famid_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__sim__sdid_famid_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__sim__sim_sdid_registerIP" label: "sim_sdid_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__Tscgc4_i2c_field_arrayBIP" label: "Tscgc4_i2c_field_arrayBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc4_i2c_fieldEQ" label: "scgc4_i2c_fieldEQ\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc4_i2c_fieldIP" label: "scgc4_i2c_fieldIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__Tscgc4_uart_field_arrayBIP" label: "Tscgc4_uart_field_arrayBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc4_uart_fieldEQ" label: "scgc4_uart_fieldEQ\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc4_uart_fieldIP" label: "scgc4_uart_fieldIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__Tscgc4_spi_field_arrayBIP" label: "Tscgc4_spi_field_arrayBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc4_spi_fieldEQ" label: "scgc4_spi_fieldEQ\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc4_spi_fieldIP" label: "scgc4_spi_fieldIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_scgc4_registerEQ" label: "sim_scgc4_registerEQ\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "__gnat_last_chance_handler" label: "gnat_last_chance_handler\n<built-in>" shape : ellipse }
+edge: { sourcename: "mkl25z4__sim__sim_scgc4_registerEQ" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:936:9" }
+node: { title: "mkl25z4__sim__sim_scgc4_registerIP" label: "sim_scgc4_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_scgc5_registerIP" label: "sim_scgc5_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__Tscgc6_tpm_field_arrayBIP" label: "Tscgc6_tpm_field_arrayBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc6_tpm_fieldEQ" label: "scgc6_tpm_fieldEQ\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__scgc6_tpm_fieldIP" label: "scgc6_tpm_fieldIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_scgc6_registerEQ" label: "sim_scgc6_registerEQ\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sim_scgc6_registerEQ" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1210:9" }
+node: { title: "mkl25z4__sim__sim_scgc6_registerIP" label: "sim_scgc6_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_scgc7_registerIP" label: "sim_scgc7_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_clkdiv1_registerIP" label: "sim_clkdiv1_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_fcfg1_registerIP" label: "sim_fcfg1_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_fcfg2_registerIP" label: "sim_fcfg2_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_uidmh_registerIP" label: "sim_uidmh_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_copc_registerIP" label: "sim_copc_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_srvcop_registerIP" label: "sim_srvcop_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__sim__sim_peripheralEQ" label: "sim_peripheralEQ\n<built-in>\n24 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralEQ" targetname: "mkl25z4__sim__sim_scgc4_registerEQ" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1585:9" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralEQ" targetname: "mkl25z4__sim__sim_scgc6_registerEQ" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1585:9" }
+node: { title: "mkl25z4__sim__sim_peripheralIP" label: "sim_peripheralIP\n<built-in>\n16 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_sopt1_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1587:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_sopt1cfg_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1589:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_sopt2_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1591:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_sopt4_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1593:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_sopt5_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1595:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_sopt7_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1597:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_scgc4_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1601:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_scgc5_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1603:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_scgc6_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1605:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_scgc7_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1607:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_clkdiv1_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1609:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_fcfg1_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1611:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_copc_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1621:7" }
+edge: { sourcename: "mkl25z4__sim__sim_peripheralIP" targetname: "mkl25z4__sim__sim_srvcop_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-sim.ads:1623:7" }
+}

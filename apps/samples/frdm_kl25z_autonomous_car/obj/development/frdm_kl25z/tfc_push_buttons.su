@@ -1,0 +1,5 @@
+<built-in>:Tpush_buttons_pressed_typeBIP	8	static
+<built-in>:Tpins_array_typeBIP	8	static
+<built-in>:push_buttons_const_typeIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_push_buttons.adb:68:4:Initialize	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_push_buttons.adb:82:4:Read_Push_Buttons	24	static

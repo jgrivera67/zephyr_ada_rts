@@ -1,0 +1,6 @@
+<built-in>:pit_mcr_registerIP	8	static
+<built-in>:tctrl_registerIP	8	static
+<built-in>:tflg_registerIP	8	static
+<built-in>:pit_channel_typeIP	16	static
+<built-in>:Tpit_channel_array_typeBIP	32	static
+<built-in>:pit_peripheralIP	16	static

@@ -1,0 +1,5 @@
+<built-in>:Tdip_switches_typeBIP	8	static
+<built-in>:Tpins_array_typeBIP	8	static
+<built-in>:dip_switches_const_typeIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_dip_switches.adb:79:4:Initialize	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_dip_switches.adb:93:4:Read_Dip_Switches	24	static

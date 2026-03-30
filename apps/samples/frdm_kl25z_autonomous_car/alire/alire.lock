@@ -1,0 +1,115 @@
+# THIS FILE IS GENERATED. DO NOT EDIT.
+
+[solution]
+[solution.context]
+solved = true
+[[solution.state]]
+crate = "gnat_arm_elf"
+fulfilment = "solved"
+pinned = false
+transitivity = "direct"
+versions = "^15.2.1"
+[solution.state.release]
+auto-gpr-with = false
+description = "The GNAT Ada compiler - ARM cross-compiler"
+licenses = "GPL-3.0-or-later AND GPL-3.0-or-later WITH GCC-exception-3.1"
+maintainers = [
+"chouteau@adacore.com",
+"sagaert@adacore.com",
+]
+maintainers-logins = [
+"Fabien-Chouteau",
+"AldanTanneo",
+]
+name = "gnat_arm_elf"
+provides = [
+"gnat=15.2.1",
+]
+version = "15.2.1"
+website = "https://github.com/alire-project/GNAT-FSF-builds"
+[solution.state.release.configuration]
+auto_gpr_with = true
+disabled = true
+generate_ada = true
+generate_c = true
+generate_gpr = true
+output_dir = "config"
+[solution.state.release.environment]
+[solution.state.release.environment.PATH]
+prepend = "${CRATE_ROOT}/bin"
+[solution.state.release.origin]
+binary = true
+hashes = [
+"sha256:a5e9cfb14ffa1ad48af2ed86b47a2e756925b2dd57aed55aba78d34431a45404",
+]
+url = "https://github.com/alire-project/GNAT-FSF-builds/releases/download/gnat-15.2.0-1/gnat-arm-elf-linux64-x86_64-15.2.0-1.tar.gz"
+[[solution.state]]
+crate = "gnatprove"
+fulfilment = "solved"
+pinned = false
+transitivity = "direct"
+versions = "*"
+[solution.state.release]
+authors = [
+"AdaCore",
+]
+auto-gpr-with = false
+description = "Automatic formal verification of SPARK code"
+licenses = "GPL-3.0-or-later"
+long-description = "GNATprove, which provides automatic formal verification of SPARK code, is based on the [open-source](https://github.com/AdaCore/spark2014) [SPARK Pro](https://www.adacore.com/sparkpro) by [AdaCore](https://www.adacore.com).\nThe [SPARK Pro User's Guide](https://docs.adacore.com/spark2014-docs/html/ug/index.html) provides extensive documentation on how to use GNATprove.\nNote that because this version of GNATprove is built from an intermediate commit of SPARK Pro, it is not representative of any specific SPARK Pro release, and the SPARK Pro documentation may describe features or capabilities that are not yet available in this version of GNATprove.\n\nTo use GNATprove, simply add it to your Alire project using\n\n    alr with gnatprove\n\nThen, configure your environment by running:\n\n    eval \"$( alr printenv )\"\n\nYou will then be able to run GNATprove:\n\n    gnatprove\n\nFor more details on getting started using GNATprove, see [Getting Started with SPARK](https://docs.adacore.com/spark2014-docs/html/ug/en/getting_started.html) from the [SPARK Pro User's Guide](https://docs.adacore.com/spark2014-docs/html/ug/index.html).\n\nTo get started with the SPARK language, see the [Introduction to SPARK](https://learn.adacore.com/courses/intro-to-spark/index.html) course on [learn.adacore.com](https://learn.adacore.com/index.html).\n"
+maintainers = [
+"Fabien Chouteau <chouteau@adacore.com>",
+"CÃ©sar Sagaert <sagaert@adacore.com>",
+]
+maintainers-logins = [
+"Fabien-Chouteau",
+"AldanTanneo",
+]
+name = "gnatprove"
+version = "15.1.0"
+website = "https://docs.adacore.com/spark2014-docs/html/ug/index.html"
+[solution.state.release.configuration]
+auto_gpr_with = true
+disabled = true
+generate_ada = true
+generate_c = true
+generate_gpr = true
+output_dir = "config"
+[solution.state.release.environment]
+[solution.state.release.environment.PATH]
+prepend = "${CRATE_ROOT}/bin"
+[solution.state.release.origin]
+binary = true
+hashes = [
+"sha256:aad9a73f600d3008f33141a6cd4c5314d4c210e8928edc172c23c76104ddf7b2",
+]
+url = "https://github.com/alire-project/GNAT-FSF-builds/releases/download/gnatprove-15.1.0-1/gnatprove-x86_64-linux-15.1.0-1.tar.gz"
+[[solution.state]]
+crate = "gprbuild"
+fulfilment = "solved"
+pinned = false
+transitivity = "direct"
+versions = "*"
+[solution.state.release]
+description = "The GPRBuild Ada/multilanguage build tool"
+maintainers = [
+"alejandro@mosteo.com",
+]
+maintainers-logins = [
+"mosteo",
+]
+name = "gprbuild"
+notes = "Provided by system package: gprbuild"
+version = "2024.1.20231009"
+[solution.state.release.origin]
+url = "system:gprbuild"
+[[solution.state]]
+crate = "zephyr_ada_rts"
+fulfilment = "linked"
+pinned = false
+transitivity = "direct"
+versions = "*"
+[solution.state.link]
+lockfiled = true
+path = "../../zephyr_ada_rts"
+

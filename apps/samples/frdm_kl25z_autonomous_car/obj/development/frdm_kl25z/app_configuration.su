@@ -1,0 +1,5 @@
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/generic_app_config.adb:40:4:Load_Config	12	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/generic_app_config.adb:51:4:Save_Config	8	static
+<built-in>:config_parameters_typeIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/app_configuration.adb:90:4:Load_Config_Parameters	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/app_configuration.adb:140:4:Save_Config_Parameters	16	static

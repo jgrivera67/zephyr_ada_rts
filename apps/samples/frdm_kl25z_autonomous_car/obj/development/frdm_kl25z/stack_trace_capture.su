@@ -1,0 +1,5 @@
+<built-in>:stack_trace_typeIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/cpu_specific/arm_cortex_m0plus/stack_trace_capture-find_previous_stack_frame.adb:29:4:Find_Previous_Stack_Frame	56	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/stack_trace_capture.adb:141:4:Unwind_Execution_Stack	72	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/stack_trace_capture.adb:93:4:Get_Stack_Trace	72	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/stack_trace_capture.adb:93:4:Get_Stack_Trace	48	static

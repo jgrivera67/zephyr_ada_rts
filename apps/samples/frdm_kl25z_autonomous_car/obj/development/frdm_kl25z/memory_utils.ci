@@ -1,0 +1,14 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.adb"
+node: { title: "memory_utils__bytes_array_typeIP" label: "bytes_array_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "memory_utils__how_many" label: "How_Many\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.ads:37:4\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "__gnat_last_chance_handler" label: "gnat_last_chance_handler\n<built-in>" shape : ellipse }
+edge: { sourcename: "memory_utils__how_many" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.ads:38:17" }
+node: { title: "__aeabi_uidiv" label: "aeabi_uidiv\n<built-in>" shape : ellipse }
+edge: { sourcename: "memory_utils__how_many" targetname: "__aeabi_uidiv" }
+node: { title: "memory_utils__round_up" label: "Round_Up\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.ads:40:4\n16 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "memory_utils__round_up" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.ads:38:17" }
+edge: { sourcename: "memory_utils__round_up" targetname: "__aeabi_uidiv" }
+node: { title: "memory_utils__get_flash_used" label: "Get_Flash_Used\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.adb:52:4\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "memory_utils__get_sram_used" label: "Get_Sram_Used\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.adb:59:4\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "memory_utils__compute_checksum" label: "Compute_Checksum\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.adb:67:4\n20 bytes (static)\n0 dynamic objects" }
+}

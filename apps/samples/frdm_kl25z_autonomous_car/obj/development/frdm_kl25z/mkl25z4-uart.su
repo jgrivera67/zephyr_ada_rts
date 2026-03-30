@@ -1,0 +1,9 @@
+<built-in>:uart1_bdh_registerIP	8	static
+<built-in>:uart1_c1_registerIP	8	static
+<built-in>:uart1_c2_registerIP	8	static
+<built-in>:uart1_s1_registerIP	8	static
+<built-in>:uart1_s2_registerIP	8	static
+<built-in>:uart1_c3_registerIP	8	static
+<built-in>:uart1_d_registerIP	8	static
+<built-in>:uart1_c4_registerIP	8	static
+<built-in>:uart_peripheralIP	16	static

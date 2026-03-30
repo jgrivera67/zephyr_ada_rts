@@ -1,0 +1,2 @@
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:48:4:Initialize	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:66:4:Set_Pwm_Duty_Cycle	8	static

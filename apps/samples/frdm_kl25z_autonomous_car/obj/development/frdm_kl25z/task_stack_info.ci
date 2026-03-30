@@ -1,0 +1,3 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/task_stack_info.adb"
+node: { title: "task_stack_info__get_current_task_stack" label: "Get_Current_Task_Stack\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/task_stack_info.adb:8:4\n8 bytes (static)\n0 dynamic objects" }
+}

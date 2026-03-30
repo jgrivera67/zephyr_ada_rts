@@ -1,0 +1,9 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_port.ads"
+node: { title: "kl25z_port__pcr_typeIP" label: "pcr_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kl25z_port__Tpcr_array_typeBIP" label: "Tpcr_array_typeBIP\n<built-in>\n24 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "kl25z_port__Tpcr_array_typeBIP" targetname: "kl25z_port__pcr_typeIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_port.ads:99:4" }
+node: { title: "kl25z_port__Tpad_array_8BIP" label: "Tpad_array_8BIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kl25z_port__Tpin_array_typeBIP" label: "Tpin_array_typeBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kl25z_port__registers_typeIP" label: "registers_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "kl25z_port__registers_typeIP" targetname: "kl25z_port__Tpcr_array_typeBIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_port.ads:86:7" }
+}

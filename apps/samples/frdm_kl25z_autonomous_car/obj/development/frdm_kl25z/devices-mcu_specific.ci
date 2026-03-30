@@ -1,0 +1,7 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/devices-mcu_specific.ads"
+node: { title: "devices__mcu_specific__pin_port_typeH" label: "pin_port_typeH\n<built-in>\n32 bytes (static)\n0 dynamic objects" }
+node: { title: "__aeabi_idivmod" label: "aeabi_idivmod\n<built-in>" shape : ellipse }
+edge: { sourcename: "devices__mcu_specific__pin_port_typeH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "devices__mcu_specific__pin_port_typeH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "devices__mcu_specific__pin_port_typeH" targetname: "__aeabi_idivmod" }
+}

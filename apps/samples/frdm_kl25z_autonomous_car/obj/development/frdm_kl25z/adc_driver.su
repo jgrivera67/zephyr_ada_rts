@@ -1,0 +1,12 @@
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/adc_driver.adb:243:4:Get_Adc_Cfg1_Mode_Value	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/adc_driver.adb:119:4:Calibrate	128	static
+<built-in>:adc_resolution_typeH	32	static
+<built-in>:adc_resolution_typeRP	8	static
+<built-in>:adc_device_const_typeIP	8	static
+<built-in>:adc_device_var_typeIP	8	static
+<built-in>:Tadc_devices_varBIP	20	static
+<built-in>:adc_interrupts_objectTVIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/adc_driver.adb:255:4:Initialized	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/adc_driver.adb:264:4:Initialize	80	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/adc_driver.adb:378:4:Start_Async_Conversion	40	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/adc_driver.adb:32:1:Adc_Driver	8	static

@@ -1,0 +1,16 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb"
+node: { title: "tfc_battery_leds__dip_switches_typeIP" label: "dip_switches_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_battery_leds__Tpins_array_typeBIP" label: "Tpins_array_typeBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_battery_leds__battery_leds_const_typeIP" label: "battery_leds_const_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_battery_leds__initialize" label: "Initialize\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:84:4\n24 bytes (static)\n0 dynamic objects" }
+node: { title: "gpio_driver__configure_pin" label: "Configure_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:43:14" shape : ellipse }
+edge: { sourcename: "tfc_battery_leds__initialize" targetname: "gpio_driver__configure_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:87:21" }
+node: { title: "gpio_driver__deactivate_output_pin" label: "Deactivate_Output_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:50:14" shape : ellipse }
+edge: { sourcename: "tfc_battery_leds__initialize" targetname: "gpio_driver__deactivate_output_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:92:21" }
+node: { title: "tfc_battery_leds__set_leds" label: "Set_Leds\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:100:4\n16 bytes (static)\n0 dynamic objects" }
+node: { title: "__gnat_last_chance_handler" label: "gnat_last_chance_handler\n<built-in>" shape : ellipse }
+edge: { sourcename: "tfc_battery_leds__set_leds" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:109:61" }
+node: { title: "gpio_driver__activate_output_pin" label: "Activate_Output_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:48:14" shape : ellipse }
+edge: { sourcename: "tfc_battery_leds__set_leds" targetname: "gpio_driver__activate_output_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:109:21" }
+edge: { sourcename: "tfc_battery_leds__set_leds" targetname: "gpio_driver__deactivate_output_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:113:21" }
+}

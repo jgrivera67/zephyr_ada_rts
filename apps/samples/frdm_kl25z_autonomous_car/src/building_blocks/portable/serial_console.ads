@@ -1,0 +1,206 @@
+--
+--  Copyright (c) 2016, German Rivera
+--  All rights reserved.
+--
+--  Redistribution and use in source and binary forms, with or without
+--  modification, are permitted provided that the following conditions are met:
+--
+--  * Redistributions of source code must retain the above copyright notice,
+--    this list of conditions and the following disclaimer.
+--
+--  * Redistributions in binary form must reproduce the above copyright notice,
+--    this list of conditions and the following disclaimer in the documentation
+--    and/or other materials provided with the distribution.
+--
+--  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+--  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+--  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+--  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+--  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+--  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+--  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+--  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+--  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+--  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+--  POSSIBILITY OF SUCH DAMAGE.
+--
+with Bit_Types; use Bit_Types;
+
+--
+--  Serial console services
+--
+package Serial_Console is
+   --
+   --  Control characters:
+   --
+   Enter_Line_Drawing_Mode : constant Character := ASCII.SO;
+   Exit_Line_Drawing_Mode :  constant Character := ASCII.SI;
+
+   --
+   --  Line drawing characters:
+   --
+   Upper_Left_Corner :  constant Character := Character'Val (16#6c#);
+   Lower_Left_Corner :  constant Character := Character'Val (16#6d#);
+   Upper_Right_Corner : constant Character := Character'Val (16#6b#);
+   Lower_Right_Corner : constant Character := Character'Val (16#6a#);
+   Vertical_Line :      constant Character := Character'Val (16#78#);
+   Horizontal_Line :    constant Character := Character'Val (16#71#);
+   T_Pointing_Up :      constant Character := Character'Val (16#76#);
+   T_Pointing_Down :    constant Character := Character'Val (16#77#);
+   T_Pointing_Left :    constant Character := Character'Val (16#75#);
+   T_Pointing_Right :   constant Character := Character'Val (16#74#);
+   Line_Intersection :  constant Character := Character'Val (16#6e#);
+
+   --
+   --  Character display attributes
+   --
+   type Attributes_Type is (Attribute_Bold,
+                            Attribute_Underlined,
+                            Attribute_Blink,
+                            Attribute_Reverse);
+
+   --
+   --  Bit vector of attributes for characters displayed on the screen
+   --
+   type Attributes_Vector_Type is array (Attributes_Type) of Bit
+      with Size => Unsigned_32'Size;
+
+   Attributes_Normal : constant Attributes_Vector_Type := [others => 0];
+
+   type Line_Type is range 1 .. 999;
+
+   type Column_Type is range 1 .. 999;
+
+   function Initialized return Boolean
+      with Inline;
+   --  @private (Used only in contracts)
+
+   procedure Initialize
+     with Pre => not Initialized;
+
+   function Is_Lock_Mine return Boolean
+     with Inline,
+          Pre => Initialized;
+
+   procedure Lock
+     with Inline,
+          Pre => Initialized and then
+                 not Is_Lock_Mine;
+
+   procedure Unlock
+     with Inline,
+          Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Put_Char (C : Character)
+     with Pre => Initialized;
+
+   procedure Print_String (S : String)
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Print_Pos_String (Line : Line_Type;
+                               Column : Column_Type;
+                               S : String;
+                               Attributes : Attributes_Vector_Type :=
+                                 Attributes_Normal)
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Turn_Off_Cursor
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Turn_On_Cursor
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Save_Cursor_and_Attributes
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Restore_Cursor_and_Attributes
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Set_Cursor_And_Attributes (Line : Line_Type;
+                                        Column : Column_Type;
+                                        Attributes : Attributes_Vector_Type;
+                                        Save_Old : Boolean := False)
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Erase_Current_Line
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Erase_Lines (Top_Line : Line_Type;
+                          Bottom_Line : Line_Type;
+                          Preserve_Cursor : Boolean := False)
+     with Pre => Initialized and then
+                 Is_Lock_Mine and then
+                 Top_Line <= Bottom_Line;
+   --
+   --  Erase a range of lines
+   --  @param Top_Line First line of the range
+   --  @param Bottom_Line last line of the range
+   --  @param Preserve_Cursor flag to indicate if cursor need to be
+   --  saved/restored
+   --
+
+   procedure Clear_Screen
+     with Pre => Initialized and then
+                 Is_Lock_Mine;
+
+   procedure Set_Scroll_Region (Top_Line : Line_Type;
+                                Bottom_Line : Line_Type)
+     with Pre => Initialized and then
+                 Is_Lock_Mine and then
+                 Top_Line < Bottom_Line;
+   --
+   --  Set scroll region for the console screen to the given range of lines
+   --
+   --  @param top_line first line of the scroll region.
+   --
+   --  @param bottom_line Last line of the scroll region
+   --
+
+   procedure Set_Scroll_Region_To_Screen_Bottom (Top_Line : Line_Type)
+     with Pre => Initialized and then
+                 Is_Lock_Mine and then
+                 Top_Line < Line_Type'Last;
+   --
+   --  Set scroll region for the console screen from the given line to the
+   --  bottom of the screen. The scroll region grows dynamically if the screen
+   --  window is resized.
+   --
+   --  @param top_line first line of the scroll region.
+   --
+
+   procedure Draw_Box (Line : Line_Type;
+                       Column : Column_Type;
+                       Height : Line_Type;
+                       Width : Column_Type;
+                       Attributes : Attributes_Vector_Type :=
+                         Attributes_Normal)
+     with Pre => Initialized and then
+                 Is_Lock_Mine and then
+                 Line + Height in Line_Type and then
+                 Column + Width in Column_Type;
+
+   procedure Draw_Horizontal_Line (Line : Line_Type;
+                                   Column : Column_Type;
+                                   Width : Column_Type;
+                                   Attributes : Attributes_Vector_Type :=
+                                     Attributes_Normal)
+     with Pre => Initialized and then
+                 Is_Lock_Mine and then
+                 Column + Width in Column_Type;
+
+   procedure Get_Char (C : out Character)
+     with Pre => Initialized;
+
+   function Is_Input_Available return Boolean
+     with Pre => Initialized;
+
+end Serial_Console;

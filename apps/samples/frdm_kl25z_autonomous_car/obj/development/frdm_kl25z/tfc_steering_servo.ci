@@ -1,0 +1,12 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb"
+node: { title: "tfc_steering_servo__initialize" label: "Initialize\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:48:4\n16 bytes (static)\n0 dynamic objects" }
+node: { title: "pwm_driver__initialize" label: "Initialize\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pwm_driver.ads:78:14" shape : ellipse }
+edge: { sourcename: "tfc_steering_servo__initialize" targetname: "pwm_driver__initialize" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:50:17" }
+node: { title: "pwm_driver__initialize_channel" label: "Initialize_Channel\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pwm_driver.ads:92:14" shape : ellipse }
+edge: { sourcename: "tfc_steering_servo__initialize" targetname: "pwm_driver__initialize_channel" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:55:17" }
+node: { title: "tfc_steering_servo__set_pwm_duty_cycle" label: "Set_Pwm_Duty_Cycle\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:66:4\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "__gnat_last_chance_handler" label: "gnat_last_chance_handler\n<built-in>" shape : ellipse }
+edge: { sourcename: "tfc_steering_servo__set_pwm_duty_cycle" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:71:42" }
+node: { title: "pwm_driver__set_channel_duty_cycle" label: "Set_Channel_Duty_Cycle\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pwm_driver.ads:108:14" shape : ellipse }
+edge: { sourcename: "tfc_steering_servo__set_pwm_duty_cycle" targetname: "pwm_driver__set_channel_duty_cycle" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_steering_servo.adb:69:17" }
+}

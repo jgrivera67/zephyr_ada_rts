@@ -1,0 +1,6 @@
+<built-in>:bytes_array_typeIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.ads:37:4:How_Many	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.ads:40:4:Round_Up	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.adb:52:4:Get_Flash_Used	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.adb:59:4:Get_Sram_Used	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/memory_utils.adb:67:4:Compute_Checksum	20	static

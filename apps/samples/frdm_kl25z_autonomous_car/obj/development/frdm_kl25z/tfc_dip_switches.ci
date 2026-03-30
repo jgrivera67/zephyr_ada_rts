@@ -1,0 +1,11 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_dip_switches.adb"
+node: { title: "tfc_dip_switches__Tdip_switches_typeBIP" label: "Tdip_switches_typeBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_dip_switches__Tpins_array_typeBIP" label: "Tpins_array_typeBIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_dip_switches__dip_switches_const_typeIP" label: "dip_switches_const_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_dip_switches__initialize" label: "Initialize\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_dip_switches.adb:79:4\n16 bytes (static)\n0 dynamic objects" }
+node: { title: "gpio_driver__configure_pin" label: "Configure_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:43:14" shape : ellipse }
+edge: { sourcename: "tfc_dip_switches__initialize" targetname: "gpio_driver__configure_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_dip_switches.adb:82:21" }
+node: { title: "tfc_dip_switches__read_dip_switches" label: "Read_Dip_Switches\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_dip_switches.adb:93:4\n24 bytes (static)\n0 dynamic objects" }
+node: { title: "gpio_driver__read_input_pin" label: "Read_Input_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:54:13" shape : ellipse }
+edge: { sourcename: "tfc_dip_switches__read_dip_switches" targetname: "gpio_driver__read_input_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_dip_switches.adb:97:24" }
+}

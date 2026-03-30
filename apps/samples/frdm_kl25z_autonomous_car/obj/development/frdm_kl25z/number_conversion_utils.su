@@ -1,0 +1,12 @@
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:90:4:Decimal_String_To_Unsigned	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:34:4:Decimal_String_To_Float	80	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:123:4:Decimal_String_To_Unsigned	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:146:4:Decimal_String_To_Unsigned	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:213:4:Hexadecimal_String_To_Unsigned	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:250:4:Hexadecimal_String_To_Unsigned	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:273:4:Hexadecimal_String_To_Unsigned	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:296:4:Unsigned_To_Decimal_String	64	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:169:4:Float_To_Decimal_String	96	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:329:4:Unsigned_To_Hexadecimal_String	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:355:4:Unsigned_To_Hexadecimal_String	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/number_conversion_utils.adb:381:4:Unsigned_To_Hexadecimal_String	16	static

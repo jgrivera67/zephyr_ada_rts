@@ -1,0 +1,10 @@
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pin_mux_driver.ads:130:4:Initialized	8	static
+<built-in>:pin_function_typeH	40	static
+<built-in>:pin_irq_mode_typeH	48	static
+<built-in>:pin_irq_mode_typeRP	8	static
+<built-in>:pin_info_typeIP	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pin_mux_driver.adb:45:4:Clear_Pin_Irq	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pin_mux_driver.adb:59:4:Disable_Pin_Irq	32	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pin_mux_driver.adb:73:4:Enable_Pin_Irq	32	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/pin_mux_driver-initialize.adb:29:4:Initialize	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/pin_mux_driver-set_pin_function.adb:29:4:Set_Pin_Function	48	static

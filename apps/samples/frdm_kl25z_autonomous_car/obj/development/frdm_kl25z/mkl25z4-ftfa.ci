@@ -1,0 +1,23 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-ftfa.ads"
+node: { title: "mkl25z4__ftfa__ftfa_fstat_registerIP" label: "ftfa_fstat_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__ftfa__ftfa_fcnfg_registerIP" label: "ftfa_fcnfg_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__ftfa__fsec_sec_fieldH" label: "fsec_sec_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+node: { title: "__aeabi_idivmod" label: "aeabi_idivmod\n<built-in>" shape : ellipse }
+edge: { sourcename: "mkl25z4__ftfa__fsec_sec_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__ftfa__fsec_sec_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__ftfa__fsec_fslacc_fieldH" label: "fsec_fslacc_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__ftfa__fsec_fslacc_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__ftfa__fsec_fslacc_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__ftfa__fsec_meen_fieldH" label: "fsec_meen_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__ftfa__fsec_meen_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__ftfa__fsec_meen_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__ftfa__fsec_keyen_fieldH" label: "fsec_keyen_fieldH\n<built-in>\n48 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__ftfa__fsec_keyen_fieldH" targetname: "__aeabi_idivmod" }
+edge: { sourcename: "mkl25z4__ftfa__fsec_keyen_fieldH" targetname: "__aeabi_idivmod" }
+node: { title: "mkl25z4__ftfa__ftfa_fsec_registerIP" label: "ftfa_fsec_registerIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__ftfa__ftfa_fccob_registersIP" label: "ftfa_fccob_registersIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__ftfa__ftfa_fprot_registersIP" label: "ftfa_fprot_registersIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "mkl25z4__ftfa__ftfa_peripheralIP" label: "ftfa_peripheralIP\n<built-in>\n16 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "mkl25z4__ftfa__ftfa_peripheralIP" targetname: "mkl25z4__ftfa__ftfa_fstat_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-ftfa.ads:341:7" }
+edge: { sourcename: "mkl25z4__ftfa__ftfa_peripheralIP" targetname: "mkl25z4__ftfa__ftfa_fcnfg_registerIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/SVD/nxp_kinetis_kl25z/mkl25z4-ftfa.ads:343:7" }
+}

@@ -1,0 +1,9 @@
+<built-in>:token_typeIP	8	static
+<built-in>:command_line_typeIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/command_line.adb:172:4:Initialized	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/command_line.adb:176:4:Initialize	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/command_line.adb:185:4:Print_Prompt	40	dynamic
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/command_line.adb:62:7:Read_Command_Line	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/command_line.adb:62:7:Read_Command_Line	32	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/command_line.adb:52:4:Get_Next_Token	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/command_line.adb:29:1:Command_Line	8	static

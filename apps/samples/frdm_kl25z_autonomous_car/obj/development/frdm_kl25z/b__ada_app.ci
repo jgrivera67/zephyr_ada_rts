@@ -1,0 +1,41 @@
+graph: { title: "b__ada_app.adb"
+node: { title: "ada_appmain__Tsec_default_sized_stacksBIP" label: "Tsec_default_sized_stacksBIP\n<built-in>\n16 bytes (static)\n0 dynamic objects" }
+node: { title: "ada_appinit" label: "ada_appinit\nb__ada_app.adb:37:4\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "ada_appmain___elabb" label: "e35b\nb__ada_app.adb:48:18" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "ada_appmain___elabb" label: "b__ada_app.adb:48:18" }
+node: { title: "system__tasking__protected_objects___elabb" label: "e37b\nb__ada_app.adb:55:42" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "system__tasking__protected_objects___elabb" label: "b__ada_app.adb:55:42" }
+node: { title: "system__tasking__restricted__stages___elabb" label: "e39b\nb__ada_app.adb:59:42" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "system__tasking__restricted__stages___elabb" label: "b__ada_app.adb:59:42" }
+node: { title: "pwm_driver__board_specific_private___elabs" label: "e41b\nb__ada_app.adb:64:43" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "pwm_driver__board_specific_private___elabs" label: "b__ada_app.adb:64:43" }
+node: { title: "pwm_driver___elabb" label: "e43b\nb__ada_app.adb:68:20" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "pwm_driver___elabb" label: "b__ada_app.adb:68:20" }
+node: { title: "runtime_logs___elabs" label: "e45b\nb__ada_app.adb:73:22" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "runtime_logs___elabs" label: "b__ada_app.adb:73:22" }
+node: { title: "adc_driver___elabb" label: "e47b\nb__ada_app.adb:77:20" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "adc_driver___elabb" label: "b__ada_app.adb:77:20" }
+node: { title: "color_led___elabb" label: "e49b\nb__ada_app.adb:81:19" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "color_led___elabb" label: "b__ada_app.adb:81:19" }
+node: { title: "nor_flash_driver___elabb" label: "e51b\nb__ada_app.adb:85:26" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "nor_flash_driver___elabb" label: "b__ada_app.adb:85:26" }
+node: { title: "tfc_line_scan_camera___elabb" label: "e53b\nb__ada_app.adb:92:30" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "tfc_line_scan_camera___elabb" label: "b__ada_app.adb:92:30" }
+node: { title: "tfc_wheel_motors___elabb" label: "e55b\nb__ada_app.adb:98:26" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "tfc_wheel_motors___elabb" label: "b__ada_app.adb:98:26" }
+node: { title: "uart_driver___elabs" label: "e57b\nb__ada_app.adb:103:21" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "uart_driver___elabs" label: "b__ada_app.adb:103:21" }
+node: { title: "uart_driver__board_specific_private___elabs" label: "e59b\nb__ada_app.adb:106:44" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "uart_driver__board_specific_private___elabs" label: "b__ada_app.adb:106:44" }
+node: { title: "uart_driver___elabb" label: "e61b\nb__ada_app.adb:110:21" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "uart_driver___elabb" label: "b__ada_app.adb:110:21" }
+node: { title: "serial_console___elabb" label: "e63b\nb__ada_app.adb:114:24" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "serial_console___elabb" label: "b__ada_app.adb:114:24" }
+node: { title: "command_line___elabb" label: "e65b\nb__ada_app.adb:118:22" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "command_line___elabb" label: "b__ada_app.adb:118:22" }
+node: { title: "car_controller___elabs" label: "e67b\nb__ada_app.adb:122:24" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "car_controller___elabs" label: "b__ada_app.adb:122:24" }
+node: { title: "car_controller___elabb" label: "e69b\nb__ada_app.adb:125:24" shape : ellipse }
+edge: { sourcename: "ada_appinit" targetname: "car_controller___elabb" label: "b__ada_app.adb:125:24" }
+node: { title: "ada_appmain___elabb" label: "ada_appmain\nb__ada_app.adb:7:1\n8 bytes (static)\n0 dynamic objects" }
+}

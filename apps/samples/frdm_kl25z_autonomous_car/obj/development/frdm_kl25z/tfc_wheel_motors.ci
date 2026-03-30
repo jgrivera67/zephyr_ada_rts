@@ -1,0 +1,31 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb"
+node: { title: "tfc_wheel_motors__h_bridge_const_typeIP" label: "h_bridge_const_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_wheel_motors__h_bridge_var_typeIP" label: "h_bridge_var_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "tfc_wheel_motors__initialize" label: "Initialize\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:83:4\n24 bytes (static)\n0 dynamic objects" }
+node: { title: "gpio_driver__configure_pin" label: "Configure_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:43:14" shape : ellipse }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "gpio_driver__configure_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:89:18" }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "gpio_driver__configure_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:94:18" }
+node: { title: "gpio_driver__deactivate_output_pin" label: "Deactivate_Output_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:50:14" shape : ellipse }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "gpio_driver__deactivate_output_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:102:18" }
+node: { title: "pwm_driver__initialize" label: "Initialize\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pwm_driver.ads:78:14" shape : ellipse }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "pwm_driver__initialize" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:104:17" }
+node: { title: "pwm_driver__initialize_channel" label: "Initialize_Channel\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pwm_driver.ads:92:14" shape : ellipse }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "pwm_driver__initialize_channel" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:109:17" }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "pwm_driver__initialize_channel" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:115:17" }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "pwm_driver__initialize_channel" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:121:17" }
+edge: { sourcename: "tfc_wheel_motors__initialize" targetname: "pwm_driver__initialize_channel" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:127:17" }
+node: { title: "tfc_wheel_motors__set_pwm_duty_cycles" label: "Set_Pwm_Duty_Cycles\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:138:4\n16 bytes (static)\n0 dynamic objects" }
+node: { title: "__gnat_last_chance_handler" label: "gnat_last_chance_handler\n<built-in>" shape : ellipse }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:143:26" }
+node: { title: "gpio_driver__activate_output_pin" label: "Activate_Output_Pin\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.ads:48:14" shape : ellipse }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "gpio_driver__activate_output_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:144:21" }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:150:42" }
+node: { title: "pwm_driver__set_channel_duty_cycle" label: "Set_Channel_Duty_Cycle\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/pwm_driver.ads:108:14" shape : ellipse }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "pwm_driver__set_channel_duty_cycle" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:148:17" }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "pwm_driver__set_channel_duty_cycle" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:152:17" }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "__gnat_last_chance_handler" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:158:42" }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "pwm_driver__set_channel_duty_cycle" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:156:17" }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "pwm_driver__set_channel_duty_cycle" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:160:17" }
+edge: { sourcename: "tfc_wheel_motors__set_pwm_duty_cycles" targetname: "gpio_driver__deactivate_output_pin" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:167:21" }
+node: { title: "tfc_wheel_motors___elabb" label: "Tfc_Wheel_Motors\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:33:1\n8 bytes (static)\n0 dynamic objects" }
+}

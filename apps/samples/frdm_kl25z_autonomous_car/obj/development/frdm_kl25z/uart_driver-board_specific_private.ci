@@ -1,0 +1,7 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/board_specific/frdm_kl25z/uart_driver-board_specific_private.ads"
+node: { title: "uart_driver__board_specific_private___elabs" label: "Board_Specific_Private\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/board_specific/frdm_kl25z/uart_driver-board_specific_private.ads:31:9\n24 bytes (static)\n0 dynamic objects" }
+node: { title: "memcpy" label: "builtin_memcpy\n<built-in>" shape : ellipse }
+edge: { sourcename: "uart_driver__board_specific_private___elabs" targetname: "memcpy" }
+edge: { sourcename: "uart_driver__board_specific_private___elabs" targetname: "memcpy" }
+edge: { sourcename: "uart_driver__board_specific_private___elabs" targetname: "memcpy" }
+}

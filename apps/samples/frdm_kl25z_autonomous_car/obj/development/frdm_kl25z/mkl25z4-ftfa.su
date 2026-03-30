@@ -1,0 +1,10 @@
+<built-in>:ftfa_fstat_registerIP	8	static
+<built-in>:ftfa_fcnfg_registerIP	8	static
+<built-in>:fsec_sec_fieldH	48	static
+<built-in>:fsec_fslacc_fieldH	48	static
+<built-in>:fsec_meen_fieldH	48	static
+<built-in>:fsec_keyen_fieldH	48	static
+<built-in>:ftfa_fsec_registerIP	8	static
+<built-in>:ftfa_fccob_registersIP	8	static
+<built-in>:ftfa_fprot_registersIP	8	static
+<built-in>:ftfa_peripheralIP	16	static

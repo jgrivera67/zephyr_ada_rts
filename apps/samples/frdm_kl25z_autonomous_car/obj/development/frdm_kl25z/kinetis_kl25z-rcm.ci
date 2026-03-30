@@ -1,0 +1,5 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/mcu_specific/nxp_kinetis_kl25z/kinetis_kl25z-rcm.ads"
+node: { title: "kinetis_kl25z__rcm__srs0_typeIP" label: "srs0_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kinetis_kl25z__rcm__srs1_typeIP" label: "srs1_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kinetis_kl25z__rcm__rcm_registers_typeIP" label: "rcm_registers_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+}

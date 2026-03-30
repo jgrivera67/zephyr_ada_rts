@@ -1,0 +1,9 @@
+graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_sim.ads"
+node: { title: "kl25z_sim__sopt2_typeIP" label: "sopt2_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kl25z_sim__scgc4_typeIP" label: "scgc4_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kl25z_sim__scgc5_typeIP" label: "scgc5_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
+node: { title: "kl25z_sim__sim_registers_typeIP" label: "sim_registers_typeIP\n<built-in>\n16 bytes (static)\n0 dynamic objects" }
+edge: { sourcename: "kl25z_sim__sim_registers_typeIP" targetname: "kl25z_sim__sopt2_typeIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_sim.ads:106:7" }
+edge: { sourcename: "kl25z_sim__sim_registers_typeIP" targetname: "kl25z_sim__scgc4_typeIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_sim.ads:107:7" }
+edge: { sourcename: "kl25z_sim__sim_registers_typeIP" targetname: "kl25z_sim__scgc5_typeIP" label: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_sim.ads:108:7" }
+}

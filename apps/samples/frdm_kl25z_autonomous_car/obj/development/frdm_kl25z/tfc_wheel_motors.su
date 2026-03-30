@@ -1,0 +1,5 @@
+<built-in>:h_bridge_const_typeIP	8	static
+<built-in>:h_bridge_var_typeIP	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:83:4:Initialize	24	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:138:4:Set_Pwm_Duty_Cycles	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_wheel_motors.adb:33:1:Tfc_Wheel_Motors	8	static

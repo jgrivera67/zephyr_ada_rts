@@ -1,0 +1,2 @@
+<built-in>:system_reset_causes_typeH	48	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/microcontroller.adb:34:4:Get_Cpu_Byte_Order	8	static

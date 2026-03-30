@@ -1,0 +1,6 @@
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/microcontroller.ads:137:7:Valid_Mmio_Address	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/microcontroller.ads:151:7:Valid_Flash_Address	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/microcontroller.ads:162:7:Valid_Ram_Address	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/microcontroller.ads:172:7:Valid_Ram_Pointer	8	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/mcu_specific/nxp_kinetis_kl25z/microcontroller-mcu_specific.adb:41:4:Find_System_Reset_Cause	16	static
+/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/mcu_specific/nxp_kinetis_kl25z/microcontroller-mcu_specific.adb:76:4:System_Reset	16	static
