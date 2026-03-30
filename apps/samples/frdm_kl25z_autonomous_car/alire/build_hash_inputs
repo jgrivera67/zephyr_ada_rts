@@ -1,5 +1,0 @@
-dependency:zephyr_ada_rts=0.1.0-dev=28bbc9512f6f0d6080be88bbf2199d5272eadc90385bdad388b50f76f4262530
-external:FRDM_KL25Z_AUTONOMOUS_CAR_LIBRARY_TYPE=default
-external:LIBRARY_TYPE=default
-profile:frdm_kl25z_autonomous_car=DEVELOPMENT
-switches:frdm_kl25z_autonomous_car=-Og,-fdata-sections,-ffunction-sections,-g,-gnatVa,-gnatW8,-gnatw.X,-gnatwa,-gnaty-d,-gnaty3,-gnatyA,-gnatyB,-gnatyI,-gnatyO,-gnatyS,-gnatya,-gnatyb,-gnatyc,-gnatye,-gnatyf,-gnatyh,-gnatyi,-gnatyk,-gnatyl,-gnatym,-gnatyn,-gnatyp,-gnatyr,-gnatyt,-gnatyu,-gnatyx

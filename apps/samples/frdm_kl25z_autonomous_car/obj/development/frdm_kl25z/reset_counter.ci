@@ -1,3 +1,0 @@
-graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/reset_counter.adb"
-node: { title: "reset_counter__get" label: "Get\n/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/building_blocks/portable/reset_counter.adb:8:4\n8 bytes (static)\n0 dynamic objects" }
-}

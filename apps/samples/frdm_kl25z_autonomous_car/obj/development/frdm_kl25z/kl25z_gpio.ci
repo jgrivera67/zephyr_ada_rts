@@ -1,3 +1,0 @@
-graph: { title: "/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/mcu_specific/nxp_kinetis_kl25z/kl25z_gpio.ads"
-node: { title: "kl25z_gpio__registers_typeIP" label: "registers_typeIP\n<built-in>\n8 bytes (static)\n0 dynamic objects" }
-}

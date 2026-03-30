@@ -9,7 +9,7 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(frdm_kl25z_autonomous_car)
 
 # Add Zephyr Ada shim for RTS (non-inline syscall wrappers)
-target_sources(app PRIVATE ../../zephyr_ada_rts/src/zephyr/zephyr_ada_shim.c)
+target_sources(app PRIVATE ../../zephyr_ada_rts/src/gnarl/zephyr_ada_shim.c)
 
 # Add custom linker script fragment for GNAT-specific sections
 zephyr_linker_sources(SECTIONS ada_sections.ld)

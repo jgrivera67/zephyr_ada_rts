@@ -1,9 +1,0 @@
-<built-in>:gpio_pin_typeIP	16	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:43:4:Activate_Output_Pin	16	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:65:4:Clear_Pin_Irq	16	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:74:4:Configure_Pin	32	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:101:4:Deactivate_Output_Pin	16	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:123:4:Disable_Pin_Irq	16	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:132:4:Enable_Pin_Irq	24	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:144:4:Read_Input_Pin	16	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/drivers/portable/gpio_driver.adb:158:4:Toggle_Output_Pin	16	static

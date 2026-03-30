@@ -1,5 +1,0 @@
-<built-in>:dip_switches_typeIP	8	static
-<built-in>:Tpins_array_typeBIP	8	static
-<built-in>:battery_leds_const_typeIP	8	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:84:4:Initialize	24	static
-/home/josegrivera/my-projects/zephyr_ada/apps/samples/frdm_kl25z_autonomous_car/src/tfc_battery_leds.adb:100:4:Set_Leds	16	static
