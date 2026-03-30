@@ -85,6 +85,14 @@ package body System.Task_Primitives.Operations is
 
       pragma Assert (Self_ID = Self);
 
+      --  Check if Wakeup was already called (race mitigation for protected
+      --  entry calls: Wakeup may arrive before Sleep on priority preemption).
+
+      if Self_ID.Common.Wakeup_Signaled then
+         Self_ID.Common.Wakeup_Signaled := False;
+         return;
+      end if;
+
       System.OS_Interface.Sleep;
    end Sleep;
 
@@ -116,6 +124,7 @@ package body System.Task_Primitives.Operations is
    procedure Wakeup (T : ST.Task_Id; Reason : System.Tasking.Task_States) is
       pragma Unreferenced (Reason);
    begin
+      T.Common.Wakeup_Signaled := True;
       System.OS_Interface.Wakeup (T.Common.LL.Thread);
    end Wakeup;
 

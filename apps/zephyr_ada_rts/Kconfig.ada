@@ -7,6 +7,7 @@
 config ADA
 	bool "Ada language support"
 	select THREAD_CUSTOM_DATA
+	select THREAD_STACK_INFO
 	select DYNAMIC_THREAD
 	help
 	  Enable Ada language support via the GNAT Ada compiler and
@@ -21,7 +22,6 @@ config ADA_MAX_TASKS
 	int "Maximum number of concurrent Ada tasks"
 	default 8
 	range 1 64
-	select DYNAMIC_THREAD
 	help
 	  Sets the maximum number of Ada tasks (including the
 	  environment task) that can exist concurrently. Each Ada

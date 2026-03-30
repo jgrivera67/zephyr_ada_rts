@@ -23,6 +23,12 @@ project Zephyr_Ada_Rts is
                         "src/ada",
                         "../third_party/generated_zephyr_ada_bindings/" & Compiler_Flags.Board,
                         "config");
+
+   --  Exclude the single-task secondary stack implementation.
+   --  When tasking is enabled, s-taskin.adb (in src/gnarl/) provides
+   --  __gnat_get_secondary_stack with a per-task implementation.
+   --  Including both causes a multiple-definition link error.
+   for Excluded_Source_Files use ("s-sssita.adb", "s-sssita.ads");
    for Object_Dir use "obj/" & Zephyr_Ada_Rts_Config.Build_Profile & "/" & Compiler_Flags.Board;
    for Create_Missing_Dirs use "True";
    for Library_Dir use "lib/" & Compiler_Flags.Board;
