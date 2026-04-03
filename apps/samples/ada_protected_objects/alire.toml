@@ -1,6 +1,6 @@
 name = "ada_protected_demo"
 description = "Zephyr Ada protected objects demo: synchronization with Ada"
-version = "0.1.0-dev"
+version = "0.1.0"
 
 authors = ["J. German Rivera"]
 maintainers = ["J. German Rivera <jgrivera67@gmail.com>"]
@@ -10,7 +10,9 @@ website = ""
 tags = []
 
 [[depends-on]]
-zephyr_ada_rts = "*"
+zephyr_ada_rts = ">=0.1.0"
+# NOTE: the [[pins]] entry below uses a local path for monorepo development.
+# Remove it when publishing this sample as a standalone crate.
 # Architecture-specific toolchain (gnat_riscv64_elf, gnat_arm_elf, or gnat_xtensa_esp32_elf)
 # is added dynamically by CMakeLists.txt using 'alr with' based on Zephyr's target architecture.
 #

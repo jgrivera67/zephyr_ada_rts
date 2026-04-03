@@ -150,10 +150,17 @@ function(ada_alire_application)
   endif()
 
   # ---- Build command ----
+  # -XBoard: selects board-specific compiler flags in the GPR project.
+  # -XZephyr_Include_Dir: path to the generated Zephyr Ada bindings
+  #   (zephyr_config.ads, zephyr-device_tree.ads). The RTS GPR project
+  #   adds this directory to its Source_Dirs so it can see Zephyr.Config
+  #   and Zephyr.Device_Tree at compile time.
+  set(_gpr_vars "-XBoard=${BOARD} -XZephyr_Include_Dir=${config_dir}")
+
   if(USE_CUSTOM_TOOLCHAIN)
     set(_build_cmd
       "export PATH=${ADA_TOOLCHAIN_PATH}/bin:$PATH && "
-      "cd ${ada_app_dir} && alr build -- -XBoard=${BOARD}"
+      "cd ${ada_app_dir} && alr build -- ${_gpr_vars}"
     )
   else()
     set(_build_cmd
@@ -162,7 +169,7 @@ function(ada_alire_application)
       "(alr with --del gnat_riscv64_elf 2>/dev/null || true) && "
       "(alr with --del gnat_xtensa_esp32_elf 2>/dev/null || true) && "
       "alr with ${ADA_TOOLCHAIN} && "
-      "alr build -- -XBoard=${BOARD}"
+      "alr build -- ${_gpr_vars}"
     )
   endif()
   string(CONCAT _build_cmd_str ${_build_cmd})
