@@ -62,6 +62,14 @@ int64_t ada_k_uptime_ticks(void);
 
 int32_t ada_k_sleep(k_timeout_t timeout);
 
+/*
+ * Interrupt lock/unlock (for interrupt-priority protected objects)
+ */
+
+unsigned int ada_irq_lock(void);
+
+void ada_irq_unlock(unsigned int key);
+
 #ifdef __cplusplus
 }
 #endif

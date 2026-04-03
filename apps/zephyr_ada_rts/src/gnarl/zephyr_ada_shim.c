@@ -87,3 +87,21 @@ int32_t ada_k_sleep(k_timeout_t timeout)
 {
     return k_sleep(timeout);
 }
+
+/*
+ * Interrupt lock/unlock for interrupt-priority protected objects.
+ * irq_lock() saves the current interrupt state and disables interrupts;
+ * irq_unlock() restores the saved state.  On single-CPU Zephyr targets
+ * this provides the mutual exclusion required by Ada's ceiling-priority
+ * protocol for objects with pragma Interrupt_Priority.
+ */
+
+unsigned int ada_irq_lock(void)
+{
+    return irq_lock();
+}
+
+void ada_irq_unlock(unsigned int key)
+{
+    irq_unlock(key);
+}
