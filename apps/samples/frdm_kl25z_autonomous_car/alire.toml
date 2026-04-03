@@ -1,24 +1,21 @@
+#
+# Copyright (c) 2024, German Rivera
+#
+# SPDX-License-Identifier: Apache-2.0
+#
 name = "frdm_kl25z_autonomous_car"
-description = "Toy autonomous car firmware"
-version = "0.1.0-dev"
+description = "Toy autonomous car firmware for the NXP FRDM-KL25Z board"
+version = "0.1.0"
 
 authors = ["J. German Rivera"]
 maintainers = ["J. German Rivera <jgrivera67@gmail.com>"]
 maintainers-logins = ["jgrivera67"]
 licenses = "Apache-2.0"
 website = ""
-tags = []
+tags = ["zephyr", "embedded", "frdm-kl25z", "autonomous"]
 
 [[depends-on]]
-zephyr_ada_rts = "*"
-gnatprove = "*"
-gprbuild = "*" # needed by alire-index CI builds
-
-[[pins]]
-zephyr_ada_rts = { path='../../zephyr_ada_rts' }
-
-[build-profiles]
-zephyr_ada_rts = "development"
-
-[[depends-on]]
+zephyr_ada_rts = ">=0.1.0"
+# Architecture-specific toolchain is added dynamically by ada_alire_application()
+# via 'alr with' based on Zephyr's target architecture.
 gnat_arm_elf = "^15.2.1"
