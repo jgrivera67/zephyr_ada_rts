@@ -67,7 +67,7 @@ log_hdr()   { echo -e "\n${BOLD}$*${RESET}"; }
 # ---------------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-SAMPLES_DIR="${PROJECT_ROOT}/apps/samples"
+ADA_RTS_CLONE="/home/josegrivera/my-projects/zephyr_ada_rts"
 
 # ---------------------------------------------------------------------------
 # Platform definitions (source of truth: apps/compiler_flags.gpr)
@@ -136,7 +136,7 @@ while [[ $# -gt 0 ]]; do
         --boards)       OPT_BOARDS="$2";    shift 2 ;;
         --build-dir)    OPT_BUILD_DIR="$2"; shift 2 ;;
         --no-pristine)  OPT_PRISTINE="";    shift ;;
-        --jobs)         OPT_JOBS="-- -j$2"; shift 2 ;;
+        --jobs)         OPT_JOBS="-j$2"; shift 2 ;;
         --help|-h)      usage ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
@@ -230,7 +230,14 @@ log_info "Timestamp    : ${TIMESTAMP}"
 # Build loop
 # ---------------------------------------------------------------------------
 for sample in "${ACTIVE_SAMPLES[@]}"; do
-    sample_dir="${SAMPLES_DIR}/${sample}"
+    # Module samples live in modules/lang/ada/samples/; the car app is in apps/
+    if [[ "${sample}" == "frdm_kl25z_autonomous_car" ]]; then
+        sample_dir="${PROJECT_ROOT}/apps/frdm_kl25z_autonomous_car"
+        cmake_extra=()
+    else
+        sample_dir="${PROJECT_ROOT}/modules/lang/ada/samples/${sample}"
+        cmake_extra=("-DADA_RTS_DIR=${ADA_RTS_CLONE}")
+    fi
 
     if [[ ! -d "${sample_dir}" ]]; then
         log_skip "Sample '${sample}' not found at ${sample_dir}"
@@ -255,14 +262,14 @@ for sample in "${ACTIVE_SAMPLES[@]}"; do
 
         log_info "Building ${BOLD}${sample}${RESET} for ${BOLD}${board}${RESET} ..."
 
+        # Collect cmake args (ADA_RTS_DIR for module samples; -jN if --jobs set)
+        cmake_args=("${cmake_extra[@]}")
+        [[ -n "${OPT_JOBS}" ]] && cmake_args+=("${OPT_JOBS}")
+
         t0=$(date +%s)
-        if west build \
-               ${OPT_PRISTINE} \
-               -b "${board}" \
-               -d "${build_dir}" \
-               "${sample_dir}" \
-               ${OPT_JOBS} \
-               >"${log_file}" 2>&1
+        west_cmd=(west build ${OPT_PRISTINE} -b "${board}" -d "${build_dir}" "${sample_dir}")
+        [[ ${#cmake_args[@]} -gt 0 ]] && west_cmd+=(-- "${cmake_args[@]}")
+        if "${west_cmd[@]}" >"${log_file}" 2>&1
         then
             elapsed=$(( $(date +%s) - t0 ))
             log_ok "${sample} / ${board}  (${elapsed}s)"

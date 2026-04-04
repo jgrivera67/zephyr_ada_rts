@@ -8,5 +8,5 @@ project(ada_hello_world)
 
 # No src/main.c needed — ada_alire_application() auto-generates the C entry
 # shim that calls ada_appinit() (GNAT elaboration) then ada_main().
-ada_alire_application(LIBNAME libada_hello)
-target_link_libraries(app PRIVATE libada_hello)
+ada_alire_application(LIBNAME libada_app)
+target_link_libraries(app PRIVATE libada_app)

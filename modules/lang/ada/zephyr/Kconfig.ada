@@ -7,6 +7,7 @@
 config ADA
 	bool "Ada language support"
 	select THREAD_CUSTOM_DATA
+	select THREAD_STACK_INFO
 	select DYNAMIC_THREAD
 	help
 	  Enable Ada language support via the GNAT Ada compiler and

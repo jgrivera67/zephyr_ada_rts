@@ -87,6 +87,14 @@ function(ada_alire_application)
   set(one_value_args LIBNAME ADA_APP_DIR)
   cmake_parse_arguments(ARG "${options}" "${one_value_args}" "" ${ARGN})
 
+  # Resolve the Ada module root relative to THIS file's location, not the
+  # caller's.  CMAKE_CURRENT_FUNCTION_LIST_DIR (CMake 3.17+) always points to
+  # the directory containing the file where the function is defined, regardless
+  # of which directory calls the function.  This makes the function self-
+  # contained even when the module is registered via ZEPHYR_EXTRA_MODULES.
+  get_filename_component(_ada_module_dir
+    "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.." ABSOLUTE)
+
   # Defaults
   if(NOT ARG_LIBNAME)
     set(ARG_LIBNAME "libada_app")
@@ -109,7 +117,7 @@ function(ada_alire_application)
   # ---- Kconfig-to-Ada package ----
   if(CONFIG_ADA_KCONFIG_PACKAGE)
     set(AUTOCONF_H     "${CMAKE_BINARY_DIR}/zephyr/include/generated/zephyr/autoconf.h")
-    set(KCONFIG_SCRIPT "${ADA_MODULE_DIR}/scripts/kconfig_to_ada.py")
+    set(KCONFIG_SCRIPT "${_ada_module_dir}/scripts/kconfig_to_ada.py")
     set(KCONFIG_ADS    "${config_dir}/zephyr_config.ads")
 
     add_custom_command(
@@ -126,7 +134,7 @@ function(ada_alire_application)
   # ---- Device-tree-to-Ada package ----
   if(CONFIG_ADA_DEVICE_TREE_PACKAGE)
     set(DTS_FILE   "${CMAKE_BINARY_DIR}/zephyr/zephyr.dts")
-    set(DT_SCRIPT  "${ADA_MODULE_DIR}/scripts/dt_to_ada.py")
+    set(DT_SCRIPT  "${_ada_module_dir}/scripts/dt_to_ada.py")
     set(DT_ADS     "${config_dir}/zephyr-device_tree.ads")
 
     add_custom_command(
@@ -149,15 +157,35 @@ function(ada_alire_application)
     list(APPEND _ada_gen_targets ada_dt_gen)
   endif()
 
+  # ---- Toolchain detection (re-done inside function for CMake scope safety) ----
+  # The top-level variables ADA_TOOLCHAIN / USE_CUSTOM_TOOLCHAIN may not be
+  # visible here if Zephyr included the module CMakeLists.txt inside a function
+  # scope.  Re-derive them from globals that ARE always visible:
+  #   ADA_TOOLCHAIN_PATH — a CACHE variable, visible from any scope
+  #   CMAKE_BINARY_DIR   — a global CMake variable
+  if(ADA_TOOLCHAIN_PATH)
+    set(_use_custom_toolchain TRUE)
+    set(_ada_toolchain "")
+  else()
+    set(_use_custom_toolchain FALSE)
+    file(READ "${CMAKE_BINARY_DIR}/zephyr/.config" _cfg)
+    if(_cfg MATCHES "CONFIG_RISCV=y")
+      set(_ada_toolchain "gnat_riscv64_elf")
+    elseif(_cfg MATCHES "CONFIG_ARM=y")
+      set(_ada_toolchain "gnat_arm_elf")
+    elseif(_cfg MATCHES "CONFIG_XTENSA=y")
+      set(_ada_toolchain "gnat_xtensa_esp32_elf")
+    else()
+      # ARM64 / x86 require ADA_TOOLCHAIN_PATH — already validated at top level
+      set(_ada_toolchain "")
+    endif()
+  endif()
+
   # ---- Build command ----
   # -XBoard: selects board-specific compiler flags in the GPR project.
-  # -XZephyr_Include_Dir: path to the generated Zephyr Ada bindings
-  #   (zephyr_config.ads, zephyr-device_tree.ads). The RTS GPR project
-  #   adds this directory to its Source_Dirs so it can see Zephyr.Config
-  #   and Zephyr.Device_Tree at compile time.
-  set(_gpr_vars "-XBoard=${BOARD} -XZephyr_Include_Dir=${config_dir}")
+  set(_gpr_vars "-XBoard=${BOARD}")
 
-  if(USE_CUSTOM_TOOLCHAIN)
+  if(_use_custom_toolchain)
     set(_build_cmd
       "export PATH=${ADA_TOOLCHAIN_PATH}/bin:$PATH && "
       "cd ${ada_app_dir} && alr build -- ${_gpr_vars}"
@@ -168,7 +196,7 @@ function(ada_alire_application)
       "(alr with --del gnat_arm_elf 2>/dev/null || true) && "
       "(alr with --del gnat_riscv64_elf 2>/dev/null || true) && "
       "(alr with --del gnat_xtensa_esp32_elf 2>/dev/null || true) && "
-      "alr with ${ADA_TOOLCHAIN} && "
+      "alr with ${_ada_toolchain} && "
       "alr build -- ${_gpr_vars}"
     )
   endif()
@@ -205,8 +233,23 @@ function(ada_alire_application)
   target_sources(app PRIVATE ${_ada_shim_c})
 
   # ---- Ada RTS library path ----
-  get_filename_component(_module_apps_dir "${ADA_MODULE_DIR}/../../../apps" ABSOLUTE)
-  set(_rts_lib "${_module_apps_dir}/zephyr_ada_rts/lib/${BOARD}/libgnat.a")
+  # ADA_RTS_DIR: path to the zephyr_ada_rts crate root.  Set this variable
+  # before calling ada_alire_application() when using a local clone or a
+  # non-standard install path.  The default covers the monorepo layout where
+  # apps/zephyr_ada_rts/ lives three levels above the module.
+  if(NOT ADA_RTS_DIR)
+    get_filename_component(ADA_RTS_DIR
+      "${_ada_module_dir}/../../../apps/zephyr_ada_rts" ABSOLUTE)
+  endif()
+  set(_rts_lib "${ADA_RTS_DIR}/lib/${BOARD}/libgnat.a")
+
+  # ---- Ada RTS C shim ----
+  # The shim wraps Zephyr kernel APIs that cannot be called as inline functions
+  # from Ada (irq_lock, k_thread_create, etc.).  It lives in the module's own
+  # src/ directory so the module is self-contained — no dependency on the RTS
+  # source path.  Compiled as Zephyr C for correct include paths and CONFIG_*.
+  set(_rts_shim "${_ada_module_dir}/src/zephyr_ada_shim.c")
+  target_sources(app PRIVATE ${_rts_shim})
 
   # ---- ExternalProject ----
   ExternalProject_Add(

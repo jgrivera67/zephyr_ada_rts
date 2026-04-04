@@ -1,6 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-
-source "Kconfig.zephyr"
-
-# Ada language support options
-rsource "../../zephyr_ada_rts/Kconfig.ada"
