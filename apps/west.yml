@@ -2,6 +2,8 @@ manifest:
   remotes:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
+    - name: local
+      url-base: file:///home/josegrivera/my-projects
 
   projects:
     - name: zephyr
@@ -9,6 +11,15 @@ manifest:
       repo-path: zephyr
       revision: main
       import: true      # This pulls in other modules, like HALs
+
+    # Ada language module (zephyr-lang-ada).
+    # Pointing at a local clone while the repo is not yet upstream.
+    # Switch remote to zephyrproject-rtos once the PR is merged.
+    - name: zephyr-lang-ada
+      remote: local
+      repo-path: zephyr-lang-ada
+      revision: main
+      path: modules/lang/ada
 
   self:
     path: apps
