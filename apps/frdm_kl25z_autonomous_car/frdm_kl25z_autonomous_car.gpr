@@ -8,8 +8,8 @@
 --  Serial_Console excluded to save RAM; Runtime_Logs used for debug output.
 --
 with "config/frdm_kl25z_autonomous_car_config.gpr";
---  compiler_flags.gpr and zephyr_ada_rts.gpr are resolved by Alire via
---  GPR_PROJECT_PATH — no relative paths needed when using published crates.
+--  Both compiler_flags.gpr and zephyr_ada_rts.gpr are resolved by Alire
+--  via GPR_PROJECT_PATH from the pinned zephyr_ada_rts crate directory.
 with "compiler_flags.gpr";
 with "zephyr_ada_rts.gpr";
 

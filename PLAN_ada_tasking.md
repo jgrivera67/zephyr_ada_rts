@@ -5,9 +5,9 @@
 Upstream Ada language support to Zephyr RTOS as an optional module.
 Branch: `ada_tasking` on `zephyr_ada` repo.
 
-## Status: IN PROGRESS — consolidating samples into module repo
+## Status: COMPLETE — regression 10/10 passed
 
-Regression: **10/10 passed** (last verified run).
+Regression: **10/10 passed** (verified after full consolidation).
 
 ## Completed Steps
 
@@ -27,57 +27,37 @@ Regression: **10/10 passed** (last verified run).
   - Fixed CMake toolchain variable scope (re-detect inside function)
   - Fixed Library_Name convention: all samples use "ada_app" → generates `ada_appinit`
 - [x] Regression verified 10/10 green with all fixes
+- [x] Move generic samples (hello_world, ada_tasking, ada_protected_objects) to module repo
+- [x] Remove in-tree duplicates (`apps/samples/hello_world/`, `apps/samples/ada_tasking/`,
+      `apps/samples/ada_protected_objects/`)
+- [x] Move `frdm_kl25z_autonomous_car` from `apps/samples/` to `apps/`
+- [x] Update regression script: module samples from `modules/lang/ada/samples/`,
+      car from `apps/frdm_kl25z_autonomous_car/`
+- [x] Fix hello_world in module: Library_Name/LIBNAME, alire.toml pins,
+      Library_Interface, redundant `with System;`, non-exact delay literals
+- [x] Regression verified 10/10 after full consolidation
 
-## Next Steps (uncommitted changes in working tree)
-
-1. **Commit A** → `~/my-projects/zephyr-lang-ada`:
-   - Fix hello_world: Library_Name "ada_hello"→"ada_app", LIBNAME libada_hello→libada_app, add [[pins]]
-   - Add `samples/ada_tasking/` (copy from apps/samples/ada_tasking, remove hardcoded ADA_RTS_DIR)
-   - Add `samples/ada_protected_objects/` (same pattern)
-
-2. **west update zephyr-lang-ada** in monorepo
-
-3. **Commit B1** → monorepo:
-   - All D entries: `apps/zephyr_ada_rts/`, `apps/third_party/`, `apps/scripts/{kconfig,dt}_to_ada.py`
-   - Modified `apps/west.yml`
-
-4. **Commit B2** → monorepo:
-   - Delete `apps/samples/hello_world/`, `apps/samples/ada_tasking/`, `apps/samples/ada_protected_objects/`
-   - `git mv apps/samples/frdm_kl25z_autonomous_car/ apps/frdm_kl25z_autonomous_car/`
-   - Remove `apps/samples/` directory
-   - Update `apps/scripts/regression_build.sh`: module samples from `modules/lang/ada/samples/`,
-     car from `apps/frdm_kl25z_autonomous_car/`, pass `-- -DADA_RTS_DIR=...` for module samples
-
-5. **Run full regression** to verify 10/10 still pass
-
-## Key Files
+## Repository State
 
 ### Local clones
-- `~/my-projects/zephyr-lang-ada/` — module (3 commits ahead of initial: Kconfig fix, cmake fix, ...)
+- `~/my-projects/zephyr-lang-ada/` — module (8 commits ahead of initial)
 - `~/my-projects/zephyr_ada_rts/` — RTS crate
 
-### Module
-- `modules/lang/ada/zephyr/CMakeLists.txt` — `ada_alire_application()` (arch detection inside function)
-- `modules/lang/ada/zephyr/Kconfig.ada` — selects THREAD_CUSTOM_DATA, THREAD_STACK_INFO, DYNAMIC_THREAD
-- `modules/lang/ada/src/zephyr_ada_shim.c` — C shim (self-contained in module)
+### Module samples (in module repo, also synced to monorepo modules/lang/ada/)
+- `modules/lang/ada/samples/hello_world/` — 3 Ada tasks, Ada delay
+- `modules/lang/ada/samples/ada_tasking/` — tasks + protected mailbox
+- `modules/lang/ada/samples/ada_protected_objects/` — protected variables + bounded buffer
 
-### Samples (apps, still uncommitted deletions)
-- `apps/samples/` — to be deleted (samples moving to module or being relocated)
-- `apps/samples/frdm_kl25z_autonomous_car/` — moving to `apps/frdm_kl25z_autonomous_car/`
+### App (board-specific)
+- `apps/frdm_kl25z_autonomous_car/` — NXP KL25Z car (frdm_kl25z only)
 
 ### Regression
-- `apps/scripts/regression_build.sh` — needs update for new sample locations
+- `apps/scripts/regression_build.sh` — 10 builds, 2 skipped
 
 ## GPR / CMake Conventions
 
 - All sample GPR files: `for Library_Name use "ada_app"` → gnatbind generates `ada_appinit`
 - All sample CMakeLists: `LIBNAME libada_app` in `ada_alire_application()`
 - Each sample's `alire.toml` pins: `zephyr_ada_rts = { path = "/home/josegrivera/my-projects/zephyr_ada_rts" }`
-- Module samples: NO hardcoded `ADA_RTS_DIR` in CMakeLists; regression script passes it
-
-## Resume Instructions
-
-Worktree: `/home/josegrivera/my-projects/zephyr_ada`
-Branch: `ada_tasking`
-Pending: Execute commits A, B1, B2 as described in Next Steps above.
-See detailed commit plan: `~/.claude/plans/dynamic-splashing-sedgewick.md`
+- Module samples: NO hardcoded `ADA_RTS_DIR` in CMakeLists; regression script passes `-DADA_RTS_DIR=...`
+- hello_world delay values: only power-of-2 multiples (0.5, 1.0, 2.0, 10.0) to avoid `-gnatwb` with `-gnatwe`

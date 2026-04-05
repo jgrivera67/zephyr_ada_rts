@@ -9,6 +9,7 @@ package Zephyr.Config is
    --  These constants provide type-safe access to Zephyr configuration
    --  without using C preprocessor directives
 
+   Ada_Device_Tree_Package : constant Boolean := True;
    Ada_Interrupt_Handling : constant Boolean := True;
    Ada_Kconfig_Package : constant Boolean := True;
    Ada_Main_Stack_Size : constant := 4096;

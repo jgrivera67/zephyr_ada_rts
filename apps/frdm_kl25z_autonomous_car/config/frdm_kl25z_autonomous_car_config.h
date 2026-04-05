@@ -2,7 +2,7 @@
 #ifndef FRDM_KL25Z_AUTONOMOUS_CAR_CONFIG_H
 #define FRDM_KL25Z_AUTONOMOUS_CAR_CONFIG_H
 
-#define CRATE_VERSION "0.1.0-dev"
+#define CRATE_VERSION "0.1.0"
 #define CRATE_NAME "frdm_kl25z_autonomous_car"
 
 #define ALIRE_HOST_OS "linux"

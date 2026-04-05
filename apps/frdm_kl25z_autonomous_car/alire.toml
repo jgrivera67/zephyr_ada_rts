@@ -18,4 +18,11 @@ tags = ["zephyr", "embedded", "frdm-kl25z", "autonomous"]
 zephyr_ada_rts = ">=0.1.0"
 # Architecture-specific toolchain is added dynamically by ada_alire_application()
 # via 'alr with' based on Zephyr's target architecture.
+
+# NOTE: [[pins]] points to the local zephyr_ada_rts clone at ~/my-projects/.
+# Switch to alire-index once zephyr_ada_rts is published there.
+[[pins]]
+zephyr_ada_rts = { path = "/home/josegrivera/my-projects/zephyr_ada_rts" }
+
+[[depends-on]]
 gnat_arm_elf = "^15.2.1"
