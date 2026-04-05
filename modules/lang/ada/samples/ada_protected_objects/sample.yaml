@@ -1,0 +1,31 @@
+sample:
+  name: Ada Protected Objects Demo
+  description: >
+    Demonstrates Ada protected objects as the sole synchronization mechanism
+    on Zephyr: a protected variable (mutex replacement), a bounded buffer with
+    entry barriers (semaphore-like producer-consumer), and an event flag for
+    ISR-to-task notification — all without any k_mutex, k_sem, or k_condvar
+    calls in Ada code.
+
+  tags:
+    - ada
+    - tasking
+    - protected_objects
+
+tests:
+  sample.ada.protected_objects:
+    build_only: false
+    filter: CONFIG_ADA
+    platform_allow:
+      - frdm_kl25z
+      - hifive1_revb
+      - esp32c3_devkitm
+      - qemu_cortex_m3
+    integration_platforms:
+      - qemu_cortex_m3
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "Ada Protected Objects Demo"
+        - "Produced:"

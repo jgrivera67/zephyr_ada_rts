@@ -9,8 +9,6 @@
 --  - No Zephyr C API calls in Ada code
 
 with Interfaces.C;
-with System;
-with Zephyr.Config;   --  generated from Kconfig by kconfig_to_ada.py
 
 package body Ada_Hello is
 
@@ -29,7 +27,7 @@ package body Ada_Hello is
    begin
       loop
          Printk ("Ada Hi task running" & ASCII.LF);
-         delay 0.1;   --  100 ms  (k_msleep via Ada RTS)
+         delay 0.5;   --  500 ms
       end loop;
    end Hi_Task;
 
@@ -37,7 +35,7 @@ package body Ada_Hello is
    begin
       loop
          Printk ("Ada Mid task running" & ASCII.LF);
-         delay 0.25;  --  250 ms
+         delay 1.0;   --  1 s
       end loop;
    end Mid_Task;
 
@@ -45,12 +43,11 @@ package body Ada_Hello is
    begin
       loop
          Printk ("Ada Lo task running" & ASCII.LF);
-         delay 0.5;   --  500 ms
+         delay 2.0;   --  2 s
       end loop;
    end Lo_Task;
 
    procedure Main is
-      pragma Unreferenced (Zephyr.Config.Main_Stack_Size);  --  available if needed
    begin
       Printk ("Zephyr Ada Hello World" & ASCII.LF);
       Printk ("Three Ada tasks started" & ASCII.LF);

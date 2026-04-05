@@ -1,0 +1,41 @@
+--
+--  Copyright (c) 2025 Zephyr Ada Contributors
+--
+--  SPDX-License-Identifier: Apache-2.0
+--
+--  Zephyr Ada Hello World sample
+--  compiler_flags.gpr and zephyr_ada_rts.gpr are resolved by Alire via
+--  GPR_PROJECT_PATH — no relative paths needed when using published crates.
+--
+with "config/ada_hello_world_config.gpr";
+with "compiler_flags.gpr";
+with "zephyr_ada_rts.gpr";
+
+project Ada_Hello_World is
+   for Target use Compiler_Flags.Target_Compiler_Selector;
+   for Runtime ("Ada") use Zephyr_Ada_Rts'Runtime ("Ada");
+   for Languages use ("Ada");
+
+   for Library_Name use "ada_app";
+   for Library_Version use Project'Library_Name & ".a." & Ada_Hello_World_Config.Crate_Version;
+
+   for Source_Dirs use ("src/", "config/");
+   for Object_Dir use "obj/" & Ada_Hello_World_Config.Build_Profile & "/" & Compiler_Flags.Board;
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "lib/" & Compiler_Flags.Board;
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("ADA_HELLO_WORLD_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
+
+   for Library_Standalone use "standard";
+
+   for Library_Interface use ("Ada_Hello");
+
+   package Compiler is
+      for Default_Switches ("Ada") use Ada_Hello_World_Config.Ada_Compiler_Switches &
+                                       Compiler_Flags.Compiler.ADAFLAGS;
+   end Compiler;
+
+end Ada_Hello_World;

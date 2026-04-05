@@ -1,0 +1,23 @@
+#
+# Copyright (c) 2025 Zephyr Ada Contributors
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+name = "ada_protected_demo"
+description = "Zephyr Ada protected objects demo: synchronization with Ada"
+version = "0.1.0"
+
+authors = ["Zephyr Ada Contributors"]
+licenses = "Apache-2.0"
+tags = ["zephyr", "embedded", "sample"]
+
+[[depends-on]]
+zephyr_ada_rts = ">=0.1.0"
+# Architecture-specific toolchain is added dynamically by ada_alire_application()
+# via 'alr with' based on Zephyr's target architecture.
+
+[[pins]]
+zephyr_ada_rts = { path = "/home/josegrivera/my-projects/zephyr_ada_rts" }
+
+[[depends-on]]
+gnat_arm_elf = "^15.2.1"

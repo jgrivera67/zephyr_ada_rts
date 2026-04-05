@@ -1,0 +1,29 @@
+sample:
+  name: Ada Tasking Demo
+  description: >
+    Demonstrates Ada-native concurrency on Zephyr: named task types with
+    different priorities, Ada delay statements (mapped to k_msleep), a
+    producer/consumer mailbox via protected entries, and a shared protected
+    counter — all without any Zephyr C API calls in Ada code.
+
+  tags:
+    - ada
+    - tasking
+
+tests:
+  sample.ada.tasking:
+    build_only: false
+    filter: CONFIG_ADA
+    platform_allow:
+      - frdm_kl25z
+      - hifive1_revb
+      - esp32c3_devkitm
+      - qemu_cortex_m3
+    integration_platforms:
+      - qemu_cortex_m3
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "Ada Tasking Demo started"
+        - "Worker 1: iteration"
